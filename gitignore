@@ -1,0 +1,16 @@
+# general
+*.swp
+.DS_Store
+
+# for ctags
+/tags
+
+# for submodules
+/doc/tags
+/doc/tags-ja
+
+# phpstorm
+.idea
+
+# vscode
+.vscode

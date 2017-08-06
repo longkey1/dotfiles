@@ -1,0 +1,27 @@
+[core]
+  editor = vim -c \"set fenc=utf-8\"
+  excludesfile = ~/.gitignore
+  quotepath = false
+  pager = nkf -w | LESSCHARSET=utf-8 less
+[user]
+  email = longkey1@gmail.com
+  name = longkey1
+[color]
+  ui = auto
+[pull]
+  rebase = true
+[alias]
+  mergelog = merge --log --no-ff
+  pushf = push --force-with-lease
+  wip = commit -m '[ci skip][wip] initial commit' --allow-empty
+  sync = remote update --prune
+[push]
+  default = nothing
+[include]
+  path = ~/.gitconfig.local
+[init]
+  templatedir = ~/.git-template
+[commit]
+  template = ~/.git-commit-message
+[ghq]
+  root = ~/workspace/src
