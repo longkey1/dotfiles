@@ -46,7 +46,7 @@ endif
 
 
 " local
-if filereadable(expand('$HOME/.config/nvim/init.local.vim'))
-  source $HOME/.config/nvim/init.local.vim
+if filereadable(expand('$HOME/.config/nvim/init.vim.local'))
+  source $HOME/.config/nvim/init.vim.local
 endif
 " ======================================================= general =====
