@@ -1,0 +1,6 @@
+## load user .zshrc configuration file
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/runcoms/zshrc" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/runcoms/zshrc"
+fi
+
+# Customize to your needs...
