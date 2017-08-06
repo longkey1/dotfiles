@@ -1,0 +1,10 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =8
+let g:netrw_dirhist_1='/home/moto'
+let g:netrw_dirhist_2='/home/moto/workspace'
+let g:netrw_dirhist_3='/home/moto/workspace/src'
+let g:netrw_dirhist_4='/home/moto/workspace/src/github.com'
+let g:netrw_dirhist_5='/home/moto/workspace/src/github.com/longkey1'
+let g:netrw_dirhist_6='/home/moto/workspace/src/github.com/longkey1/hooks'
+let g:netrw_dirhist_7='/home/moto/workspace/src/github.com/longkey1/hooks/src'
+let g:netrw_dirhist_8='/home/moto'
