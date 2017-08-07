@@ -1,14 +1,14 @@
 " ======================================================= plug ===
 if has('vim_starting')
-  if !isdirectory(expand('~/.local/share/nvim/site/plugged/vim-plug'))
+  if !isdirectory(expand('~/.vim/plugged/vim-plug'))
     echo 'install vim-plug...'
-    call system('mkdir -p ~/.local/share/nvim/site/plugged/vim-plug')
-    call system('git clone https://github.com/junegunn/vim-plug.git ~/.local/share/nvim/site/plugged/vim-plug')
-    call system('mkdir -p ~/.local/share/nvim/site/autoload')
-    call system('ln -s ~/.local/share/nvim/site/plugged/vim-plug/plug.vim ~/.local/share/nvim/site/autoload/')
+    call system('mkdir -p ~/.vim/plugged/vim-plug')
+    call system('git clone https://github.com/junegunn/vim-plug.git ~/.vim/plugged/vim-plug')
+    call system('mkdir -p ~/.vim/autoload')
+    call system('ln -s ~/.vim/plugged/vim-plug/plug.vim ~/.vim/autoload/')
   end
 endif
-call plug#begin('~/.local/share/nvim/site/plugged')
+call plug#begin('~/.vim/plugged')
 Plug 'junegunn/vim-plug'
 Plug 'nanotech/jellybeans.vim'
 Plug 'thinca/vim-quickrun'
@@ -17,7 +17,7 @@ call plug#end()
 
 " ======================================================= plugin =====
 " colorscheme:jellybeans
-if isdirectory(expand('~/.local/share/nvim/site/plugged/jellybeans.vim'))
+if isdirectory(expand('~/.vim/plugged/jellybeans.vim'))
   colorscheme jellybeans
 endif
 
@@ -72,7 +72,7 @@ endif
 
 
 " local
-if filereadable(expand('~/.config/nvim/init.vim.local'))
-  source ~/.config/nvim/init.vim.local
+if filereadable(expand('~/.vimrc.local'))
+  source ~/.vimrc.local
 endif
 " ======================================================= general =====

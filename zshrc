@@ -8,8 +8,8 @@ function excutable() {
 }
 
 # general
-export EDITOR="nvim"
-export VISUAL="nvim"
+export EDITOR="vim"
+export VISUAL="vim"
 export PAGER="less"
 
 # no create core dump file
@@ -77,7 +77,7 @@ if excutable ls; then
   alias ll="ls -l"
 fi
 if excutable vim; then
-  alias vi="nvim"
+  alias vi="vim"
 fi
 if excutable grep; then
   alias grep="grep -I --color=auto"
@@ -144,7 +144,6 @@ if excutable peco; then
   zle -N peco-select-path
   # Ctrl+f で起動
   bindkey '^f' peco-select-path
-
 fi
 
 # historica backward/forward search with linehead string binded to ^p/^n

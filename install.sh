@@ -31,6 +31,8 @@ FILES=(\
 "config/nvim" \
 "tmux" \
 "tmux.conf" \
+"vim" \
+"vimrc" \
 "zprezto" \
 "zlogin" \
 "zlogout" \
