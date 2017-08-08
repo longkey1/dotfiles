@@ -10,3 +10,6 @@
 [submodule "vim/pack/bundle/start/vim-quickrun"]
 	path = vim/pack/bundle/start/vim-quickrun
 	url = https://github.com/thinca/vim-quickrun.git
+[submodule "vim/pack/bundle/start/sudo.vim"]
+	path = vim/pack/bundle/start/sudo.vim
+	url = https://github.com/vim-scripts/sudo.vim.git
