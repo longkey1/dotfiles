@@ -96,11 +96,8 @@ alias jekyll="nocorrect jekyll"
 alias cleaver="nocorrect cleaver"
 
 # less
-if excutable less; then
-  alias less="less -N"
-  if excutable source-highlight-esc.sh; then
-    export LESSOPEN="| source-highlight-esc.sh %s"
-  fi
+if excutable less && excutable source-highlight-esc.sh; then
+  export LESSOPEN="| source-highlight-esc.sh %s"
 fi
 
 # ansible
