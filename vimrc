@@ -1,30 +1,12 @@
-" ======================================================= plug ===
-if has('vim_starting')
-  if !isdirectory(expand('~/.vim/plugged/vim-plug'))
-    echo 'install vim-plug...'
-    call system('mkdir -p ~/.vim/plugged/vim-plug')
-    call system('git clone https://github.com/junegunn/vim-plug.git ~/.vim/plugged/vim-plug')
-    call system('mkdir -p ~/.vim/autoload')
-    call system('ln -s ~/.vim/plugged/vim-plug/plug.vim ~/.vim/autoload/')
-  end
-endif
-call plug#begin('~/.vim/plugged')
-Plug 'junegunn/vim-plug'
-Plug 'nanotech/jellybeans.vim'
-Plug 'thinca/vim-quickrun'
-call plug#end()
-" ======================================================= plug ===
-
 " ======================================================= plugin =====
-" colorscheme:jellybeans
-if isdirectory(expand('~/.vim/plugged/jellybeans.vim'))
+" colorscheme
+if isdirectory(expand('~/.vim/pack/bundle/start/jellybeans.vim'))
   colorscheme jellybeans
 endif
 
 " netrw
 let g:netrw_liststyle = 3
 
-" ======================================================= plugin =====
 
 " ======================================================= general =====
 syntax on " シンタックス
@@ -74,4 +56,3 @@ endif
 if filereadable(expand('~/.vimrc.local'))
   source ~/.vimrc.local
 endif
-" ======================================================= general =====
