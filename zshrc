@@ -107,7 +107,7 @@ fi
 
 # peco
 if excutable peco; then
-  # historical search with peco binded to ^h
+  # historical search with peco binded to ^r
   function peco-select-history() {
     # historyを番号なし、逆順、最初から表示。
     # 順番を保持して重複を削除。
@@ -120,9 +120,9 @@ if excutable peco; then
     zle -R -c
   }
   zle -N peco-select-history
-  bindkey '^h' peco-select-history
+  bindkey '^r' peco-select-history
 
-  # historical search with peco binded to ^h
+  # path selection with peco binded to ^f
   function peco-select-path() {
     local filepath="$(find . | grep -v '/\.' | peco --prompt 'PATH>')"
     [ -z "$filepath" ] && return
