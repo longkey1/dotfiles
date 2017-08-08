@@ -70,7 +70,6 @@ if executable('ibus')
   augroup END
 endif
 
-
 " local
 if filereadable(expand('~/.vimrc.local'))
   source ~/.vimrc.local
