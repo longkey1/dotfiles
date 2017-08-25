@@ -3,13 +3,8 @@
 ## Installation
 
 ```
-git clone git@github.com:longkey1/dotfiles.git ~/.dotfiles --recursive
-cd ~/.dotfiles
-./install.sh
+git clone git@gitlab.com:longkey1/dotfiles.git --recursive
+cd dotfiles
+make && make install
 
 ```
-
-## Optional local configuration file
-
-- `~/.zshrc.local`
-- `~/.config/nvim/init.vim.local`
