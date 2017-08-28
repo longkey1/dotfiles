@@ -21,7 +21,7 @@ TARGETS := \
 
 .PHONY: all
 all: ## submodule update init
-	git submodule update --init
+	git submodule update --init --recursive
 
 .PHONY: install
 install: ## create target's symlink in home directory
