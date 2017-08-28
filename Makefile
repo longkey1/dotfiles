@@ -34,8 +34,8 @@ install: ## create target's symlink in home directory
 		fi \
 	done
 
-.PHONY: clean
-clean: ## delete created symlink
+.PHONY: uninstall
+uninstall: ## delete created symlink
 	@for TARGET in $(TARGETS); do \
 		if [ -h "$(HOME)/.$$TARGET" ]; then \
 			rm $(HOME)/.$$TARGET; \
