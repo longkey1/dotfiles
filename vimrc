@@ -14,6 +14,8 @@ filetype plugin on " ファイルタイププラグイン
 
 set autoindent " オートインデント
 set number " 行番号表示
+set list
+set listchars=trail:-
 
 " クリップボード共有
 if has('mac')
