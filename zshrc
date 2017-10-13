@@ -67,9 +67,11 @@ if [[ -d /opt/ffmpeg ]]; then
   export PATH=/opt/ffmpeg:$PATH
 fi
 
-# git diff-highlight
+# git/diff-highlight
 if [[ -d /usr/local/share/git-core/contrib/diff-highlight ]]; then
   export PATH=$PATH:/usr/local/share/git-core/contrib/diff-highlight
+elif [[ -d /usr/share/git/diff-highlight ]]; then
+  export PATH=$PATH:/usr/share/git/diff-highlight
 fi
 
 # direnv
