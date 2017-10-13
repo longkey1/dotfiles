@@ -67,6 +67,11 @@ if [[ -d /opt/ffmpeg ]]; then
   export PATH=/opt/ffmpeg:$PATH
 fi
 
+# git diff-highlight
+if [[ -d /usr/local/share/git-core/contrib/diff-highlight ]]; then
+  export PATH=$PATH:/usr/local/share/git-core/contrib/diff-highlight
+fi
+
 # direnv
 if excutable direnv; then
   eval "$(direnv hook zsh)"

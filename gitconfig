@@ -25,3 +25,7 @@
   template = ~/.git-commit-message
 [ghq]
   root = ~/workspace/src
+[pager]
+  log = diff-highlight | less
+  show = diff-highlight | less
+  diff = diff-highlight | less
