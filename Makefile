@@ -2,7 +2,7 @@ TARGETS := \
 "bundle" \
 "gitconfig" \
 "gitignore" \
-"git-template" \
+"git-hooks" \
 "git-commit-message" \
 "config/nvim" \
 "tmux" \
