@@ -3,6 +3,7 @@
   excludesfile = ~/.gitignore
   quotepath = false
   pager = nkf -w | LESSCHARSET=utf-8 less
+  hooksPath = ~/.git-hooks
 [user]
   email = longkey1@gmail.com
   name = longkey1
@@ -19,8 +20,6 @@
   default = nothing
 [include]
   path = ~/.gitconfig.local
-[init]
-  templatedir = ~/.git-template
 [commit]
   template = ~/.git-commit-message
 [ghq]
