@@ -5,6 +5,7 @@ TARGETS := \
 "git-hooks" \
 "git-commit-message" \
 "config/nvim" \
+"ocamlinit" \
 "tmux" \
 "tmux.conf" \
 "vim" \
