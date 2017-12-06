@@ -4,10 +4,6 @@ if isdirectory(expand('~/.vim/pack/bundle/start/jellybeans.vim'))
   colorscheme jellybeans
 endif
 
-" netrw
-let g:netrw_liststyle = 3
-
-
 " ======================================================= general =====
 syntax on " シンタックス
 filetype plugin on " ファイルタイププラグイン
@@ -16,6 +12,9 @@ set autoindent " オートインデント
 set number " 行番号表示
 set list
 set listchars=trail:-
+
+" netrw
+let g:netrw_liststyle = 3
 
 " クリップボード共有
 if has('mac')
