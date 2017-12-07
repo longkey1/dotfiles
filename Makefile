@@ -21,7 +21,7 @@ TARGETS := \
 "zshrc.prezto"
 
 .PHONY: all
-all: ## submodule update init
+all: decript-netrc ## submodule update init and decrypt netrc
 	git submodule update --init --recursive
 
 .PHONY: install
@@ -47,6 +47,14 @@ uninstall: ## delete created symlink
 			echo "no exists $$TARGET"; \
 		fi \
 	done
+
+.PHONY: encript-netrc
+encript-netrc: ## encript netrc
+	openssl aes-256-cbc -e -md sha256 -in netrc -out netrc.encrypted
+
+.PHONY: decript-netrc
+decript-netrc: ## decript netrc
+	openssl aes-256-cbc -d -md sha256 -in netrc.encrypted -out netrc
 
 .PHONY: help
 help:

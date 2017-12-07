@@ -1,6 +1,7 @@
-/tmux/plugins/
 /bundle/cache
 /config/nvim/.netrwhist
+/netrc
+/tmux/plugins/
 /vim/.netrwhist
 /vim/autoload
 /vim/plugged
