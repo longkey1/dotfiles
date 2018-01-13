@@ -53,7 +53,7 @@ fi
 
 # ruby & gem
 if excutable ruby && excutable gem; then
-  export PATH="$(ruby -rubygems -e 'puts Gem.user_dir')/bin:$PATH"
+  export PATH="$(ruby -e 'puts Gem.user_dir')/bin:$PATH"
 fi
 
 # go
