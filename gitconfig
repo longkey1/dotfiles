@@ -9,8 +9,6 @@
   name = longkey1
 [color]
   ui = auto
-[pull]
-  rebase = true
 [alias]
   mergelog = merge --log --no-ff
   pushf = push --force-with-lease
