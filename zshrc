@@ -94,10 +94,10 @@ fi
 if excutable tmux && [[ "${OSTYPE}" =~ ^darwin* ]]; then
   alias tmux="tmux -2 -u"
 fi
-if excutable ghq && excutable peco ]]; then
-  alias gg='cd $(ghq list -p | peco)'
+if excutable ghq && excutable fzf && excutable fzf-tmux; then
+  alias gg='cd $(ghq list -p | fzf-tmux)'
 fi
-#
+
 # nocorrect alias
 alias jekyll="nocorrect jekyll"
 alias cleaver="nocorrect cleaver"
@@ -112,8 +112,45 @@ if excutable ansible; then
   export ANSIBLE_NOCOWS=1
 fi
 
+# fzf
+if excutable fzf-tmux ]]; then
+  # historical search with peco binded to ^r
+  function fzf-select-history() {
+    # historyを番号なし、逆順、最初から表示。
+    # 順番を保持して重複を削除。
+    # カーソルの左側の文字列をクエリにしてpecoを起動
+    # \nを改行に変換
+    BUFFER="$(history -nr 1 | awk '!a[$0]++' | fzf-tmux --query "$LBUFFER" --prompt 'HISTORY>' | sed 's/\\n/\n/')"
+    # カーソルを文末に移動
+    CURSOR=$#BUFFER
+    # refresh
+    zle -R -c
+  }
+  zle -N fzf-select-history
+  bindkey '^r' fzf-select-history
+
+  # path selection with peco binded to ^f
+  function fzf-select-path() {
+    local filepath="$(find . | grep -v '/\.' | fzf-tmux --prompt 'PATH>')"
+    [ -z "$filepath" ] && return
+    if [ -n "$LBUFFER" ]; then
+      BUFFER="$LBUFFER$filepath"
+    else
+      if [ -d "$filepath" ]; then
+        BUFFER="cd $filepath"
+      elif [ -f "$filepath" ]; then
+        BUFFER="$EDITOR $filepath"
+      fi
+    fi
+    CURSOR=$#BUFFER
+  }
+
+  zle -N fzf-select-path
+  # Ctrl+f で起動
+  bindkey '^f' fzf-select-path
+#
 # peco
-if excutable peco; then
+elif excutable peco; then
   # historical search with peco binded to ^r
   function peco-select-history() {
     # historyを番号なし、逆順、最初から表示。
