@@ -10,3 +10,6 @@
 [submodule "vim/pack/bundle/start/sudo.vim"]
 	path = vim/pack/bundle/start/sudo.vim
 	url = https://github.com/vim-scripts/sudo.vim.git
+[submodule "zgen"]
+	path = zgen
+	url = https://github.com/tarjoilija/zgen.git
