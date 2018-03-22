@@ -11,14 +11,9 @@ TARGETS := \
 "vim" \
 "vimrc" \
 "xprofile" \
-"zprezto" \
-"zlogin" \
-"zlogout" \
-"zpreztorc" \
-"zprofile" \
-"zshenv" \
+"zgen" \
 "zshrc" \
-"zshrc.prezto"
+"zshrc.mine"
 
 .PHONY: all
 all: decript-netrc ## submodule update init and decrypt netrc
