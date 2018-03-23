@@ -11,9 +11,8 @@ TARGETS := \
 "vim" \
 "vimrc" \
 "xprofile" \
-"zgen" \
 "zshrc" \
-"zshrc.mine"
+"zshrc.zgen"
 
 .PHONY: all
 all: decript-netrc ## submodule update init and decrypt netrc
@@ -29,6 +28,7 @@ install: ## create target's symlink in home directory
 			echo "created $$TARGET"; \
 		fi \
 	done
+	git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
 
 .PHONY: uninstall
 uninstall: ## delete created symlink
@@ -42,6 +42,7 @@ uninstall: ## delete created symlink
 			echo "no exists $$TARGET"; \
 		fi \
 	done
+	rm -rf "${HOME}/.zgen"
 
 .PHONY: encript-netrc
 encript-netrc: ## encript netrc
