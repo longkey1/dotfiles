@@ -1,5 +1,5 @@
 # include .zshrc.zgen
-[[ -f ~/.zshrc.zgen ]] && source ~/.zshrc.zgen
+[[ -f $HOME/.zshrc.zgen ]] && source $HOME/.zshrc.zgen
 
 # functions
 function excutable() {

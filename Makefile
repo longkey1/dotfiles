@@ -1,4 +1,5 @@
 TARGETS := \
+"bin" \
 "bundle" \
 "gitconfig" \
 "gitignore" \
@@ -28,7 +29,11 @@ install: ## create target's symlink in home directory
 			echo "created $$TARGET"; \
 		fi \
 	done
-	git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
+	@if [ -e "$(HOME)/.zgen" ]; then \
+		echo "already exists $(HOME)/.zgen"; \
+	else \
+		git clone https://github.com/tarjoilija/zgen.git "$(HOME)/.zgen"; \
+	fi
 
 .PHONY: uninstall
 uninstall: ## delete created symlink
@@ -36,13 +41,18 @@ uninstall: ## delete created symlink
 		if [ -h "$(HOME)/.$$TARGET" ]; then \
 			rm $(HOME)/.$$TARGET; \
 			echo "deleted .$$TARGET"; \
-  	elif [ -e "$(HOME)/.$$TARGET" ]; then \
+		elif [ -e "$(HOME)/.$$TARGET" ]; then \
 			echo "no symlink $$TARGET"; \
 		else \
 			echo "no exists $$TARGET"; \
 		fi \
 	done
-	rm -rf "${HOME}/.zgen"
+	@if [ -e "$(HOME)/.zgen" ]; then \
+		rm -rf "${HOME}/.zgen"; \
+		echo "deleted $(HOME)/.zgen"; \
+	else \
+		echo "no exists $(HOME)/.zgen"; \
+	fi
 
 .PHONY: encript-netrc
 encript-netrc: ## encript netrc
