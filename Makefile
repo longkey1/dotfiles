@@ -15,9 +15,25 @@ TARGETS := \
 "zshrc" \
 "zshrc.zgen"
 
+COMPOSER := "https://getcomposer.org/download/1.6.3/composer.phar"
+
+ESAMPO_Darwin := "https://github.com/longkey1/esampo/releases/download/v0.0.3/esampo_darwin_amd64"
+ESAMPO_Linux := "https://github.com/longkey1/esampo/releases/download/v0.0.3/esampo_linux_amd64"
+
+DEP_Darwin := "https://github.com/monochromegane/the_platinum_searcher/releases/download/v2.1.5/pt_darwin_amd64.zip"
+DEP_Linux := "https://github.com/golang/dep/releases/download/v0.4.1/dep-linux-amd64"
+
+DIRENV_Darwin := "https://github.com/direnv/direnv/releases/download/v2.15.2/direnv.darwin-amd64"
+DIRENV_Linux := "https://github.com/direnv/direnv/releases/download/v2.15.2/direnv.linux-amd64"
+
 .PHONY: all
 all: decript-netrc ## submodule update init and decrypt netrc
 	git submodule update --init --recursive
+	wget $(COMPOSER) -O ./bin/composer && chmod +x ./bin/composer
+	$(eval UNAME := $(shell uname -s))
+	wget $(ESAMPO_$(UNAME)) -O ./bin/esampo && chmod +x ./bin/esampo
+	wget $(DEP_$(UNAME)) -O ./bin/dep && chmod +x ./bin/dep
+	wget $(DIRENV_$(UNAME)) -O ./bin/direnv && chmod +x ./bin/direnv
 
 .PHONY: install
 install: ## create target's symlink in home directory
