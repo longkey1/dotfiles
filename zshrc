@@ -102,6 +102,7 @@ alias jekyll="nocorrect jekyll"
 alias cleaver="nocorrect cleaver"
 
 # less
+export LESS="-R -F -X"
 if excutable less && excutable source-highlight-esc.sh; then
   export LESSOPEN="| source-highlight-esc.sh %s"
 fi
