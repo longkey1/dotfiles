@@ -15,6 +15,9 @@ TARGETS := \
 "zshrc" \
 "zshrc.zgen"
 
+LINUX_ONLY_TARGETS := \
+"xprofile" \
+
 COMPOSER := "https://getcomposer.org/download/1.6.3/composer.phar"
 
 ESAMPO_Darwin := "https://github.com/longkey1/esampo/releases/download/v0.0.3/esampo_darwin_amd64"
@@ -45,6 +48,13 @@ install: ## create target's symlink in home directory
 			echo "created $$TARGET"; \
 		fi \
 	done
+	@if [ "$(UNAME)" = "Linux" ]; then \
+		for TARGET in $(LINUX_ONLY_TARGETS); do \
+			if [ -h "$(HOME)/.$$TARGET" ]; then \
+				rm $(HOME)/.$$TARGET; \
+			fi \
+		done \
+	fi
 	@if [ -e "$(HOME)/.zgen" ]; then \
 		echo "already exists $(HOME)/.zgen"; \
 	else \
