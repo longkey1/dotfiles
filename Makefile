@@ -11,11 +11,13 @@ TARGETS := \
 "tmux.conf" \
 "vim" \
 "vimrc" \
+"Xmodmap" \
 "xprofile" \
 "zshrc" \
 "zshrc.zgen"
 
 LINUX_ONLY_TARGETS := \
+"Xmodmap" \
 "xprofile" \
 
 COMPOSER := "https://getcomposer.org/download/1.6.3/composer.phar"
