@@ -22,14 +22,17 @@ LINUX_ONLY_TARGETS := \
 
 COMPOSER := "https://getcomposer.org/download/1.6.3/composer.phar"
 
-ESAMPO_Darwin := "https://github.com/longkey1/esampo/releases/download/v0.0.3/esampo_darwin_amd64"
-ESAMPO_Linux := "https://github.com/longkey1/esampo/releases/download/v0.0.3/esampo_linux_amd64"
-
-DEP_Darwin := "https://github.com/monochromegane/the_platinum_searcher/releases/download/v2.1.5/pt_darwin_amd64.zip"
+DEP_Darwin := "https://github.com/golang/dep/releases/download/v0.4.1/dep-darwin-amd64"
 DEP_Linux := "https://github.com/golang/dep/releases/download/v0.4.1/dep-linux-amd64"
 
 DIRENV_Darwin := "https://github.com/direnv/direnv/releases/download/v2.15.2/direnv.darwin-amd64"
 DIRENV_Linux := "https://github.com/direnv/direnv/releases/download/v2.15.2/direnv.linux-amd64"
+
+ESAMPO_Darwin := "https://github.com/longkey1/esampo/releases/download/v0.0.3/esampo_darwin_amd64"
+ESAMPO_Linux := "https://github.com/longkey1/esampo/releases/download/v0.0.3/esampo_linux_amd64"
+
+PT_Darwin := "https://github.com/monochromegane/the_platinum_searcher/releases/download/v2.1.5/pt_darwin_amd64.zip"
+PT_Linux := "https://github.com/monochromegane/the_platinum_searcher/releases/download/v2.1.5/pt_linux_amd64.tar.gz"
 
 .PHONY: all
 all: decript-netrc ## submodule update init and decrypt netrc
@@ -39,6 +42,7 @@ all: decript-netrc ## submodule update init and decrypt netrc
 	wget $(ESAMPO_$(UNAME)) -O ./bin/esampo && chmod +x ./bin/esampo
 	wget $(DEP_$(UNAME)) -O ./bin/dep && chmod +x ./bin/dep
 	wget $(DIRENV_$(UNAME)) -O ./bin/direnv && chmod +x ./bin/direnv
+	wget $(PT_$(UNAME)) -O- | bsdtar -xvf- -C ./bin --strip=1 '*/pt'
 
 .PHONY: install
 install: ## create target's symlink in home directory
