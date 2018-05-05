@@ -1,9 +1,6 @@
 [submodule "tmux/plugins/tpm"]
 	path = tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
-[submodule "vim/pack/bundle/start/jellybeans.vim"]
-	path = vim/pack/bundle/start/jellybeans.vim
-	url = https://github.com/nanotech/jellybeans.vim.git
 [submodule "vim/pack/bundle/start/vim-quickrun"]
 	path = vim/pack/bundle/start/vim-quickrun
 	url = https://github.com/thinca/vim-quickrun.git
