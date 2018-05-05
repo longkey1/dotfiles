@@ -56,8 +56,8 @@ if excutable ruby && excutable gem; then
 fi
 
 # go
-if excutable go && [[ -d "$HOME/workspace" ]]; then
-  export GOPATH="$HOME/workspace"
+if excutable go && [[ -d "$HOME/work" ]]; then
+  export GOPATH="$HOME/work"
   export PATH=$GOPATH/bin:$PATH
 fi
 
