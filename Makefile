@@ -71,7 +71,7 @@ install: ## create target's symlink in home directory
 uninstall: ## delete created symlink
 	@for TARGET in $(TARGETS); do \
 		if [ -h "$(HOME)/.$$TARGET" ]; then \
-			rm $(HOME)/.$$TARGET; \
+			unlink $(HOME)/.$$TARGET; \
 			echo "deleted .$$TARGET"; \
 		elif [ -e "$(HOME)/.$$TARGET" ]; then \
 			echo "no symlink $$TARGET"; \
