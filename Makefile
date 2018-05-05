@@ -34,15 +34,19 @@ ESAMPO_Linux := "https://github.com/longkey1/esampo/releases/download/v0.0.3/esa
 PT_Darwin := "https://github.com/monochromegane/the_platinum_searcher/releases/download/v2.1.5/pt_darwin_amd64.zip"
 PT_Linux := "https://github.com/monochromegane/the_platinum_searcher/releases/download/v2.1.5/pt_linux_amd64.tar.gz"
 
-.PHONY: all
-all: decript-netrc ## submodule update init and decrypt netrc
+GHQ_Darwin := "https://github.com/motemen/ghq/releases/download/v0.8.0/ghq_darwin_amd64.zip"
+GHQ_Linux := "https://github.com/motemen/ghq/releases/download/v0.8.0/ghq_linux_amd64.zip"
+
+.PHONY: build
+build: decript-netrc ## submodule update init and decrypt netrc
 	git submodule update --init --recursive
 	wget $(COMPOSER) -O ./bin/composer && chmod +x ./bin/composer
 	$(eval UNAME := $(shell uname -s))
 	wget $(ESAMPO_$(UNAME)) -O ./bin/esampo && chmod +x ./bin/esampo
 	wget $(DEP_$(UNAME)) -O ./bin/dep && chmod +x ./bin/dep
 	wget $(DIRENV_$(UNAME)) -O ./bin/direnv && chmod +x ./bin/direnv
-	wget $(PT_$(UNAME)) -O- | bsdtar -xvf- -C ./bin --strip=1 '*/pt'
+	wget $(PT_$(UNAME)) -O- | bsdtar -xvf- -C ./bin --strip=1 '*/pt' && chmod +x ./bin/pt
+	wget $(GHQ_$(UNAME)) -O- | bsdtar -xvf- -C ./bin 'ghq' && chmod +x ./bin/ghq
 
 .PHONY: install
 install: ## create target's symlink in home directory
@@ -93,6 +97,7 @@ encript-netrc: ## encript netrc
 .PHONY: decript-netrc
 decript-netrc: ## decript netrc
 	openssl aes-256-cbc -d -md sha256 -in netrc.encrypted -out netrc
+
 
 .PHONY: help
 help:
