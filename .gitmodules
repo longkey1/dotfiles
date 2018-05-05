@@ -10,6 +10,3 @@
 [submodule "zgen"]
 	path = zgen
 	url = https://github.com/tarjoilija/zgen.git
-[submodule "vim/colors/jellybeans.vim"]
-	path = vim/colors/jellybeans.vim
-	url = https://github.com/vim-scripts/jellybeans.vim.git
