@@ -3,8 +3,7 @@
 ## Installation
 
 ```
-git clone git@gitlab.com:longkey1/dotfiles.git --recursive
-cd dotfiles
-make && make install
-
+$ mkdir -p $HOME/work/src/gitlab.com/longkey1
+$ git clone git@gitlab.com:longkey1/dotfiles.git $HOME/work/src/gitlab.com/longkey1/dotfiles
+$ pushd $HOME/work/src/gitlab.com/longkey1/dotfiles && make && make install && popd
 ```
