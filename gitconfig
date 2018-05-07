@@ -16,8 +16,6 @@
   sync = remote update --prune
 [push]
   default = nothing
-[include]
-  path = ~/.gitconfig.local
 [commit]
   template = ~/.git-commit-message
 [ghq]
@@ -26,3 +24,5 @@
   log = diff-highlight | less
   show = diff-highlight | less
   diff = diff-highlight | less
+[include]
+  path = ~/.gitconfig.local
