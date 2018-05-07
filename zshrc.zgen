@@ -8,7 +8,7 @@ if [[ -f "${HOME}/.zgen/zgen.zsh" ]]; then
 
     # specify plugins here
     zgen oh-my-zsh
-    zgen oh-my-zsh themes/clean
+    zgen oh-my-zsh themes/gentoo
 
     zgen load zsh-users/zsh-completions
     zgen load zsh-users/zsh-history-substring-search
