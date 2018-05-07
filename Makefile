@@ -44,7 +44,7 @@ PT_Linux := $(shell curl -s https://api.github.com/repos/monochromegane/the_plat
 .PHONY: build
 build: decript-netrc ## submodule update init and decrypt netrc
 	@if ! type bsdtar &> /dev/null ; then \
-		echo "not found basdtar command." && exit 1; \
+		echo "not found bsdtar command." && exit 1; \
 	fi
 	@if ! type jq &> /dev/null ; then \
 		echo "not found jq command." && exit 1; \
