@@ -48,6 +48,10 @@ build: decript-netrc ## submodule update init and decrypt netrc
 	wget $(PT_$(UNAME)) -O- | bsdtar -xvf- -C ./bin --strip=1 '*/pt' && chmod +x ./bin/pt
 	wget $(GHQ_$(UNAME)) -O- | bsdtar -xvf- -C ./bin 'ghq' && chmod +x ./bin/ghq
 
+.PHONY: clean
+clean: ## delete builded files
+	@find ./bin -type f | grep -v .gitignore | xargs rm -rf
+
 .PHONY: install
 install: ## create target's symlink in home directory
 	@for TARGET in $(TARGETS); do \
@@ -89,6 +93,12 @@ uninstall: ## delete created symlink
 	else \
 		echo "no exists $(HOME)/.zgen"; \
 	fi
+
+.PHONY: rebuild
+rebuild: clean build ## clean and build
+
+.PHONY: reinstall
+reinstall: uninstall install ## uninstall and install
 
 .PHONY: encript-netrc
 encript-netrc: ## encript netrc
