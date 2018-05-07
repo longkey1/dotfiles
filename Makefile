@@ -19,33 +19,43 @@ LINUX_ONLY_TARGETS := \
 "Xmodmap" \
 "xprofile" \
 
-COMPOSER := "https://getcomposer.org/download/1.6.3/composer.phar"
+COMPOSER := "https://getcomposer.org/composer.phar"
 
-DEP_Darwin := "https://github.com/golang/dep/releases/download/v0.4.1/dep-darwin-amd64"
-DEP_Linux := "https://github.com/golang/dep/releases/download/v0.4.1/dep-linux-amd64"
+DEP_Darwin := $(shell curl -s https://api.github.com/repos/golang/dep/releases/latest | jq -r ".assets[] | select(.name | test(\"darwin-amd64\")) | .browser_download_url")
+DEP_Linux := $(shell curl -s https://api.github.com/repos/golang/dep/releases/latest | jq -r ".assets[] | select(.name | test(\"linux-amd64\")) | .browser_download_url")
 
-DIRENV_Darwin := "https://github.com/direnv/direnv/releases/download/v2.15.2/direnv.darwin-amd64"
-DIRENV_Linux := "https://github.com/direnv/direnv/releases/download/v2.15.2/direnv.linux-amd64"
+DIRENV_Darwin := $(shell curl -s https://api.github.com/repos/direnv/direnv/releases/latest | jq -r ".assets[] | select(.name | test(\"darwin-amd64\")) | .browser_download_url")
+DIRENV_Linux := $(shell curl -s https://api.github.com/repos/direnv/direnv/releases/latest | jq -r ".assets[] | select(.name | test(\"linux-amd64\")) | .browser_download_url")
 
-ESAMPO_Darwin := "https://github.com/longkey1/esampo/releases/download/v0.0.3/esampo_darwin_amd64"
-ESAMPO_Linux := "https://github.com/longkey1/esampo/releases/download/v0.0.3/esampo_linux_amd64"
+ESAMPO_Darwin := $(shell curl -s https://api.github.com/repos/longkey1/esampo/releases/latest | jq -r ".assets[] | select(.name | test(\"darwin_amd64\")) | .browser_download_url")
+ESAMPO_Linux := $(shell curl -s https://api.github.com/repos/longkey1/esampo/releases/latest | jq -r ".assets[] | select(.name | test(\"linux_amd64\")) | .browser_download_url")
 
-PT_Darwin := "https://github.com/monochromegane/the_platinum_searcher/releases/download/v2.1.5/pt_darwin_amd64.zip"
-PT_Linux := "https://github.com/monochromegane/the_platinum_searcher/releases/download/v2.1.5/pt_linux_amd64.tar.gz"
+GHQ_Darwin := $(shell curl -s https://api.github.com/repos/motemen/ghq/releases/latest | jq -r ".assets[] | select(.name | test(\"darwin_amd64\")) | .browser_download_url")
+GHQ_Linux := $(shell curl -s https://api.github.com/repos/motemen/ghq/releases/latest | jq -r ".assets[] | select(.name | test(\"linux_amd64\")) | .browser_download_url")
 
-GHQ_Darwin := "https://github.com/motemen/ghq/releases/download/v0.8.0/ghq_darwin_amd64.zip"
-GHQ_Linux := "https://github.com/motemen/ghq/releases/download/v0.8.0/ghq_linux_amd64.zip"
+PECO_Darwin := $(shell curl -s https://api.github.com/repos/peco/peco/releases/latest | jq -r ".assets[] | select(.name | test(\"darwin_amd64\")) | .browser_download_url")
+PECO_Linux := $(shell curl -s https://api.github.com/repos/peco/peco/releases/latest | jq -r ".assets[] | select(.name | test(\"linux_amd64\")) | .browser_download_url")
+
+PT_Darwin := $(shell curl -s https://api.github.com/repos/monochromegane/the_platinum_searcher/releases/latest | jq -r ".assets[] | select(.name | test(\"darwin_amd64\")) | .browser_download_url")
+PT_Linux := $(shell curl -s https://api.github.com/repos/monochromegane/the_platinum_searcher/releases/latest | jq -r ".assets[] | select(.name | test(\"linux_amd64\")) | .browser_download_url")
 
 .PHONY: build
 build: decript-netrc ## submodule update init and decrypt netrc
+	@if ! type bsdtar &> /dev/null ; then \
+		echo "not found basdtar command." && exit 1; \
+	fi
+	@if ! type jq &> /dev/null ; then \
+		echo "not found jq command." && exit 1; \
+	fi
 	git submodule update --init --recursive
 	wget $(COMPOSER) -O ./bin/composer && chmod +x ./bin/composer
 	$(eval UNAME := $(shell uname -s))
-	wget $(ESAMPO_$(UNAME)) -O ./bin/esampo && chmod +x ./bin/esampo
 	wget $(DEP_$(UNAME)) -O ./bin/dep && chmod +x ./bin/dep
 	wget $(DIRENV_$(UNAME)) -O ./bin/direnv && chmod +x ./bin/direnv
-	wget $(PT_$(UNAME)) -O- | bsdtar -xvf- -C ./bin --strip=1 '*/pt' && chmod +x ./bin/pt
+	wget $(ESAMPO_$(UNAME)) -O ./bin/esampo && chmod +x ./bin/esampo
 	wget $(GHQ_$(UNAME)) -O- | bsdtar -xvf- -C ./bin 'ghq' && chmod +x ./bin/ghq
+	wget $(PECO_$(UNAME)) -O- | bsdtar -xvf- -C ./bin --strip=1 '*/peco' && chmod +x ./bin/peco
+	wget $(PT_$(UNAME)) -O- | bsdtar -xvf- -C ./bin --strip=1 '*/pt' && chmod +x ./bin/pt
 
 .PHONY: clean
 clean: ## delete builded files
