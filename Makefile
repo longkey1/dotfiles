@@ -11,7 +11,6 @@ TARGETS := \
 "tmux.conf" \
 "vim" \
 "vimrc" \
-"Xmodmap" \
 "xprofile" \
 "zshrc" \
 "zshrc.zgen"
