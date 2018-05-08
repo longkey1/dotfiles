@@ -98,9 +98,6 @@ fi
 if excutable tmux && [[ "${OSTYPE}" =~ ^darwin* ]]; then
   alias tmux="tmux -2 -u"
 fi
-if excutable ghq && excutable fzf && excutable fzf-tmux; then
-  alias gg='cd $(ghq list -p | fzf-tmux)'
-fi
 
 # nocorrect alias
 alias jekyll="nocorrect jekyll"
@@ -190,6 +187,13 @@ elif excutable peco; then
   zle -N peco-select-path
   # Ctrl+f で起動
   bindkey '^f' peco-select-path
+fi
+
+# gg
+if excutable ghq && excutable fzf && excutable fzf-tmux; then
+  alias gg='cd $(ghq root)/$(ghq list -p | fzf-tmux)'
+elif excutable ghq && excutable peco; then
+  alias gg='cd $(ghq root)/$(ghq list | peco)'
 fi
 
 # historica backward/forward search with linehead string binded to ^p/^n
