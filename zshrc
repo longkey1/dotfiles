@@ -191,9 +191,9 @@ fi
 
 # gg
 if excutable ghq && excutable fzf && excutable fzf-tmux; then
-  alias gg='cd $(ghq root)/$(ghq list -p | fzf-tmux)'
+  alias gg='cd $(ghq list -p | fzf-tmux)'
 elif excutable ghq && excutable peco; then
-  alias gg='cd $(ghq root)/$(ghq list | peco)'
+  alias gg='cd $(ghq list -p | peco)'
 fi
 
 # historica backward/forward search with linehead string binded to ^p/^n
