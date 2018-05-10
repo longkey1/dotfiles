@@ -14,7 +14,7 @@ export PAGER="less"
 # no create core dump file
 ulimit -c 0
 
-# path
+# path .bin
 export PATH="$HOME/.bin:$PATH"
 
 # phpenv
@@ -50,7 +50,7 @@ if [[ -d $HOME/.nvm ]]; then
   fi
 fi
 
-# ruby & gem
+# ruby
 if excutable ruby && excutable gem; then
   export PATH="$(ruby -e 'puts Gem.user_dir')/bin:$PATH"
 fi
@@ -58,12 +58,7 @@ fi
 # go
 if excutable go && [[ -d "$HOME/work" ]]; then
   export GOPATH="$HOME/work"
-  export PATH=$GOPATH/bin:$PATH
-fi
-
-# ffmpeg
-if [[ -d /opt/ffmpeg ]]; then
-  export PATH=/opt/ffmpeg:$PATH
+  export PATH="$GOPATH/bin:$PATH"
 fi
 
 # git/diff-highlight
@@ -109,15 +104,22 @@ if excutable less && excutable source-highlight-esc.sh; then
   export LESSOPEN="| source-highlight-esc.sh %s"
 fi
 
+# colordiff
+if excutable colordiff; then
+  alias diff="colordiff"
+fi
+
 # ansible
 if excutable ansible; then
   export ANSIBLE_NOCOWS=1
 fi
 
+# select-history and select-path
+#
 # fzf
 if excutable fzf-tmux ]]; then
   # historical search with peco binded to ^r
-  function fzf-select-history() {
+  function select-history-fzf() {
     # historyを番号なし、逆順、最初から表示。
     # 順番を保持して重複を削除。
     # カーソルの左側の文字列をクエリにしてpecoを起動
@@ -128,11 +130,11 @@ if excutable fzf-tmux ]]; then
     # refresh
     zle -R -c
   }
-  zle -N fzf-select-history
-  bindkey '^r' fzf-select-history
+  zle -N select-history-fzf
+  bindkey '^r' select-history-fzf
 
   # path selection with peco binded to ^f
-  function fzf-select-path() {
+  function select-path-fzf() {
     local filepath="$(find . | grep -v '/\.' | fzf-tmux --prompt 'PATH>')"
     [ -z "$filepath" ] && return
     if [ -n "$LBUFFER" ]; then
@@ -147,14 +149,14 @@ if excutable fzf-tmux ]]; then
     CURSOR=$#BUFFER
   }
 
-  zle -N fzf-select-path
+  zle -N select-path-fzf
   # Ctrl+f で起動
-  bindkey '^f' fzf-select-path
-
+  bindkey '^f' select-path-fzf
+#
 # peco
 elif excutable peco; then
   # historical search with peco binded to ^r
-  function peco-select-history() {
+  function select-history-peco() {
     # historyを番号なし、逆順、最初から表示。
     # 順番を保持して重複を削除。
     # カーソルの左側の文字列をクエリにしてpecoを起動
@@ -165,11 +167,12 @@ elif excutable peco; then
     # refresh
     zle -R -c
   }
-  zle -N peco-select-history
-  bindkey '^r' peco-select-history
+  zle -N select-history-peco
+  # Ctrl+f
+  bindkey '^r' select-history-peco
 
   # path selection with peco binded to ^f
-  function peco-select-path() {
+  function select-path-peco() {
     local filepath="$(find . | grep -v '/\.' | peco --prompt 'PATH>')"
     [ -z "$filepath" ] && return
     if [ -n "$LBUFFER" ]; then
@@ -183,15 +186,17 @@ elif excutable peco; then
     fi
     CURSOR=$#BUFFER
   }
-
-  zle -N peco-select-path
-  # Ctrl+f で起動
-  bindkey '^f' peco-select-path
+  zle -N select-path-peco
+  # Ctrl+f
+  bindkey '^f' select-path-peco
 fi
 
 # gg
-if excutable ghq && excutable fzf && excutable fzf-tmux; then
+#
+# fzf
+if excutable ghq && excutable fzf-tmux; then
   alias gg='cd $(ghq list -p | fzf-tmux)'
+# peco
 elif excutable ghq && excutable peco; then
   alias gg='cd $(ghq list -p | peco)'
 fi
