@@ -3,5 +3,4 @@
 /netrc
 /tmux/plugins/
 /vim/.netrwhist
-/vim/colors
 *.local
