@@ -15,4 +15,4 @@
 	url = https://github.com/vim-scripts/jellybeans.vim.git
 [submodule "vim/pack/bundle/start/vim-ranger"]
 	path = vim/pack/bundle/start/vim-ranger
-	url = git@github.com:longkey1/vim-ranger.git
+	url = https://github.com/longkey1/vim-ranger.git
