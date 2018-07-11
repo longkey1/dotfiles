@@ -90,10 +90,12 @@ if excutable grep; then
   # for grep's glob
   setopt nonomatch
 fi
+if excutable jq; then
+  alias jq="jq -C"
+fi
 if excutable tmux && [[ "${OSTYPE}" =~ ^darwin* ]]; then
   alias tmux="tmux -2 -u"
 fi
-
 # nocorrect alias
 alias jekyll="nocorrect jekyll"
 alias cleaver="nocorrect cleaver"
