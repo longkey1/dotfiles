@@ -1,3 +1,4 @@
+.DEFAULT_GOAL := help
 SHELL := /bin/bash
 
 TARGETS := \
@@ -31,21 +32,37 @@ endef
 
 .PHONY: build
 build: decript-netrc ## submodule update init and decrypt netrc
-	@if ! type bsdtar &> /dev/null ; then \
+	@if ! type bsdtar &> /dev/null; then \
 		echo "not found bsdtar command." && exit 1; \
 	fi
-	@if ! type jq &> /dev/null ; then \
+	@if ! type jq &> /dev/null; then \
 		echo "not found jq command." && exit 1; \
 	fi
 	git submodule update --init --recursive
-	wget "https://getcomposer.org/composer.phar" -O ./bin/composer && chmod +x ./bin/composer
-	wget $(call _get_github_download_url,"golang/dep") -O ./bin/dep && chmod +x ./bin/dep
-	wget $(call _get_github_download_url,"direnv/direnv") -O ./bin/direnv && chmod +x ./bin/direnv
-	wget $(call _get_github_download_url,"longkey1/esampo") -O ./bin/esampo && chmod +x ./bin/esampo
-	wget $(call _get_github_download_url,"motemen/ghq") -O- | bsdtar -xvf- -C ./bin 'ghq' && chmod +x ./bin/ghq
-	wget $(call _get_github_download_url,"peco/peco") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/peco' && chmod +x ./bin/peco
-	wget $(call _get_github_download_url,"monochromegane/the_platinum_searcher") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/pt' && chmod +x ./bin/pt
-	wget $(call _get_github_download_url,"mattn/memo") -O- | bsdtar -xvf- -C ./bin 'memo' && chmod +x ./bin/memo
+	@if test ! -f ./bin/composer; then \
+		wget "https://getcomposer.org/composer.phar" -O ./bin/composer && chmod +x ./bin/composer; \
+	fi
+	@if test ! -f ./bin/dep; then \
+		wget $(call _get_github_download_url,"golang/dep") -O ./bin/dep && chmod +x ./bin/dep; \
+	fi
+	@if test ! -f ./bin/direnv; then \
+		wget $(call _get_github_download_url,"direnv/direnv") -O ./bin/direnv && chmod +x ./bin/direnv; \
+	fi
+	@if test ! -f ./bin/esampo; then \
+		wget $(call _get_github_download_url,"longkey1/esampo") -O ./bin/esampo && chmod +x ./bin/esampo; \
+	fi
+	@if test ! -f ./bin/ghq; then \
+		wget $(call _get_github_download_url,"motemen/ghq") -O- | bsdtar -xvf- -C ./bin 'ghq' && chmod +x ./bin/ghq; \
+	fi
+	@if test ! -f ./bin/peco; then \
+		wget $(call _get_github_download_url,"peco/peco") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/peco' && chmod +x ./bin/peco; \
+	fi
+	@if test ! -f ./bin/pt; then \
+		wget $(call _get_github_download_url,"monochromegane/the_platinum_searcher") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/pt' && chmod +x ./bin/pt; \
+	fi
+	@if test ! -f ./bin/memo; then \
+		wget $(call _get_github_download_url,"mattn/memo") -O- | bsdtar -xvf- -C ./bin 'memo' && chmod +x ./bin/memo; \
+	fi
 
 .PHONY: clean
 clean: ## delete builded files
