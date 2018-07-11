@@ -8,6 +8,7 @@ TARGETS := \
 "gitignore" \
 "git-hooks" \
 "git-commit-message" \
+"config/memo" \
 "config/nvim" \
 "netrc" \
 "ocamlinit" \
@@ -32,13 +33,16 @@ endef
 
 .PHONY: build
 build: decript-netrc ## submodule update init and decrypt netrc
+	git submodule update --init --recursive
 	@if ! type bsdtar &> /dev/null; then \
 		echo "not found bsdtar command." && exit 1; \
 	fi
 	@if ! type jq &> /dev/null; then \
 		echo "not found jq command." && exit 1; \
 	fi
-	git submodule update --init --recursive
+	@if ! type envsubst &> /dev/null ; then \
+		echo "not found envsubst command." && exit 1; \
+	fi
 	@if test ! -f ./bin/composer; then \
 		wget "https://getcomposer.org/composer.phar" -O ./bin/composer && chmod +x ./bin/composer; \
 	fi
@@ -62,6 +66,7 @@ build: decript-netrc ## submodule update init and decrypt netrc
 	fi
 	@if test ! -f ./bin/memo; then \
 		wget $(call _get_github_download_url,"mattn/memo") -O- | bsdtar -xvf- -C ./bin 'memo' && chmod +x ./bin/memo; \
+		envsubst < config/memo/config.toml.dist > config/memo/config.toml
 	fi
 
 .PHONY: clean
@@ -123,6 +128,7 @@ encript-netrc: ## encript netrc
 .PHONY: decript-netrc
 decript-netrc: ## decript netrc
 	openssl aes-256-cbc -d -md sha256 -in netrc.encrypted -out netrc
+
 
 
 .PHONY: help

@@ -1,0 +1,6 @@
+memodir = "${HOME}/Dropbox/Documents/Memo"
+editor = "vim"
+column = 20
+selectcmd = "fzf"
+grepcmd = "grep -nH ${PATTERN} ${FILES}"
+assetsdir = "."
