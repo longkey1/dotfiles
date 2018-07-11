@@ -66,7 +66,7 @@ build: decript-netrc ## submodule update init and decrypt netrc
 	fi
 	@if test ! -f ./bin/memo; then \
 		wget $(call _get_github_download_url,"mattn/memo") -O- | bsdtar -xvf- -C ./bin 'memo' && chmod +x ./bin/memo; \
-		envsubst < config/memo/config.toml.dist > config/memo/config.toml
+		envsubst < config/memo/config.toml.dist > config/memo/config.toml; \
 	fi
 
 .PHONY: clean
