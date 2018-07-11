@@ -116,6 +116,11 @@ if excutable ansible; then
   export ANSIBLE_NOCOWS=1
 fi
 
+# make
+if excutable make; then
+  export MAKEFLAGS=-j ${MAKEFLAGS}
+fi
+
 # select-history and select-path
 #
 # fzf
