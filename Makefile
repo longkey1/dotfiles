@@ -8,6 +8,7 @@ TARGETS := \
 "git-hooks" \
 "git-commit-message" \
 "config/nvim" \
+"netrc" \
 "ocamlinit" \
 "tmux" \
 "tmux.conf" \
