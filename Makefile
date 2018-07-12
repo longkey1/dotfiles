@@ -72,6 +72,7 @@ build: decript-netrc ## submodule update init and decrypt netrc
 .PHONY: clean
 clean: ## delete builded files
 	@find ./bin -type f | grep -v .gitignore | xargs rm -rf
+	@rm config/memo/config.toml
 
 .PHONY: install
 install: ## create target's symlink in home directory
