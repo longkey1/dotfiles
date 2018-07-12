@@ -118,7 +118,7 @@ fi
 
 # make
 if excutable make; then
-  export MAKEFLAGS=-j ${MAKEFLAGS}
+  export MAKEFLAGS="-j ${MAKEFLAGS}"
 fi
 
 # select-history and select-path
