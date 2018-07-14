@@ -118,7 +118,7 @@ fi
 
 # make
 if excutable make; then
-  export MAKEFLAGS="-j ${MAKEFLAGS}"
+  export MAKEFLAGS="-j$(grep -c ^processor /proc/cpuinfo 2>/dev/null) ${MAKEFLAGS}"
 fi
 
 # select-history and select-path
