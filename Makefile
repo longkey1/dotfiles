@@ -27,43 +27,87 @@ LINUX_ONLY_TARGETS := \
 OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
 ARCH := amd64
 
+define _encrypt
+	openssl aes-256-cbc -e -md sha256 -in $(1) -out $(1).encrypted
+endef
+
+define _decrypt
+	openssl aes-256-cbc -d -md sha256 -in $(1).encrypted -out $(1)
+endef
+
 define _get_github_download_url
 	$(shell curl -s https://api.github.com/repos/$(1)/releases/latest | jq -r ".assets[] | select(.name | contains(\"$(OS)\") and contains(\"$(ARCH)\") and (contains(\".sha256\") | not)) | .browser_download_url")
 endef
 
 .PHONY: build
-build: decript-netrc ## submodule update init and decrypt netrc
+build: build-composer build-direnv build-esampo build-ghq build-peco build-pt build-memo
+	@if test ! -f ./netrc; then \
+		$(call _decrypt,"netrc"); \
+	fi
 	git submodule update --init --recursive
+
+.PHONY: require-bsdtar
+require-bsdtar:
 	@if ! type bsdtar &> /dev/null; then \
 		echo "not found bsdtar command." && exit 1; \
 	fi
+
+.PHONY: require-jq
+require-jq:
 	@if ! type jq &> /dev/null; then \
 		echo "not found jq command." && exit 1; \
 	fi
+
+.PHONY: require-envsubst
+require-envsubst:
 	@if ! type envsubst &> /dev/null ; then \
 		echo "not found envsubst command." && exit 1; \
 	fi
+
+.PHONY: build-composer
+build-composer: require-jq
 	@if test ! -f ./bin/composer; then \
 		wget "https://getcomposer.org/composer.phar" -O ./bin/composer && chmod +x ./bin/composer; \
 	fi
+
+.PHONY: build-dep
+build-dep: require-jq
 	@if test ! -f ./bin/dep; then \
 		wget $(call _get_github_download_url,"golang/dep") -O ./bin/dep && chmod +x ./bin/dep; \
 	fi
+
+.PHONY: build-direnv
+build-direnv: require-jq
 	@if test ! -f ./bin/direnv; then \
 		wget $(call _get_github_download_url,"direnv/direnv") -O ./bin/direnv && chmod +x ./bin/direnv; \
 	fi
+
+.PHONY: build-esampo
+build-esampo: require-jq
 	@if test ! -f ./bin/esampo; then \
 		wget $(call _get_github_download_url,"longkey1/esampo") -O ./bin/esampo && chmod +x ./bin/esampo; \
 	fi
+
+.PHONY: build-ghq
+build-ghq: require-jq require-bsdtar
 	@if test ! -f ./bin/ghq; then \
 		wget $(call _get_github_download_url,"motemen/ghq") -O- | bsdtar -xvf- -C ./bin 'ghq' && chmod +x ./bin/ghq; \
 	fi
+
+.PHONY: build-peco
+build-peco: require-jq require-bsdtar
 	@if test ! -f ./bin/peco; then \
 		wget $(call _get_github_download_url,"peco/peco") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/peco' && chmod +x ./bin/peco; \
 	fi
+
+.PHONY: build-pt
+build-pt: require-jq require-bsdtar
 	@if test ! -f ./bin/pt; then \
 		wget $(call _get_github_download_url,"monochromegane/the_platinum_searcher") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/pt' && chmod +x ./bin/pt; \
 	fi
+
+.PHONY: build-memo
+build-memo: require-jq require-bsdtar require-envsubst
 	@if test ! -f ./bin/memo; then \
 		wget $(call _get_github_download_url,"mattn/memo") -O- | bsdtar -xvf- -C ./bin 'memo' && chmod +x ./bin/memo; \
 		envsubst < config/memo/config.toml.dist > config/memo/config.toml; \
@@ -122,13 +166,13 @@ rebuild: clean build ## clean and build
 .PHONY: reinstall
 reinstall: uninstall install ## uninstall and install
 
-.PHONY: encript-netrc
-encript-netrc: ## encript netrc
-	openssl aes-256-cbc -e -md sha256 -in netrc -out netrc.encrypted
+.PHONY: encrypt-netrc
+encrypt-netrc: ## encrypt netrc
+	call _encrypt,"netrc"
 
-.PHONY: decript-netrc
-decript-netrc: ## decript netrc
-	openssl aes-256-cbc -d -md sha256 -in netrc.encrypted -out netrc
+.PHONY: decrypt-netrc
+decrypt-netrc: ## decrypt netrc
+	call _decrypt,"netrc"
 
 
 
