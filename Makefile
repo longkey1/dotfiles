@@ -40,7 +40,7 @@ define _get_github_download_url
 endef
 
 .PHONY: build
-build: build-composer build-direnv build-esampo build-ghq build-peco build-pt build-memo
+build: build-composer build-direnv build-ghq build-peco build-pt build-memo
 	@if test ! -f ./netrc; then \
 		$(call _decrypt,"netrc"); \
 	fi
@@ -80,12 +80,6 @@ build-dep: require-jq
 build-direnv: require-jq
 	@if test ! -f ./bin/direnv; then \
 		wget $(call _get_github_download_url,"direnv/direnv") -O ./bin/direnv && chmod +x ./bin/direnv; \
-	fi
-
-.PHONY: build-esampo
-build-esampo: require-jq
-	@if test ! -f ./bin/esampo; then \
-		wget $(call _get_github_download_url,"longkey1/esampo") -O ./bin/esampo && chmod +x ./bin/esampo; \
 	fi
 
 .PHONY: build-ghq

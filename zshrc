@@ -116,9 +116,14 @@ if excutable ansible; then
   export ANSIBLE_NOCOWS=1
 fi
 
+# nproc
+if ! excutable nproc && excutable sysctl; then
+  alias nproc='sysctl -n hw.physicalcpu'
+fi
+
 # make
 if excutable make; then
-  export MAKEFLAGS="-j$(grep -c ^processor /proc/cpuinfo 2>/dev/null) ${MAKEFLAGS}"
+  export MAKEFLAGS="-j$(nproc)"
 fi
 
 # oh-my-zsh
@@ -219,4 +224,4 @@ bindkey "^p" history-beginning-search-backward-end
 bindkey "^n" history-beginning-search-forward-end
 
 # include .zshrc.local
-[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+[[ -f ${ZDOTDIR}/.zshrc.local ]] && source ${ZDOTDIR}/.zshrc.local
