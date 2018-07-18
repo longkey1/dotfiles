@@ -121,6 +121,9 @@ if excutable make; then
   export MAKEFLAGS="-j$(grep -c ^processor /proc/cpuinfo 2>/dev/null) ${MAKEFLAGS}"
 fi
 
+# oh-my-zsh
+export DISABLE_AUTO_TITLE=true
+
 # select-history and select-path
 #
 # fzf
