@@ -224,4 +224,4 @@ bindkey "^p" history-beginning-search-backward-end
 bindkey "^n" history-beginning-search-forward-end
 
 # include .zshrc.local
-[[ -f ${ZDOTDIR}/.zshrc.local ]] && source ${ZDOTDIR}/.zshrc.local
+[[ -f ${HOME}/.zshrc.local ]] && source ${HOME}/.zshrc.local
