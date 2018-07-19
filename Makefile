@@ -110,7 +110,7 @@ build-memo: require-jq require-bsdtar require-envsubst
 .PHONY: clean
 clean: ## delete builded files
 	@find ./bin -type f | grep -v .gitignore | xargs rm -rf
-	@rm config/memo/config.toml
+	@rm -f config/memo/config.toml
 
 .PHONY: install
 install: ## create target's symlink in home directory
