@@ -22,7 +22,7 @@ TARGETS := \
 
 LINUX_ONLY_TARGETS := \
 "Xmodmap" \
-"xprofile" \
+"xprofile"
 
 OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
 ARCH := amd64
@@ -122,10 +122,13 @@ install: ## create target's symlink in home directory
 			echo "created $$TARGET"; \
 		fi \
 	done
-	@if [ "$(UNAME)" = "Linux" ]; then \
+	@if [ "$(OS)" = "linux" ]; then \
 		for TARGET in $(LINUX_ONLY_TARGETS); do \
-			if [ -h "$(HOME)/.$$TARGET" ]; then \
-				rm $(HOME)/.$$TARGET; \
+			if [ -e "$(HOME)/.$$TARGET" ]; then \
+				echo "already exists $$TARGET"; \
+			else \
+				ln -s $(CURDIR)/$$TARGET $(HOME)/.$$TARGET; \
+				echo "created $$TARGET"; \
 			fi \
 		done \
 	fi
@@ -147,6 +150,13 @@ uninstall: ## delete created symlink
 			echo "no exists $$TARGET"; \
 		fi \
 	done
+	@if [ "$(OS)" = "linux" ]; then \
+		for TARGET in $(LINUX_ONLY_TARGETS); do \
+			if [ -h "$(HOME)/.$$TARGET" ]; then \
+				rm $(HOME)/.$$TARGET; \
+			fi \
+		done \
+	fi
 	@if [ -e "$(HOME)/.zgen" ]; then \
 		rm -rf "${HOME}/.zgen"; \
 		echo "deleted $(HOME)/.zgen"; \
