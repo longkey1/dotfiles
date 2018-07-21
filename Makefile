@@ -40,7 +40,7 @@ define _get_github_download_url
 endef
 
 .PHONY: build
-build: build-composer build-direnv build-ghq build-peco build-pt build-memo
+build: build-composer build-dep build-direnv build-ghq build-peco build-pt build-memo
 	@if test ! -f ./netrc; then \
 		$(call _decrypt,"netrc"); \
 	fi
