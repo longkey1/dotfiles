@@ -1,0 +1,3 @@
+base_dir = "/home/moto/Dropbox/Documents/Diary"
+file_path_format = "2006-01-02.md"
+editor = "vim"

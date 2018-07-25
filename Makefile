@@ -8,6 +8,7 @@ TARGETS := \
 "gitignore" \
 "git-hooks" \
 "git-commit-message" \
+"config/diary" \
 "config/memo" \
 "config/nvim" \
 "netrc" \
@@ -40,7 +41,7 @@ define _get_github_download_url
 endef
 
 .PHONY: build
-build: build-composer build-dep build-direnv build-ghq build-peco build-pt build-memo
+build: build-composer build-dep build-direnv build-ghq build-peco build-pt build-memo build-diary
 	@if test ! -f ./netrc; then \
 		$(call _decrypt,"netrc"); \
 	fi
@@ -105,6 +106,12 @@ build-memo: require-jq require-bsdtar require-envsubst
 	@if test ! -f ./bin/memo; then \
 		wget $(call _get_github_download_url,"mattn/memo") -O- | bsdtar -xvf- -C ./bin 'memo' && chmod +x ./bin/memo; \
 		envsubst '$$HOME' < config/memo/config.toml.dist > config/memo/config.toml; \
+	fi
+
+.PHONY: build-diary
+build-diary: require-jq
+	@if test ! -f ./bin/diary; then \
+		wget $(call _get_github_download_url,"longkey1/diary") -O ./bin/diary && chmod +x ./bin/diary; \
 	fi
 
 .PHONY: clean
