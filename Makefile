@@ -9,7 +9,6 @@ TARGETS := \
 "git-hooks" \
 "git-commit-message" \
 "config/diary" \
-"config/memo" \
 "config/nvim" \
 "netrc" \
 "ocamlinit" \
@@ -41,7 +40,7 @@ define _get_github_download_url
 endef
 
 .PHONY: build
-build: build-composer build-dep build-direnv build-ghq build-peco build-pt build-memo build-diary
+build: build-composer build-dep build-direnv build-ghq build-peco build-pt build-memo
 	@if test ! -f ./netrc; then \
 		$(call _decrypt,"netrc"); \
 	fi
@@ -77,6 +76,13 @@ build-dep: require-jq
 		wget $(call _get_github_download_url,"golang/dep") -O ./bin/dep && chmod +x ./bin/dep; \
 	fi
 
+.PHONY: build-diary
+build-diary: require-jq ## build diary
+	@if test ! -f ./bin/diary; then \
+		wget $(call _get_github_download_url,"longkey1/diary") -O ./bin/diary && chmod +x ./bin/diary; \
+		envsubst '$$HOME' < config/diary/config.toml.dist > config/diary/config.toml; \
+	fi
+
 .PHONY: build-direnv
 build-direnv: require-jq
 	@if test ! -f ./bin/direnv; then \
@@ -87,6 +93,13 @@ build-direnv: require-jq
 build-ghq: require-jq require-bsdtar
 	@if test ! -f ./bin/ghq; then \
 		wget $(call _get_github_download_url,"motemen/ghq") -O- | bsdtar -xvf- -C ./bin 'ghq' && chmod +x ./bin/ghq; \
+	fi
+
+.PHONY: build-memo
+build-memo: require-jq require-bsdtar require-envsubst
+	@if test ! -f ./bin/memo; then \
+		wget $(call _get_github_download_url,"mattn/memo") -O- | bsdtar -xvf- -C ./bin 'memo' && chmod +x ./bin/memo; \
+		envsubst '$$HOME' < config/memo/config.toml.dist > config/memo/config.toml; \
 	fi
 
 .PHONY: build-peco
@@ -101,22 +114,10 @@ build-pt: require-jq require-bsdtar
 		wget $(call _get_github_download_url,"monochromegane/the_platinum_searcher") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/pt' && chmod +x ./bin/pt; \
 	fi
 
-.PHONY: build-memo
-build-memo: require-jq require-bsdtar require-envsubst
-	@if test ! -f ./bin/memo; then \
-		wget $(call _get_github_download_url,"mattn/memo") -O- | bsdtar -xvf- -C ./bin 'memo' && chmod +x ./bin/memo; \
-		envsubst '$$HOME' < config/memo/config.toml.dist > config/memo/config.toml; \
-	fi
-
-.PHONY: build-diary
-build-diary: require-jq
-	@if test ! -f ./bin/diary; then \
-		wget $(call _get_github_download_url,"longkey1/diary") -O ./bin/diary && chmod +x ./bin/diary; \
-	fi
-
 .PHONY: clean
 clean: ## delete builded files
 	@find ./bin -type f | grep -v .gitignore | xargs rm -rf
+	@rm -f config/diary/config.toml
 	@rm -f config/memo/config.toml
 
 .PHONY: install
