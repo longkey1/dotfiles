@@ -8,7 +8,6 @@ TARGETS := \
 "gitignore" \
 "git-hooks" \
 "git-commit-message" \
-"config/diary" \
 "config/nvim" \
 "netrc" \
 "ocamlinit" \
@@ -37,6 +36,26 @@ endef
 
 define _get_github_download_url
 	$(shell curl -s https://api.github.com/repos/$(1)/releases/latest | jq -r ".assets[] | select(.name | contains(\"$(OS)\") and contains(\"$(ARCH)\") and (contains(\".sha256\") | not)) | .browser_download_url")
+endef
+
+define _create_home_symlink
+	if [ -e "$(HOME)/.$(1)" ]; then \
+		echo "already exists $(HOME)/.$(1)"; \
+	else \
+		ln -s $(CURDIR)/$(1) $(HOME)/.$(1); \
+		echo "created $(HOME)/.$(1)"; \
+	fi
+endef
+
+define _delete_home_symlink
+	if [ -h "$(HOME)/.$(1)" ]; then \
+		unlink $(HOME)/.$(1); \
+		echo "deleted $(HOME)/.$(1)"; \
+	elif [ -e "$(HOME)/.$(1)" ]; then \
+		echo "no deleted $(HOME)/.$(1), not a symlink"; \
+	else \
+		echo "no exists $(HOME)/.$(1)"; \
+	fi
 endef
 
 .PHONY: build
@@ -82,6 +101,7 @@ build-diary: require-jq ## build diary
 		wget $(call _get_github_download_url,"longkey1/diary") -O ./bin/diary && chmod +x ./bin/diary; \
 		envsubst '$$HOME' < config/diary/config.toml.dist > config/diary/config.toml; \
 	fi
+	$(call _create_home_symlink,"config/diary")
 
 .PHONY: build-direnv
 build-direnv: require-jq
@@ -123,21 +143,11 @@ clean: ## delete builded files
 .PHONY: install
 install: ## create target's symlink in home directory
 	@for TARGET in $(TARGETS); do \
-		if [ -e "$(HOME)/.$$TARGET" ]; then \
-			echo "already exists $$TARGET"; \
-		else \
-			ln -s $(CURDIR)/$$TARGET $(HOME)/.$$TARGET; \
-			echo "created $$TARGET"; \
-		fi \
+		$(call _create_home_symlink,"$$TARGET"); \
 	done
 	@if [ "$(OS)" = "linux" ]; then \
 		for TARGET in $(LINUX_ONLY_TARGETS); do \
-			if [ -e "$(HOME)/.$$TARGET" ]; then \
-				echo "already exists $$TARGET"; \
-			else \
-				ln -s $(CURDIR)/$$TARGET $(HOME)/.$$TARGET; \
-				echo "created $$TARGET"; \
-			fi \
+		$(call _create_home_symlink,"$$TARGET"); \
 		done \
 	fi
 	@if [ -e "$(HOME)/.zgen" ]; then \
@@ -149,20 +159,11 @@ install: ## create target's symlink in home directory
 .PHONY: uninstall
 uninstall: ## delete created symlink
 	@for TARGET in $(TARGETS); do \
-		if [ -h "$(HOME)/.$$TARGET" ]; then \
-			unlink $(HOME)/.$$TARGET; \
-			echo "deleted .$$TARGET"; \
-		elif [ -e "$(HOME)/.$$TARGET" ]; then \
-			echo "no symlink $$TARGET"; \
-		else \
-			echo "no exists $$TARGET"; \
-		fi \
+		$(call _delete_home_symlink,"$$TARGET"); \
 	done
 	@if [ "$(OS)" = "linux" ]; then \
 		for TARGET in $(LINUX_ONLY_TARGETS); do \
-			if [ -h "$(HOME)/.$$TARGET" ]; then \
-				rm $(HOME)/.$$TARGET; \
-			fi \
+			$(call _delete_home_symlink,"$$TARGET"); \
 		done \
 	fi
 	@if [ -e "$(HOME)/.zgen" ]; then \
