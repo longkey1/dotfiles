@@ -5,4 +5,5 @@
 /netrc
 /tmux/plugins/
 /vim/.netrwhist
+/zsh/zgen
 *.local

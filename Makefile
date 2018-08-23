@@ -16,8 +16,8 @@ TARGETS := \
 "vim" \
 "vimrc" \
 "xprofile" \
-"zshrc" \
-"zshrc.zgen"
+"zsh" \
+"zshrc"
 
 LINUX_ONLY_TARGETS := \
 "Xmodmap" \
@@ -150,10 +150,10 @@ install: ## create target's symlink in home directory
 		$(call _create_home_symlink,"$$TARGET"); \
 		done \
 	fi
-	@if [ -e "$(HOME)/.zgen" ]; then \
-		echo "already exists $(HOME)/.zgen"; \
+	@if [ -e "./zsh/zgen" ]; then \
+		echo "already exists ./zsh/zgen"; \
 	else \
-		git clone https://github.com/tarjoilija/zgen.git "$(HOME)/.zgen"; \
+		git clone https://github.com/tarjoilija/zgen.git "./zsh/zgen"; \
 	fi
 
 .PHONY: uninstall
@@ -166,11 +166,11 @@ uninstall: ## delete created symlink
 			$(call _delete_home_symlink,"$$TARGET"); \
 		done \
 	fi
-	@if [ -e "$(HOME)/.zgen" ]; then \
-		rm -rf "${HOME}/.zgen"; \
-		echo "deleted $(HOME)/.zgen"; \
+	@if [ -e "./zsh/zgen" ]; then \
+		rm -rf "./zsh/zgen"; \
+		echo "deleted ./zsh/zgen"; \
 	else \
-		echo "no exists $(HOME)/.zgen"; \
+		echo "no exists $./zsh/zgen"; \
 	fi
 
 .PHONY: encrypt-netrc
