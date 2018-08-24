@@ -8,6 +8,7 @@ TARGETS := \
 "gitignore" \
 "git-hooks" \
 "git-commit-message" \
+"config/memo" \
 "config/nvim" \
 "netrc" \
 "ocamlinit" \
