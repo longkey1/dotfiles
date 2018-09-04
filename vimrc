@@ -38,6 +38,8 @@ augroup TrimTrailingBlankSpace
 augroup END
 
 " 挿入モードから出る時にIMEを自動的にオフにする
+" 待ち時間を短くする
+set ttimeoutlen=1
 " fcitx
 if executable('fcitx-remote')
   augroup AutoFcitxOff
