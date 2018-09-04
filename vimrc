@@ -52,6 +52,13 @@ if executable('ibus')
     autocmd InsertLeave * call system('ibus engine "xkb:us::eng"')
   augroup END
 endif
+" mac
+if has('mac')
+  augroup AutoIMEOff
+    autocmd!
+    autocmd InsertLeave * :call system('osascript -e "tell application \"System Events\" to key code 102"')
+  augroup END
+endif
 
 " local
 if filereadable(expand('~/.vimrc.local'))
