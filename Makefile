@@ -60,7 +60,7 @@ define _delete_home_symlink
 endef
 
 .PHONY: build
-build: build-composer build-dep build-direnv build-ghq build-peco build-pt build-memo
+build: build-composer build-dep build-direnv build-ghq build-go-task build-memo build-peco build-pt
 	@if test ! -f ./netrc; then \
 		$(call _decrypt,"netrc"); \
 	fi
@@ -114,6 +114,12 @@ build-direnv: require-jq
 build-ghq: require-jq require-bsdtar
 	@if test ! -f ./bin/ghq; then \
 		wget $(call _get_github_download_url,"motemen/ghq") -O- | bsdtar -xvf- -C ./bin 'ghq' && chmod +x ./bin/ghq; \
+	fi
+
+.PHONY: build-go-task
+build-go-task: require-jq require-bsdtar
+	@if test ! -f ./bin/task; then \
+		wget $(call _get_github_download_url,"go-task/task") -O- | bsdtar -xvf- -C ./bin 'task' && chmod +x ./bin/task; \
 	fi
 
 .PHONY: build-memo
