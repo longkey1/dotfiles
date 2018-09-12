@@ -67,11 +67,56 @@ define _delete_home_symlink
 endef
 
 .PHONY: build
-build: build-composer build-dep build-direnv build-ghq build-go-task build-memo build-peco build-pt build-robo
-	@if test ! -f ./netrc; then \
-		$(call _decrypt,"netrc"); \
-	fi
+build: build-composer build-dep build-direnv build-ghq build-go-task build-memo build-peco build-pt build-robo ## build packages
+	@test ! -f ./netrc && $(call _decrypt,"netrc") || true
 	git submodule update --init --recursive
+
+.PHONY: clean
+clean: ## delete builded files
+	@find ./bin -type f | grep -v .gitignore | xargs rm -rf
+	@rm -f config/diary/config.toml
+	@rm -f config/memo/config.toml
+
+.PHONY: install
+install: ## create target's symlink in home directory
+	@for TARGET in $(TARGETS); do \
+		$(call _create_home_symlink,"$$TARGET"); \
+	done
+	@if [ "$(OS)" = "linux" ]; then \
+		for TARGET in $(LINUX_ONLY_TARGETS); do \
+		$(call _create_home_symlink,"$$TARGET"); \
+		done \
+	fi
+	@if [ -e "./zsh/zgen" ]; then \
+		echo "already exists ./zsh/zgen"; \
+	else \
+		git clone https://github.com/tarjoilija/zgen.git "./zsh/zgen"; \
+	fi
+
+.PHONY: uninstall
+uninstall: ## delete created symlink
+	@for TARGET in $(TARGETS); do \
+		$(call _delete_home_symlink,"$$TARGET"); \
+	done
+	@if [ "$(OS)" = "linux" ]; then \
+		for TARGET in $(LINUX_ONLY_TARGETS); do \
+			$(call _delete_home_symlink,"$$TARGET"); \
+		done \
+	fi
+	@if [ -e "./zsh/zgen" ]; then \
+		rm -rf "./zsh/zgen"; \
+		echo "deleted ./zsh/zgen"; \
+	else \
+		echo "no exists $./zsh/zgen"; \
+	fi
+
+.PHONY: encrypt-netrc
+encrypt-netrc: ## encrypt netrc
+	call _encrypt,"netrc"
+
+.PHONY: decrypt-netrc
+decrypt-netrc: ## decrypt netrc
+	call _decrypt,"netrc"
 
 .PHONY: require-bsdtar
 require-bsdtar:
@@ -147,53 +192,6 @@ build-robo: require-jq
 	@if test ! -f ./bin/robo; then \
 		wget $(call _get_github_download_url,"tj/robo") -O ./bin/robo && chmod +x ./bin/robo; \
 	fi
-
-.PHONY: clean
-clean: ## delete builded files
-	@find ./bin -type f | grep -v .gitignore | xargs rm -rf
-	@rm -f config/diary/config.toml
-	@rm -f config/memo/config.toml
-
-.PHONY: install
-install: ## create target's symlink in home directory
-	@for TARGET in $(TARGETS); do \
-		$(call _create_home_symlink,"$$TARGET"); \
-	done
-	@if [ "$(OS)" = "linux" ]; then \
-		for TARGET in $(LINUX_ONLY_TARGETS); do \
-		$(call _create_home_symlink,"$$TARGET"); \
-		done \
-	fi
-	@if [ -e "./zsh/zgen" ]; then \
-		echo "already exists ./zsh/zgen"; \
-	else \
-		git clone https://github.com/tarjoilija/zgen.git "./zsh/zgen"; \
-	fi
-
-.PHONY: uninstall
-uninstall: ## delete created symlink
-	@for TARGET in $(TARGETS); do \
-		$(call _delete_home_symlink,"$$TARGET"); \
-	done
-	@if [ "$(OS)" = "linux" ]; then \
-		for TARGET in $(LINUX_ONLY_TARGETS); do \
-			$(call _delete_home_symlink,"$$TARGET"); \
-		done \
-	fi
-	@if [ -e "./zsh/zgen" ]; then \
-		rm -rf "./zsh/zgen"; \
-		echo "deleted ./zsh/zgen"; \
-	else \
-		echo "no exists $./zsh/zgen"; \
-	fi
-
-.PHONY: encrypt-netrc
-encrypt-netrc: ## encrypt netrc
-	call _encrypt,"netrc"
-
-.PHONY: decrypt-netrc
-decrypt-netrc: ## decrypt netrc
-	call _decrypt,"netrc"
 
 
 
