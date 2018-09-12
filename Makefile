@@ -27,6 +27,13 @@ LINUX_ONLY_TARGETS := \
 OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
 ARCH := amd64
 
+define _executable
+	@if ! type $(1) &> /dev/null; then \
+		echo "not found $(1) command."; \
+		exit 1; \
+	fi
+endef
+
 define _encrypt
 	openssl aes-256-cbc -e -md sha256 -in $(1) -out $(1).encrypted
 endef
@@ -60,7 +67,7 @@ define _delete_home_symlink
 endef
 
 .PHONY: build
-build: build-composer build-dep build-direnv build-ghq build-go-task build-memo build-peco build-pt
+build: build-composer build-dep build-direnv build-ghq build-go-task build-memo build-peco build-pt build-robo
 	@if test ! -f ./netrc; then \
 		$(call _decrypt,"netrc"); \
 	fi
@@ -68,21 +75,15 @@ build: build-composer build-dep build-direnv build-ghq build-go-task build-memo 
 
 .PHONY: require-bsdtar
 require-bsdtar:
-	@if ! type bsdtar &> /dev/null; then \
-		echo "not found bsdtar command." && exit 1; \
-	fi
+	@$(call _executable,"bsdtar")
 
 .PHONY: require-jq
 require-jq:
-	@if ! type jq &> /dev/null; then \
-		echo "not found jq command." && exit 1; \
-	fi
+	@$(call _executable,"jq")
 
 .PHONY: require-envsubst
 require-envsubst:
-	@if ! type envsubst &> /dev/null ; then \
-		echo "not found envsubst command." && exit 1; \
-	fi
+	@$(call _executable,"envsubst")
 
 .PHONY: build-composer
 build-composer: require-jq
@@ -139,6 +140,12 @@ build-peco: require-jq require-bsdtar
 build-pt: require-jq require-bsdtar
 	@if test ! -f ./bin/pt; then \
 		wget $(call _get_github_download_url,"monochromegane/the_platinum_searcher") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/pt' && chmod +x ./bin/pt; \
+	fi
+
+.PHONY: build-robo
+build-robo: require-jq
+	@if test ! -f ./bin/robo; then \
+		wget $(call _get_github_download_url,"tj/robo") -O ./bin/robo && chmod +x ./bin/robo; \
 	fi
 
 .PHONY: clean
