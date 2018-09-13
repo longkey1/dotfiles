@@ -7,4 +7,5 @@
 /vim/.netrwhist
 /vim/pack/bundle/start
 /zsh/antigen/
+/zsh/zshrc.antigen.zwc
 *.local

@@ -41,7 +41,7 @@ endef
 
 define _clone_github_repo
 	@if [ ! -d "$(2)" ]; then \
-                git clone https://github.com/$(1).git $(2); \
+		git clone https://github.com/$(1).git $(2); \
 	fi
 endef
 
@@ -53,15 +53,13 @@ define _create_home_symlink
 	if [ -e "$(HOME)/.$(1)" ]; then \
 		echo "already exists $(HOME)/.$(1)"; \
 	else \
-		ln -s $(CURDIR)/$(1) $(HOME)/.$(1); \
-		echo "created $(HOME)/.$(1)"; \
+		ln -s $(CURDIR)/$(1) $(HOME)/.$(1) && echo "created $(HOME)/.$(1)"; \
 	fi
 endef
 
 define _delete_home_symlink
 	if [ -h "$(HOME)/.$(1)" ]; then \
-		unlink $(HOME)/.$(1); \
-		echo "deleted $(HOME)/.$(1)"; \
+		unlink $(HOME)/.$(1) && echo "deleted $(HOME)/.$(1)"; \
 	elif [ -e "$(HOME)/.$(1)" ]; then \
 		echo "no deleted $(HOME)/.$(1), not a symlink"; \
 	else \
@@ -70,7 +68,7 @@ define _delete_home_symlink
 endef
 
 .PHONY: build
-build: build-composer build-dep build-direnv build-ghq build-go-task build-memo build-peco build-pt build-robo ## build packages
+build: build-composer build-dep build-direnv build-ghq build-memo build-peco build-pt build-robo ## build packages
 	@test ! -f ./netrc && $(call _decrypt,"netrc") || true
 	$(call _clone_github_repo,zsh-users/antigen,zsh/antigen)
 	$(call _clone_github_repo,tmux-plugins/tpm,tmux/plugins/tpm)
@@ -160,12 +158,6 @@ build-direnv: require-jq
 build-ghq: require-jq require-bsdtar
 	@if test ! -f ./bin/ghq; then \
 		wget $(call _get_github_download_url,"motemen/ghq") -O- | bsdtar -xvf- -C ./bin 'ghq' && chmod +x ./bin/ghq; \
-	fi
-
-.PHONY: build-go-task
-build-go-task: require-jq require-bsdtar
-	@if test ! -f ./bin/task; then \
-		wget $(call _get_github_download_url,"go-task/task") -O- | bsdtar -xvf- -C ./bin 'task' && chmod +x ./bin/task; \
 	fi
 
 .PHONY: build-memo
