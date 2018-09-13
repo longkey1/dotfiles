@@ -42,6 +42,12 @@ define _decrypt
 	openssl aes-256-cbc -d -md sha256 -in $(1).encrypted -out $(1)
 endef
 
+define _clone_github_repo
+	if [ ! -d "$(2)" ]; then \
+                git clone https://github.com/$(1).git $(2)
+	fi
+endef
+
 define _get_github_download_url
 	$(shell curl -s https://api.github.com/repos/$(1)/releases/latest | jq -r ".assets[] | select(.name | contains(\"$(OS)\") and contains(\"$(ARCH)\") and (contains(\".sha256\") | not) and (contains(\".deb\") | not) and (contains(\".rpm\") | not)) | .browser_download_url")
 endef
@@ -69,13 +75,20 @@ endef
 .PHONY: build
 build: build-composer build-dep build-direnv build-ghq build-go-task build-memo build-peco build-pt build-robo ## build packages
 	@test ! -f ./netrc && $(call _decrypt,"netrc") || true
-	git submodule update --init --recursive
+	$(call _clone_github_repo,zsh-users/antigen,zsh/antigen)
+	$(call _clone_github_repo,tmux-plugins/tpm,tmux/plugins/tpm)
+	$(call _clone_github_repo,thinca/vim-quickrun,vim/pack/bundle/start/vim-quickrun)
+	$(call _clone_github_repo,vim-scripts/sudo.vim,vim/pack/bundle/start/sudo.vim)
+	$(call _clone_github_repo,longkey1/vim-ranger,vim/pack/bundle/start/vim-ranger)
 
 .PHONY: clean
 clean: ## delete builded files
 	@find ./bin -type f | grep -v .gitignore | xargs rm -rf
 	@rm -f config/diary/config.toml
 	@rm -f config/memo/config.toml
+	@rm -rf zsh/antigen
+	@rm -rf tmux-plugins/tpm
+	@rm -rf vim/pack/bundle/start/*
 
 .PHONY: install
 install: ## create target's symlink in home directory
@@ -87,11 +100,6 @@ install: ## create target's symlink in home directory
 		$(call _create_home_symlink,"$$TARGET"); \
 		done \
 	fi
-	@if [ -e "./zsh/zgen" ]; then \
-		echo "already exists ./zsh/zgen"; \
-	else \
-		git clone https://github.com/tarjoilija/zgen.git "./zsh/zgen"; \
-	fi
 
 .PHONY: uninstall
 uninstall: ## delete created symlink
@@ -102,12 +110,6 @@ uninstall: ## delete created symlink
 		for TARGET in $(LINUX_ONLY_TARGETS); do \
 			$(call _delete_home_symlink,"$$TARGET"); \
 		done \
-	fi
-	@if [ -e "./zsh/zgen" ]; then \
-		rm -rf "./zsh/zgen"; \
-		echo "deleted ./zsh/zgen"; \
-	else \
-		echo "no exists $./zsh/zgen"; \
 	fi
 
 .PHONY: encrypt-netrc
