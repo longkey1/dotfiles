@@ -3,7 +3,6 @@ SHELL := /bin/bash
 
 TARGETS := \
 "bin" \
-"bundle" \
 "gitconfig" \
 "gitignore" \
 "git-hooks" \
@@ -16,12 +15,10 @@ TARGETS := \
 "tmux.conf" \
 "vim" \
 "vimrc" \
-"xprofile" \
 "zsh" \
 "zshrc"
 
 LINUX_ONLY_TARGETS := \
-"Xmodmap" \
 "xprofile"
 
 OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
