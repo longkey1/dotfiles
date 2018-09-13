@@ -43,8 +43,8 @@ define _decrypt
 endef
 
 define _clone_github_repo
-	if [ ! -d "$(2)" ]; then \
-                git clone https://github.com/$(1).git $(2)
+	@if [ ! -d "$(2)" ]; then \
+                git clone https://github.com/$(1).git $(2); \
 	fi
 endef
 
@@ -80,6 +80,7 @@ build: build-composer build-dep build-direnv build-ghq build-go-task build-memo 
 	$(call _clone_github_repo,thinca/vim-quickrun,vim/pack/bundle/start/vim-quickrun)
 	$(call _clone_github_repo,vim-scripts/sudo.vim,vim/pack/bundle/start/sudo.vim)
 	$(call _clone_github_repo,longkey1/vim-ranger,vim/pack/bundle/start/vim-ranger)
+	$(call _clone_github_repo,nanotech/jellybeans.vim,vim/pack/bundle/start/jellybeans.vim)
 
 .PHONY: clean
 clean: ## delete builded files
