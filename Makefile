@@ -7,7 +7,7 @@ TARGETS := \
 "gitignore" \
 "git-hooks" \
 "git-commit-message" \
-"config/memo" \
+"config/diary" \
 "config/nvim" \
 "netrc" \
 "ocamlinit" \
@@ -68,7 +68,7 @@ define _delete_home_symlink
 endef
 
 .PHONY: build
-build: build-composer build-dep build-direnv build-ghq build-memo build-peco build-pt build-robo ## build packages
+build: build-composer build-dep build-diary build-direnv build-ghq build-peco build-pt build-robo ## build packages
 	@test ! -f ./netrc && $(call _decrypt,"netrc") || true
 	$(call _clone_github_repo,zsh-users/antigen,zsh/antigen)
 	$(call _clone_github_repo,tmux-plugins/tpm,tmux/plugins/tpm)
@@ -141,7 +141,7 @@ build-dep: require-jq
 	fi
 
 .PHONY: build-diary
-build-diary: require-jq ## build diary
+build-diary: require-jq
 	@if test ! -f ./bin/diary; then \
 		wget $(call _get_github_download_url,"longkey1/diary") -O ./bin/diary && chmod +x ./bin/diary; \
 		envsubst '$$HOME' < config/diary/config.toml.dist > config/diary/config.toml; \
@@ -160,7 +160,7 @@ build-ghq: require-jq require-bsdtar
 		wget $(call _get_github_download_url,"motemen/ghq") -O- | bsdtar -xvf- -C ./bin 'ghq' && chmod +x ./bin/ghq; \
 	fi
 
-.PHONY: build-memo
+#.PHONY: build-memo
 build-memo: require-jq require-bsdtar require-envsubst
 	@if test ! -f ./bin/memo; then \
 		wget $(call _get_github_download_url,"mattn/memo") -O- | bsdtar -xvf- -C ./bin 'memo' && chmod +x ./bin/memo; \
