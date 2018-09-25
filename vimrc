@@ -16,7 +16,7 @@ set listchars=trail:-
 " netrw
 let g:netrw_liststyle = 3
 
-" クリップボード共有
+" clipboard
 if has('mac')
   set clipboard+=unnamed
 else
@@ -38,27 +38,21 @@ augroup TrimTrailingBlankSpace
 augroup END
 
 " 挿入モードから出る時にIMEを自動的にオフにする
-" 待ち時間を短くする
-set ttimeoutlen=1
-" fcitx
-if executable('fcitx-remote')
-  augroup AutoFcitxOff
-    autocmd!
-    autocmd InsertLeave * call system('fcitx-remote -c')
-  augroup END
-endif
-" ibus
-if executable('ibus')
-  augroup AutoIBusOff
-    autocmd!
-    autocmd InsertLeave * call system('ibus engine "xkb:us::eng"')
-  augroup END
-endif
-" mac
+set ttimeoutlen=1  "待ち時間を短くする
 if has('mac')
   augroup AutoIMEOff
     autocmd!
     autocmd InsertLeave * :call system('osascript -e "tell application \"System Events\" to key code 102"')
+  augroup END
+elseif executable('fcitx-remote')
+  augroup AutoFcitxOff
+    autocmd!
+    autocmd InsertLeave * call system('fcitx-remote -c')
+  augroup END
+elseif executable('ibus')
+  augroup AutoIBusOff
+    autocmd!
+    autocmd InsertLeave * call system('ibus engine "xkb:us::eng"')
   augroup END
 endif
 
