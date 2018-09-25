@@ -143,7 +143,7 @@ build-dep: require-jq
 .PHONY: build-diary
 build-diary: require-jq
 	@if test ! -f ./bin/diary; then \
-		wget $(call _get_github_download_url,"longkey1/diary") -O ./bin/diary && chmod +x ./bin/diary; \
+		wget $(call _get_github_download_url,"longkey1/diary-bin") -O ./bin/diary && chmod +x ./bin/diary; \
 		envsubst '$$HOME' < config/diary/config.toml.dist > config/diary/config.toml; \
 	fi
 	$(call _create_home_symlink,"config/diary")
