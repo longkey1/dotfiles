@@ -225,3 +225,22 @@ bindkey "^n" history-beginning-search-forward-end
 
 # include .zshrc.local
 [[ -f ${HOME}/.zshrc.local ]] && source ${HOME}/.zshrc.local
+
+# try run
+if excutable robo ]]; then
+  function _robo_completion() {
+    local output="$(robo 2>&1)"
+    if echo $output | grep -q "error loading configuration"; then
+      return
+    fi
+    local values=()
+    echo $output | while read line
+    do
+      if [ "$line" ]; then
+        values+=$(echo $line | sed -e 's/ – /[/' | sed -e 's/$/]/')
+      fi
+    done
+    _values '' $values
+  }
+  compdef _robo_completion robo
+fi
