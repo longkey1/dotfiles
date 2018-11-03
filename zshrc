@@ -17,6 +17,11 @@ ulimit -c 0
 # path .bin
 export PATH="$HOME/.bin:$PATH"
 
+# fpath .zsh/functions
+if [[ -d $HOME/.zsh/functions ]]; then
+  export FPATH="$HOME/.zsh/functions:$FPATH"
+fi
+
 # phpenv
 if [[ -d $HOME/.phpenv ]]; then
   export PATH="$HOME/.phpenv/bin:$PATH"
@@ -223,24 +228,9 @@ zle -N history-beginning-search-forward-end history-search-end
 bindkey "^p" history-beginning-search-backward-end
 bindkey "^n" history-beginning-search-forward-end
 
+# update compinit
+autoload -U compinit
+compinit
+
 # include .zshrc.local
 [[ -f ${HOME}/.zshrc.local ]] && source ${HOME}/.zshrc.local
-
-# try run
-if excutable robo ]]; then
-  function _robo_completion() {
-    local output="$(robo 2>&1)"
-    if echo $output | grep -q "error loading configuration"; then
-      return
-    fi
-    local values=()
-    echo $output | while read line
-    do
-      if [ "$line" ]; then
-        values+=$(echo $line | sed -e 's/ – /[/' | sed -e 's/$/]/')
-      fi
-    done
-    _values '' $values
-  }
-  compdef _robo_completion robo
-fi
