@@ -110,11 +110,11 @@ uninstall: ## delete created symlink
 
 .PHONY: encrypt-netrc
 encrypt-netrc: ## encrypt netrc
-	call _encrypt,"netrc"
+	$(call _encrypt,"netrc")
 
 .PHONY: decrypt-netrc
 decrypt-netrc: ## decrypt netrc
-	call _decrypt,"netrc"
+	$(call _decrypt,"netrc")
 
 .PHONY: require-bsdtar
 require-bsdtar:
