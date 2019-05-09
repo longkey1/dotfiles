@@ -80,6 +80,7 @@ fi
 
 # direnv
 if excutable direnv; then
+  export DIRENV_WARN_TIMEOUT=100s
   eval "$(direnv hook zsh)"
 fi
 
