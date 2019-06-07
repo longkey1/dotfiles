@@ -68,8 +68,7 @@ define _delete_home_symlink
 endef
 
 .PHONY: build
-build: build-composer build-dep build-diary build-direnv build-ghq build-peco build-pt build-robo build-slack-term ## build packages
-	@test ! -f ./netrc && $(call _decrypt,"netrc") || true
+build: build-composer build-dep build-diary build-direnv build-ghq build-peco build-pt build-robo build-slack-term decrypt ## build packages
 	$(call _clone_github_repo,zsh-users/antigen,zsh/antigen)
 	$(call _clone_github_repo,tmux-plugins/tpm,tmux/plugins/tpm)
 	$(call _clone_github_repo,thinca/vim-quickrun,vim/pack/bundle/start/vim-quickrun)
@@ -116,7 +115,7 @@ encrypt: ## encrypt files
 .PHONY: decrypt
 decrypt: ## decrypt files
 	$(call _decrypt,"netrc")
-	$(call _encrypt,"slack-term")
+	$(call _decrypt,"slack-term")
 
 .PHONY: _require-bsdtar
 _require-bsdtar:
