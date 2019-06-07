@@ -1,5 +1,4 @@
 .DEFAULT_GOAL := help
-SHELL := /bin/bash
 
 TARGETS := \
 "bin" \
@@ -11,6 +10,7 @@ TARGETS := \
 "config/nvim" \
 "netrc" \
 "ocamlinit" \
+"slack-term" \
 "tmux" \
 "tmux.conf" \
 "vim" \
@@ -68,7 +68,7 @@ define _delete_home_symlink
 endef
 
 .PHONY: build
-build: build-composer build-dep build-diary build-direnv build-ghq build-peco build-pt build-robo ## build packages
+build: build-composer build-dep build-diary build-direnv build-ghq build-peco build-pt build-robo build-slack-term ## build packages
 	@test ! -f ./netrc && $(call _decrypt,"netrc") || true
 	$(call _clone_github_repo,zsh-users/antigen,zsh/antigen)
 	$(call _clone_github_repo,tmux-plugins/tpm,tmux/plugins/tpm)
@@ -183,6 +183,12 @@ build-pt: require-jq require-bsdtar
 build-robo: require-jq
 	@if test ! -f ./bin/robo; then \
 		wget $(call _get_github_download_url,"tj/robo") -O ./bin/robo && chmod +x ./bin/robo; \
+	fi
+
+.PHONY: build-slack-term
+build-slack-term: require-jq
+	@if test ! -f ./bin/slack-term; then \
+		wget $(call _get_github_download_url,"erroneousboat/slack-term") -O ./bin/slack-term && chmod +x ./bin/slack-term; \
 	fi
 
 
