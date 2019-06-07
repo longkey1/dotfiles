@@ -32,11 +32,11 @@ define _executable
 endef
 
 define _encrypt
-	openssl aes-256-cbc -e -md sha256 -in $(1) -out $(1).encrypted
+	openssl aes-256-cbc -e -salt -pbkdf2 -in $(1) -out $(1).encrypted
 endef
 
 define _decrypt
-	openssl aes-256-cbc -d -md sha256 -in $(1).encrypted -out $(1)
+	openssl aes-256-cbc -d -salt -pbkdf2 -in $(1).encrypted -out $(1)
 endef
 
 define _clone_github_repo
@@ -108,40 +108,42 @@ uninstall: ## delete created symlink
 		done \
 	fi
 
-.PHONY: encrypt-netrc
-encrypt-netrc: ## encrypt netrc
+.PHONY: encrypt
+encrypt: ## encrypt files
 	$(call _encrypt,"netrc")
+	$(call _encrypt,"slack-term")
 
-.PHONY: decrypt-netrc
-decrypt-netrc: ## decrypt netrc
+.PHONY: decrypt
+decrypt: ## decrypt files
 	$(call _decrypt,"netrc")
+	$(call _encrypt,"slack-term")
 
-.PHONY: require-bsdtar
-require-bsdtar:
+.PHONY: _require-bsdtar
+_require-bsdtar:
 	@$(call _executable,"bsdtar")
 
-.PHONY: require-jq
-require-jq:
+.PHONY: _require-jq
+_require-jq:
 	@$(call _executable,"jq")
 
-.PHONY: require-envsubst
-require-envsubst:
+.PHONY: _require-envsubst
+_require-envsubst:
 	@$(call _executable,"envsubst")
 
 .PHONY: build-composer
-build-composer: require-jq
+build-composer: _require-jq
 	@if test ! -f ./bin/composer; then \
 		wget "https://getcomposer.org/composer.phar" -O ./bin/composer && chmod +x ./bin/composer; \
 	fi
 
 .PHONY: build-dep
-build-dep: require-jq
+build-dep: _require-jq
 	@if test ! -f ./bin/dep; then \
 		wget $(call _get_github_download_url,"golang/dep") -O ./bin/dep && chmod +x ./bin/dep; \
 	fi
 
 .PHONY: build-diary
-build-diary: require-jq
+build-diary: _require-jq
 	@if test ! -f ./bin/diary; then \
 		wget $(call _get_github_download_url,"longkey1/diary") -O ./bin/diary && chmod +x ./bin/diary; \
 		envsubst '$$HOME' < config/diary/config.toml.dist > config/diary/config.toml; \
@@ -149,44 +151,44 @@ build-diary: require-jq
 	$(call _create_home_symlink,"config/diary")
 
 .PHONY: build-direnv
-build-direnv: require-jq
+build-direnv: _require-jq
 	@if test ! -f ./bin/direnv; then \
 		wget $(call _get_github_download_url,"direnv/direnv") -O ./bin/direnv && chmod +x ./bin/direnv; \
 	fi
 
 .PHONY: build-ghq
-build-ghq: require-jq require-bsdtar
+build-ghq: _require-jq _require-bsdtar
 	@if test ! -f ./bin/ghq; then \
 		wget $(call _get_github_download_url,"motemen/ghq") -O- | bsdtar -xvf- -C ./bin 'ghq' && chmod +x ./bin/ghq; \
 	fi
 
 #.PHONY: build-memo
-build-memo: require-jq require-bsdtar require-envsubst
+build-memo: _require-jq _require-bsdtar _require-envsubst
 	@if test ! -f ./bin/memo; then \
 		wget $(call _get_github_download_url,"mattn/memo") -O- | bsdtar -xvf- -C ./bin 'memo' && chmod +x ./bin/memo; \
 		envsubst '$$HOME' < config/memo/config.toml.dist > config/memo/config.toml; \
 	fi
 
 .PHONY: build-peco
-build-peco: require-jq require-bsdtar
+build-peco: _require-jq _require-bsdtar
 	@if test ! -f ./bin/peco; then \
 		wget $(call _get_github_download_url,"peco/peco") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/peco' && chmod +x ./bin/peco; \
 	fi
 
 .PHONY: build-pt
-build-pt: require-jq require-bsdtar
+build-pt: _require-jq _require-bsdtar
 	@if test ! -f ./bin/pt; then \
 		wget $(call _get_github_download_url,"monochromegane/the_platinum_searcher") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/pt' && chmod +x ./bin/pt; \
 	fi
 
 .PHONY: build-robo
-build-robo: require-jq
+build-robo: _require-jq
 	@if test ! -f ./bin/robo; then \
 		wget $(call _get_github_download_url,"tj/robo") -O ./bin/robo && chmod +x ./bin/robo; \
 	fi
 
 .PHONY: build-slack-term
-build-slack-term: require-jq
+build-slack-term: _require-jq
 	@if test ! -f ./bin/slack-term; then \
 		wget $(call _get_github_download_url,"erroneousboat/slack-term") -O ./bin/slack-term && chmod +x ./bin/slack-term; \
 	fi
