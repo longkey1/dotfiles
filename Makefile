@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-TARGETS := \
+_TARGETS := \
 "bin" \
 "gitconfig" \
 "gitignore" \
@@ -18,11 +18,11 @@ TARGETS := \
 "zsh" \
 "zshrc"
 
-LINUX_ONLY_TARGETS := \
+_LINUX_ONLY_TARGETS := \
 "xprofile"
 
-OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
-ARCH := amd64
+_OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
+_ARCH := amd64
 
 define _executable
 	@if ! type $(1) &> /dev/null; then \
@@ -46,7 +46,7 @@ define _clone_github_repo
 endef
 
 define _get_github_download_url
-	$(shell curl -s https://api.github.com/repos/$(1)/releases/latest | jq -r ".assets[] | select(.name | contains(\"$(OS)\") and contains(\"$(ARCH)\") and (contains(\".sha256\") | not) and (contains(\".deb\") | not) and (contains(\".rpm\") | not)) | .browser_download_url")
+	$(shell curl -s https://api.github.com/repos/$(1)/releases/latest | jq -r ".assets[] | select(.name | contains(\"$(_OS)\") and contains(\"$(_ARCH)\") and (contains(\".sha256\") | not) and (contains(\".deb\") | not) and (contains(\".rpm\") | not)) | .browser_download_url")
 endef
 
 define _create_home_symlink
@@ -87,22 +87,22 @@ clean: ## delete builded files
 
 .PHONY: install
 install: ## create target's symlink in home directory
-	@for TARGET in $(TARGETS); do \
+	@for TARGET in $(_TARGETS); do \
 		$(call _create_home_symlink,"$$TARGET"); \
 	done
 	@if [ "$(OS)" = "linux" ]; then \
-		for TARGET in $(LINUX_ONLY_TARGETS); do \
+		for TARGET in $(_LINUX_ONLY_TARGETS); do \
 		$(call _create_home_symlink,"$$TARGET"); \
 		done \
 	fi
 
 .PHONY: uninstall
 uninstall: ## delete created symlink
-	@for TARGET in $(TARGETS); do \
+	@for TARGET in $(_TARGETS); do \
 		$(call _delete_home_symlink,"$$TARGET"); \
 	done
-	@if [ "$(OS)" = "linux" ]; then \
-		for TARGET in $(LINUX_ONLY_TARGETS); do \
+	@if [ "$(_OS)" = "linux" ]; then \
+		for TARGET in $(_LINUX_ONLY_TARGETS); do \
 			$(call _delete_home_symlink,"$$TARGET"); \
 		done \
 	fi
@@ -158,7 +158,7 @@ build-direnv: _require-jq
 .PHONY: build-ghq
 build-ghq: _require-jq _require-bsdtar
 	@if test ! -f ./bin/ghq; then \
-		wget $(call _get_github_download_url,"motemen/ghq") -O- | bsdtar -xvf- -C ./bin 'ghq' && chmod +x ./bin/ghq; \
+		wget $(call _get_github_download_url,"motemen/ghq") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/ghq' && chmod +x ./bin/ghq; \
 	fi
 
 #.PHONY: build-memo
