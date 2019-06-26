@@ -1,6 +1,6 @@
 base_directory = "${HOME}/Dropbox/Documents/Diary"
-file_name = "2006-01-02.md"
-file_template = "2006-01-02\n"
+file_name = "2006/01/2006-01-02.md"
+file_template = "# 2006-01-02\n"
 open_command = "vim {{ .DayFile }}"
 list_command = "ranger {{ .BaseDirectory }}"
 search_command = "selected=$(pt \"{{ .Pattern }}\" \"{{ .BaseDirectory }}\" | fzf --query \"$LBUFFER\" | awk -F : '{print \"-c \" $2 \" \" $1}'); [[ -n ${selected} ]] && echo $selected || true"
