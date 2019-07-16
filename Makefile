@@ -68,7 +68,7 @@ define _delete_home_symlink
 endef
 
 .PHONY: build
-build: build-composer build-dep build-diary build-direnv build-ghq build-peco build-pt build-robo build-slack-term decrypt ## build packages
+build: build-composer build-dep build-diary build-direnv build-ghq build-peco build-pt build-robo build-slack-term build-lf decrypt ## build packages
 	$(call _clone_github_repo,zsh-users/antigen,zsh/antigen)
 	$(call _clone_github_repo,tmux-plugins/tpm,tmux/plugins/tpm)
 	$(call _clone_github_repo,thinca/vim-quickrun,vim/pack/bundle/start/vim-quickrun)
@@ -145,7 +145,7 @@ build-dep: _require-jq
 build-diary: _require-jq
 	@if test ! -f ./bin/diary; then \
 		wget $(call _get_github_download_url,"longkey1/diary") -O ./bin/diary && chmod +x ./bin/diary; \
-		envsubst '$$HOME' < config/diary/config.toml.dist > config/diary/config.toml; \
+		envsubst '$$HOME $$EDITOR' < config/diary/config.toml.dist > config/diary/config.toml; \
 	fi
 	$(call _create_home_symlink,"config/diary")
 
@@ -159,13 +159,6 @@ build-direnv: _require-jq
 build-ghq: _require-jq _require-bsdtar
 	@if test ! -f ./bin/ghq; then \
 		wget $(call _get_github_download_url,"motemen/ghq") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/ghq' && chmod +x ./bin/ghq; \
-	fi
-
-#.PHONY: build-memo
-build-memo: _require-jq _require-bsdtar _require-envsubst
-	@if test ! -f ./bin/memo; then \
-		wget $(call _get_github_download_url,"mattn/memo") -O- | bsdtar -xvf- -C ./bin 'memo' && chmod +x ./bin/memo; \
-		envsubst '$$HOME' < config/memo/config.toml.dist > config/memo/config.toml; \
 	fi
 
 .PHONY: build-peco
@@ -190,6 +183,12 @@ build-robo: _require-jq
 build-slack-term: _require-jq
 	@if test ! -f ./bin/slack-term; then \
 		wget $(call _get_github_download_url,"erroneousboat/slack-term") -O ./bin/slack-term && chmod +x ./bin/slack-term; \
+	fi
+
+.PHONY: build-lf
+build-lf: _require-jq _require-bsdtar
+	@if test ! -f ./bin/lf; then \
+		wget $(call _get_github_download_url,"gokcehan/lf") -O- | bsdtar -xvf- -C ./bin 'lf' && chmod +x ./bin/lf; \
 	fi
 
 
