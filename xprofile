@@ -3,4 +3,4 @@ export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 export DefaultIMModule=fcitx
 
-xinput --set-prop 'pointer:ThinkPad Compact Bluetooth Keyboard with TrackPoint' 'libinput Accel Speed' 0.7
+[ -f /opt/trackpoint-adjuster/apply.sh ] && /opt/trackpoint-adjuster/apply.sh
