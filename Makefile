@@ -7,6 +7,7 @@ _TARGETS := \
 "git-hooks" \
 "git-commit-message" \
 "config/diary" \
+"config/direnv" \
 "config/nvim" \
 "netrc" \
 "ocamlinit" \

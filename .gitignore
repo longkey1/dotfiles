@@ -1,5 +1,6 @@
 /bundle/cache
 /config/diary/config.toml
+/config/direnv/allow
 /config/memo/config.toml
 /config/nvim/.netrwhist
 /netrc
