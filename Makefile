@@ -10,6 +10,7 @@ _TARGETS := \
 "config/direnv" \
 "config/lf" \
 "config/nvim" \
+"ideavimrc" \
 "netrc" \
 "ocamlinit" \
 "slack-term" \
