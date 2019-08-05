@@ -8,6 +8,7 @@ _TARGETS := \
 "git-commit-message" \
 "config/diary" \
 "config/direnv" \
+"config/lf" \
 "config/nvim" \
 "netrc" \
 "ocamlinit" \

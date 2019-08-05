@@ -7,8 +7,8 @@ function excutable() {
 }
 
 # general
-export EDITOR="vim -p"
-export VISUAL="vim -p"
+export EDITOR="vim"
+export VISUAL="vim"
 export PAGER="less"
 
 # no create core dump file
