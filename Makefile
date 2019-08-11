@@ -71,19 +71,22 @@ define _delete_home_symlink
 endef
 
 .PHONY: build
-build: build-composer build-dep build-diary build-direnv build-ghq build-peco build-pt build-robo build-slack-term build-lf decrypt ## build packages
+build: build-composer build-dep build-diary build-direnv build-ghq build-peco build-pt build-robo build-slack-term build-lf build-boilr ## build packages
 	$(call _clone_github_repo,zsh-users/antigen,zsh/antigen)
 	$(call _clone_github_repo,tmux-plugins/tpm,tmux/plugins/tpm)
 	$(call _clone_github_repo,thinca/vim-quickrun,vim/pack/bundle/start/vim-quickrun)
 	$(call _clone_github_repo,vim-scripts/sudo.vim,vim/pack/bundle/start/sudo.vim)
 	$(call _clone_github_repo,longkey1/vim-ranger,vim/pack/bundle/start/vim-ranger)
 	$(call _clone_github_repo,nanotech/jellybeans.vim,vim/pack/bundle/start/jellybeans.vim)
+	$(MAKE) decrypt
 
 .PHONY: clean
 clean: ## delete builded files
 	@find ./bin -type f | grep -v .gitignore | xargs rm -rf
 	@rm -f config/diary/config.toml
 	@rm -f config/memo/config.toml
+	@rm -f netrc
+	@rm -f slack-term
 	@rm -rf zsh/antigen
 	@rm -rf tmux-plugins/tpm
 	@rm -rf vim/pack/bundle/start/*
@@ -148,9 +151,10 @@ build-dep: _require-jq
 build-diary: _require-jq
 	@if test ! -f ./bin/diary; then \
 		wget $(call _get_github_download_url,"longkey1/diary") -O ./bin/diary && chmod +x ./bin/diary; \
+	fi
+	@if test ! -f ./config/diary/config.toml; then \
 		envsubst '$$HOME $$EDITOR' < config/diary/config.toml.dist > config/diary/config.toml; \
 	fi
-	$(call _create_home_symlink,"config/diary")
 
 .PHONY: build-direnv
 build-direnv: _require-jq
@@ -192,6 +196,12 @@ build-slack-term: _require-jq
 build-lf: _require-jq _require-bsdtar
 	@if test ! -f ./bin/lf; then \
 		wget $(call _get_github_download_url,"gokcehan/lf") -O- | bsdtar -xvf- -C ./bin 'lf' && chmod +x ./bin/lf; \
+	fi
+
+.PHONY: build-boilr
+build-boilr: _require-jq _require-bsdtar
+	@if test ! -f ./bin/boilr; then \
+		wget $(call _get_github_download_url,"tmrts/boilr") -O- | bsdtar -xvf- -C ./bin 'boilr' && chmod +x ./bin/boilr; \
 	fi
 
 
