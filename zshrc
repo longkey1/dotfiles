@@ -55,10 +55,6 @@ if [[ -d $HOME/.nvm ]]; then
   fi
 fi
 
-# docker
-export DOCKER_COMPOSE_UID=$UID
-export DOCKER_COMPOSE_GID=$GID
-
 # ruby
 if excutable ruby && excutable gem; then
   export PATH="$(ruby -e 'puts Gem.user_dir')/bin:$PATH"
