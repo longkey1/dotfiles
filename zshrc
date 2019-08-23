@@ -22,37 +22,11 @@ if [[ -d $HOME/.zsh/functions ]]; then
   export FPATH="$HOME/.zsh/functions:$FPATH"
 fi
 
-# phpenv
-if [[ -d $HOME/.phpenv ]]; then
-  export PATH="$HOME/.phpenv/bin:$PATH"
-  eval "$(phpenv init -)"
-fi
-
-# rbenv
-if [[ -d $HOME/.rbenv ]]; then
-  export PATH="$HOME/.rbenv/bin:$PATH"
-  eval "$(rbenv init -)"
-fi
-
-# pyenv
-if [[ -d $HOME/.pyenv ]]; then
-  export PATH="$HOME/.pyenv/bin:$PATH"
-  eval "$(pyenv init -)"
-fi
-
 # linuxbrew
 if [[ -d $HOME/.linuxbrew ]]; then
   export PATH="$HOME/.linuxbrew/bin:$PATH"
   export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
   export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
-fi
-
-# nvm
-if [[ -d $HOME/.nvm ]]; then
-  export NVM_DIR="$HOME/.nvm"
-  if [[ -s "$NVM_DIR/nvm.sh" ]] then
-    . "$NVM_DIR/nvm.sh"
-  fi
 fi
 
 # ruby
