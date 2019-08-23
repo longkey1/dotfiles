@@ -35,15 +35,23 @@ define _executable
 endef
 
 define _encrypt
-	openssl aes-256-cbc -e -salt -pbkdf2 -in $(1) -out $(1).encrypted
+	@if test -e "$(1).encrypted"; then \
+		echo "already exists $(1).encrypted."; \
+	else \
+		openssl aes-256-cbc -e -salt -pbkdf2 -in $(1) -out $(1).encrypted; \
+	fi
 endef
 
 define _decrypt
-	openssl aes-256-cbc -d -salt -pbkdf2 -in $(1).encrypted -out $(1)
+	@if test -e "$(1)"; then \
+		echo "already exists $(1)"; \
+	else \
+		openssl aes-256-cbc -d -salt -pbkdf2 -in $(1).encrypted -out $(1); \
+	fi
 endef
 
 define _clone_github_repo
-	@if [ ! -d "$(2)" ]; then \
+	@if ! test -d "$(2)"; then \
 		git clone https://github.com/$(1).git $(2); \
 	fi
 endef
@@ -53,7 +61,7 @@ define _get_github_download_url
 endef
 
 define _create_home_symlink
-	if [ -e "$(HOME)/.$(1)" ]; then \
+	if test -e "$(HOME)/.$(1)"; then \
 		echo "already exists $(HOME)/.$(1)"; \
 	else \
 		ln -s $(CURDIR)/$(1) $(HOME)/.$(1) && echo "created $(HOME)/.$(1)"; \
@@ -61,9 +69,9 @@ define _create_home_symlink
 endef
 
 define _delete_home_symlink
-	if [ -h "$(HOME)/.$(1)" ]; then \
+	if test -h "$(HOME)/.$(1)"; then \
 		unlink $(HOME)/.$(1) && echo "deleted $(HOME)/.$(1)"; \
-	elif [ -e "$(HOME)/.$(1)" ]; then \
+	elif test -e "$(HOME)/.$(1)"; then \
 		echo "no deleted $(HOME)/.$(1), not a symlink"; \
 	else \
 		echo "no exists $(HOME)/.$(1)"; \
@@ -96,7 +104,7 @@ install: ## create target's symlink in home directory
 	@for TARGET in $(_TARGETS); do \
 		$(call _create_home_symlink,"$$TARGET"); \
 	done
-	@if [ "$(OS)" = "linux" ]; then \
+	@if test "$(OS)" = "linux"; then \
 		for TARGET in $(_LINUX_ONLY_TARGETS); do \
 		$(call _create_home_symlink,"$$TARGET"); \
 		done \
@@ -107,7 +115,7 @@ uninstall: ## delete created symlink
 	@for TARGET in $(_TARGETS); do \
 		$(call _delete_home_symlink,"$$TARGET"); \
 	done
-	@if [ "$(_OS)" = "linux" ]; then \
+	@if test "$(_OS)" = "linux"; then \
 		for TARGET in $(_LINUX_ONLY_TARGETS); do \
 			$(call _delete_home_symlink,"$$TARGET"); \
 		done \
