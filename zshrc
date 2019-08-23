@@ -29,11 +29,6 @@ if [[ -d $HOME/.linuxbrew ]]; then
   export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
 fi
 
-# ruby
-if excutable ruby && excutable gem; then
-  export PATH="$(ruby -e 'puts Gem.user_dir')/bin:$PATH"
-fi
-
 # go
 if excutable go && [[ -d "$HOME/work" ]]; then
   export GOPATH="$HOME/work"
