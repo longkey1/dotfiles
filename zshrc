@@ -6,7 +6,7 @@ function excutable() {
   type "$1" &> /dev/null;
 }
 
-# general
+# environment variables
 export EDITOR="vim"
 export VISUAL="vim"
 export PAGER="less"
@@ -36,13 +36,16 @@ if excutable go && [[ -d "$HOME/work" ]]; then
 fi
 
 # git/diff-highlight
-# for mac
+#
+## for mac
 if [[ -d /usr/local/share/git-core/contrib/diff-highlight ]]; then
   export PATH=$PATH:/usr/local/share/git-core/contrib/diff-highlight
-# for arch
+#
+## for arch
 elif [[ -d /usr/share/git/diff-highlight ]]; then
   export PATH=$PATH:/usr/share/git/diff-highlight
-# for debian or ubuntu
+#
+## for debian or ubuntu
 elif [[ -d /usr/share/doc/git/contrib/diff-highlight ]]; then
   export PATH=$PATH:/usr/share/doc/git/contrib/diff-highlight
 fi
@@ -54,26 +57,33 @@ if excutable direnv; then
 fi
 
 # alias
+#
+## ls
 if excutable ls; then
   alias ll="ls -l"
 fi
+#
+## vim
 if excutable vim; then
   alias vi="vim"
 fi
+#
+## grep
 if excutable grep; then
   alias grep="grep -I --color=auto"
   # for grep's glob
   setopt nonomatch
 fi
+#
+## jq
 if excutable jq; then
   alias jq="jq -C"
 fi
+#
+## tmux
 if excutable tmux && [[ "${OSTYPE}" =~ ^darwin* ]]; then
   alias tmux="tmux -2 -u"
 fi
-# nocorrect alias
-alias jekyll="nocorrect jekyll"
-alias cleaver="nocorrect cleaver"
 
 # less
 export LESS="-R -F -X"
@@ -106,7 +116,7 @@ export DISABLE_AUTO_TITLE=true
 
 # select-history and select-path
 #
-# fzf
+## fzf
 if excutable fzf-tmux ]]; then
   # historical search with peco binded to ^r
   function select-history-fzf() {
@@ -143,7 +153,7 @@ if excutable fzf-tmux ]]; then
   # Ctrl+f で起動
   bindkey '^f' select-path-fzf
 #
-# peco
+## peco
 elif excutable peco; then
   # historical search with peco binded to ^r
   function select-history-peco() {
@@ -183,10 +193,11 @@ fi
 
 # gg
 #
-# fzf
+## fzf
 if excutable ghq && excutable fzf-tmux; then
   alias gg='cd $(ghq list -p | fzf-tmux)'
-# peco
+#
+## peco
 elif excutable ghq && excutable peco; then
   alias gg='cd $(ghq list -p | peco)'
 fi
