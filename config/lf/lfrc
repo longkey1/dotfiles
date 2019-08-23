@@ -1,1 +1,3 @@
 map e $$EDITOR -p $fx
+map r $lf -remote "send $id push :rename<space>'$(basename $f | sed 's/ /<space>/g')'<left>"
+cmd rename %[ -e $1 ] && printf "file exists" || mv $f $1
