@@ -76,7 +76,7 @@ build: build-composer build-dep build-diary build-direnv build-ghq build-peco bu
 	$(call _clone_github_repo,tmux-plugins/tpm,tmux/plugins/tpm)
 	$(call _clone_github_repo,thinca/vim-quickrun,vim/pack/bundle/start/vim-quickrun)
 	$(call _clone_github_repo,vim-scripts/sudo.vim,vim/pack/bundle/start/sudo.vim)
-	$(call _clone_github_repo,longkey1/vim-ranger,vim/pack/bundle/start/vim-ranger)
+	$(call _clone_github_repo,longkey1/vim-lf,vim/pack/bundle/start/vim-lf)
 	$(call _clone_github_repo,nanotech/jellybeans.vim,vim/pack/bundle/start/jellybeans.vim)
 	$(MAKE) decrypt
 
