@@ -51,7 +51,7 @@ define _decrypt
 endef
 
 define _clone_github_repo
-	@if ! test -d "$(2)"; then \
+	@if test ! -d "$(2)"; then \
 		git clone https://github.com/$(1).git $(2); \
 	fi
 endef
@@ -104,9 +104,9 @@ install: ## create target's symlink in home directory
 	@for TARGET in $(_TARGETS); do \
 		$(call _create_home_symlink,"$$TARGET"); \
 	done
-	@if test "$(OS)" = "linux"; then \
+	@if test "$(_OS)" = "linux"; then \
 		for TARGET in $(_LINUX_ONLY_TARGETS); do \
-		$(call _create_home_symlink,"$$TARGET"); \
+			$(call _create_home_symlink,"$$TARGET"); \
 		done \
 	fi
 
