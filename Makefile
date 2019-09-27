@@ -86,6 +86,8 @@ build: build-composer build-dep build-diary build-direnv build-ghq build-peco bu
 	$(call _clone_github_repo,vim-scripts/sudo.vim,vim/pack/bundle/start/sudo.vim)
 	$(call _clone_github_repo,longkey1/vim-lf,vim/pack/bundle/start/vim-lf)
 	$(call _clone_github_repo,nanotech/jellybeans.vim,vim/pack/bundle/start/jellybeans.vim)
+	$(call _clone_github_repo,ConradIrwin/vim-bracketed-paste,vim/pack/bundle/start/vim-bracketed-paste)
+
 	$(MAKE) decrypt
 
 .PHONY: clean
