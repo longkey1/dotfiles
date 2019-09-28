@@ -14,7 +14,6 @@ _TARGETS := \
 "netrc" \
 "ocamlinit" \
 "slack-term" \
-"tmux" \
 "tmux.conf" \
 "vim" \
 "vimrc" \
@@ -81,7 +80,6 @@ endef
 .PHONY: build
 build: build-composer build-dep build-diary build-direnv build-ghq build-peco build-pt build-robo build-slack-term build-lf build-boilr ## build packages
 	$(call _clone_github_repo,zsh-users/antigen,zsh/antigen)
-	$(call _clone_github_repo,tmux-plugins/tpm,tmux/plugins/tpm)
 	$(call _clone_github_repo,thinca/vim-quickrun,vim/pack/bundle/start/vim-quickrun)
 	$(call _clone_github_repo,vim-scripts/sudo.vim,vim/pack/bundle/start/sudo.vim)
 	$(call _clone_github_repo,longkey1/vim-lf,vim/pack/bundle/start/vim-lf)
