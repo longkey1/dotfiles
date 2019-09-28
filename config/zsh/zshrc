@@ -1,5 +1,18 @@
 # include .zshrc.antigen
-[[ -f $HOME/.zsh/zshrc.antigen ]] && source $HOME/.zsh/zshrc.antigen
+[[ -f ${ZDOTDIR}/zshrc.antigen ]] && source ${ZDOTDIR}/zshrc.antigen
+
+# zsh
+## history
+export HISTFILE="${ZDOTDIR}/history"
+export HISTSIZE=100000
+export SAVEHIST=${HISTSIZE}
+
+## fpath functions
+if [[ -d ${ZDOTDIR}/functions ]]; then
+  export FPATH="${ZDOTDIR}/functions:$FPATH"
+fi
+
+
 
 # functions
 function excutable() {
@@ -15,31 +28,19 @@ export PAGER="less"
 ulimit -c 0
 
 # path .bin
-export PATH="$HOME/.bin:$PATH"
-
-# fpath .zsh/functions
-if [[ -d $HOME/.zsh/functions ]]; then
-  export FPATH="$HOME/.zsh/functions:$FPATH"
-fi
-
-# linuxbrew
-if [[ -d $HOME/.linuxbrew ]]; then
-  export PATH="$HOME/.linuxbrew/bin:$PATH"
-  export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
-  export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
-fi
+export PATH="${HOME}/.bin:${PATH}"
 
 # go
-if excutable go && [[ -d "$HOME/work" ]]; then
-  export GOPATH="$HOME/work"
-  export PATH="$GOPATH/bin:$PATH"
+if excutable go && [[ -d "${HOME}/work" ]]; then
+  export GOPATH="${HOME}/work"
+  export PATH="${GOPATH}/bin:${PATH}"
 fi
 
 # git/diff-highlight
 #
 ## for mac
 if [[ -d /usr/local/share/git-core/contrib/diff-highlight ]]; then
-  export PATH=$PATH:/usr/local/share/git-core/contrib/diff-highlight
+  export PATH=${PATH}:/usr/local/share/git-core/contrib/diff-highlight
 #
 ## for arch
 elif [[ -d /usr/share/git/diff-highlight ]]; then
@@ -47,7 +48,7 @@ elif [[ -d /usr/share/git/diff-highlight ]]; then
 #
 ## for debian or ubuntu
 elif [[ -d /usr/share/doc/git/contrib/diff-highlight ]]; then
-  export PATH=$PATH:/usr/share/doc/git/contrib/diff-highlight
+  export PATH=${PATH}:/usr/share/doc/git/contrib/diff-highlight
 fi
 
 # direnv
@@ -124,9 +125,9 @@ if excutable fzf-tmux ]]; then
     # 順番を保持して重複を削除。
     # カーソルの左側の文字列をクエリにしてpecoを起動
     # \nを改行に変換
-    BUFFER="$(\history -nr 1 | awk '!a[$0]++' | fzf-tmux --query "$LBUFFER" --prompt 'HISTORY>' | sed 's/\\n/\n/')"
+    BUFFER="$(\history -nr 1 | awk '!a[$0]++' | fzf-tmux --query "${LBUFFER}" --prompt 'HISTORY>' | sed 's/\\n/\n/')"
     # カーソルを文末に移動
-    CURSOR=$#BUFFER
+    CURSOR=${#BUFFER}
     # refresh
     zle -R -c
   }
@@ -136,17 +137,17 @@ if excutable fzf-tmux ]]; then
   # path selection with peco binded to ^f
   function select-path-fzf() {
     local filepath="$(find . | grep -v '/\.' | fzf-tmux --prompt 'PATH>')"
-    [ -z "$filepath" ] && return
-    if [ -n "$LBUFFER" ]; then
-      BUFFER="$LBUFFER$filepath"
+    [ -z "${filepath}" ] && return
+    if [ -n "${LBUFFER}" ]; then
+      BUFFER="${LBUFFER}${filepath}"
     else
-      if [ -d "$filepath" ]; then
-        BUFFER="cd $filepath"
-      elif [ -f "$filepath" ]; then
-        BUFFER="$EDITOR $filepath"
+      if [ -d "${filepath}" ]; then
+        BUFFER="cd ${filepath}"
+      elif [ -f "${filepath}" ]; then
+        BUFFER="${EDITOR} ${filepath}"
       fi
     fi
-    CURSOR=$#BUFFER
+    CURSOR=${#BUFFER}
   }
 
   zle -N select-path-fzf
@@ -161,9 +162,9 @@ elif excutable peco; then
     # 順番を保持して重複を削除。
     # カーソルの左側の文字列をクエリにしてpecoを起動
     # \nを改行に変換
-    BUFFER="$(\history -nr 1 | awk '!a[$0]++' | peco --query "$LBUFFER" | sed 's/\\n/\n/')"
+    BUFFER="$(\history -nr 1 | awk '!a[$0]++' | peco --query "${LBUFFER}" | sed 's/\\n/\n/')"
     # カーソルを文末に移動
-    CURSOR=$#BUFFER
+    CURSOR=${#BUFFER}
     # refresh
     zle -R -c
   }
@@ -174,17 +175,17 @@ elif excutable peco; then
   # path selection with peco binded to ^f
   function select-path-peco() {
     local filepath="$(find . | grep -v '/\.' | peco --prompt 'PATH>')"
-    [ -z "$filepath" ] && return
-    if [ -n "$LBUFFER" ]; then
-      BUFFER="$LBUFFER$filepath"
+    [ -z "${filepath}" ] && return
+    if [ -n "${LBUFFER}" ]; then
+      BUFFER="${LBUFFER}${filepath}"
     else
-      if [ -d "$filepath" ]; then
-        BUFFER="cd $filepath"
-      elif [ -f "$filepath" ]; then
-        BUFFER="$EDITOR $filepath"
+      if [ -d "${filepath}" ]; then
+        BUFFER="cd ${filepath}"
+      elif [ -f "${filepath}" ]; then
+        BUFFER="${EDITOR} ${filepath}"
       fi
     fi
-    CURSOR=$#BUFFER
+    CURSOR=${#BUFFER}
   }
   zle -N select-path-peco
   # Ctrl+f
@@ -214,4 +215,4 @@ autoload -U compinit
 compinit
 
 # include .zshrc.local
-[[ -f ${HOME}/.zshrc.local ]] && source ${HOME}/.zshrc.local
+[[ -f ${ZDOTDIR}/zshrc.local ]] && source ${ZDOTDIR}/zshrc.local

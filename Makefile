@@ -2,14 +2,12 @@
 
 _TARGETS := \
 "bin" \
-"gitconfig" \
-"gitignore" \
-"git-hooks" \
-"git-commit-message" \
 "config/diary" \
 "config/direnv" \
+"config/git" \
 "config/lf" \
 "config/nvim" \
+"config/zsh" \
 "ideavimrc" \
 "netrc" \
 "ocamlinit" \
@@ -17,8 +15,7 @@ _TARGETS := \
 "tmux.conf" \
 "vim" \
 "vimrc" \
-"zsh" \
-"zshrc"
+"zshenv"
 
 _LINUX_ONLY_TARGETS := \
 "xprofile"
@@ -79,7 +76,7 @@ endef
 
 .PHONY: build
 build: build-composer build-dep build-diary build-direnv build-ghq build-peco build-pt build-robo build-slack-term build-lf build-boilr ## build packages
-	$(call _clone_github_repo,zsh-users/antigen,zsh/antigen)
+	$(call _clone_github_repo,zsh-users/antigen,config/zsh/antigen)
 	$(call _clone_github_repo,thinca/vim-quickrun,vim/pack/bundle/start/vim-quickrun)
 	$(call _clone_github_repo,vim-scripts/sudo.vim,vim/pack/bundle/start/sudo.vim)
 	$(call _clone_github_repo,longkey1/vim-lf,vim/pack/bundle/start/vim-lf)
@@ -92,11 +89,12 @@ build: build-composer build-dep build-diary build-direnv build-ghq build-peco bu
 clean: ## delete builded files
 	@find ./bin -type f | grep -v .gitignore | xargs rm -rf
 	@rm -f config/diary/config.toml
+	@rm -f config/git/config.local
+	@rm -f config/zsh/zshrc.local
 	@rm -f config/memo/config.toml
 	@rm -f netrc
 	@rm -f slack-term
-	@rm -rf zsh/antigen
-	@rm -rf tmux-plugins/tpm
+	@rm -rf config/zsh/antigen
 	@rm -rf vim/pack/bundle/start/*
 
 .PHONY: install

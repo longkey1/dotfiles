@@ -3,11 +3,14 @@
 /config/direnv/allow
 /config/memo/config.toml
 /config/nvim/.netrwhist
+/config/zsh/antigen/
+/config/zsh/.zcompdump
+/config/zsh/.zshrc
+/config/zsh/history
+/config/zsh/zshrc.antigen.zwc
+
 /netrc
 /slack-term
-/tmux/plugins/
 /vim/.netrwhist
 /vim/pack/bundle/start
-/zsh/antigen/
-/zsh/zshrc.antigen.zwc
 *.local

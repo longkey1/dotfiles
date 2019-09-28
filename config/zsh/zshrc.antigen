@@ -1,21 +1,21 @@
-if [[ -f "${HOME}/.zsh/antigen/antigen.zsh" ]]; then
+if [[ -f "${ZDOTDIR}/antigen/antigen.zsh" ]]; then
   # load antigen.zsh
-  source ~/.zsh/antigen/antigen.zsh
-  
+  source ${ZDOTDIR}/antigen/antigen.zsh
+
   # load the oh-my-zsh's library.
   antigen use oh-my-zsh
-  
+
   # bundles from the default repo (robbyrussell's oh-my-zsh).
   #antigen bundle git
-  
+
   # bundles from other than oh-my-zsh
   antigen bundle zsh-users/zsh-completions
   antigen bundle zsh-users/zsh-history-substring-search
   antigen bundle zsh-users/zsh-syntax-highlighting
-  
+
   # Load the theme.
   antigen theme fishy
-  
+
   # Tell antigen that you're done.
   antigen apply
 fi
