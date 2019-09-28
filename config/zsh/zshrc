@@ -85,8 +85,13 @@ if excutable jq; then
 fi
 #
 ## tmux
-if excutable tmux && [[ "${OSTYPE}" =~ ^darwin* ]]; then
-  alias tmux="tmux -2 -u"
+if excutable tmux; then
+  export TMUX_TMPDIR="${XDG_RUNTIME_DIR}"
+  if "${OSTYPE}" =~ ^darwin*; then
+    alias tmux="tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf -2 -u"
+  else
+    alias tmux="tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf"
+  fi
 fi
 
 # less
