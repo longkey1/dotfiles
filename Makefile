@@ -7,14 +7,13 @@ _TARGETS := \
 "config/git" \
 "config/lf" \
 "config/nvim" \
+"config/tmux" \
 "config/zsh" \
 "ideavimrc" \
 "netrc" \
 "ocamlinit" \
 "slack-term" \
-"tmux.conf" \
 "vim" \
-"vimrc" \
 "zshenv"
 
 _LINUX_ONLY_TARGETS := \
@@ -94,13 +93,13 @@ clean: ## delete all builded files
 	@find ./bin -type f | grep -v .gitignore | xargs rm -rf
 	@rm -f config/diary/config.toml
 	@rm -f config/git/config.local
+	@rm -f config/memo/config.toml
+	@rm -rf config/zsh/antigen
+	@rm -rf config/zsh/.antigen
 	@rm -f config/zsh/.zshrc.
 	@rm -f config/zsh/zshrc.local
-	@rm -rf config/zsh/.antigen
-	@rm -f config/memo/config.toml
 	@rm -f netrc
 	@rm -f slack-term
-	@rm -rf config/zsh/antigen
 	@rm -rf vim/pack/bundle/start/*
 
 .PHONY: install
