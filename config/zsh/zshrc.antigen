@@ -1,4 +1,5 @@
 if [[ -f "${ZDOTDIR}/antigen/antigen.zsh" ]]; then
+  export ADOTDIR=${ZDOTDIR}/.antigen
   # load antigen.zsh
   source ${ZDOTDIR}/antigen/antigen.zsh
 

@@ -3,9 +3,11 @@
 /config/direnv/allow
 /config/memo/config.toml
 /config/nvim/.netrwhist
-/config/zsh/antigen/
+/config/zsh/antigen
+/config/zsh/.antigen
 /config/zsh/.zcompdump
 /config/zsh/.zshrc
+/config/zsh/.zshrc.zwc
 /config/zsh/history
 /config/zsh/zshrc.antigen.zwc
 

@@ -76,12 +76,10 @@ endef
 
 .PHONY: build
 build: ## build all packages
-	$(MAKE) build-composer
 	$(MAKE) build-dep
 	$(MAKE) build-diary
 	$(MAKE) build-direnv
 	$(MAKE) build-ghq
-	$(MAKE) build-peco
 	$(MAKE) build-pt
 	$(MAKE) build-robo
 	$(MAKE) build-slack-term
@@ -96,7 +94,9 @@ clean: ## delete all builded files
 	@find ./bin -type f | grep -v .gitignore | xargs rm -rf
 	@rm -f config/diary/config.toml
 	@rm -f config/git/config.local
+	@rm -f config/zsh/.zshrc.
 	@rm -f config/zsh/zshrc.local
+	@rm -rf config/zsh/.antigen
 	@rm -f config/memo/config.toml
 	@rm -f netrc
 	@rm -f slack-term
@@ -161,12 +161,6 @@ build-vim: _require-jq
 	$(call _clone_github_repo,longkey1/vim-lf,vim/pack/bundle/start/vim-lf)
 	$(call _clone_github_repo,nanotech/jellybeans.vim,vim/pack/bundle/start/jellybeans.vim)
 	$(call _clone_github_repo,ConradIrwin/vim-bracketed-paste,vim/pack/bundle/start/vim-bracketed-paste)
-
-.PHONY: build-composer
-build-composer: _require-jq
-	@if test ! -f ./bin/composer; then \
-		wget "https://getcomposer.org/composer.phar" -O ./bin/composer && chmod +x ./bin/composer; \
-	fi
 
 .PHONY: build-dep
 build-dep: _require-jq
