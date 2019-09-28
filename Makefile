@@ -75,18 +75,24 @@ define _delete_home_symlink
 endef
 
 .PHONY: build
-build: build-composer build-dep build-diary build-direnv build-ghq build-peco build-pt build-robo build-slack-term build-lf build-boilr ## build packages
-	$(call _clone_github_repo,zsh-users/antigen,config/zsh/antigen)
-	$(call _clone_github_repo,thinca/vim-quickrun,vim/pack/bundle/start/vim-quickrun)
-	$(call _clone_github_repo,vim-scripts/sudo.vim,vim/pack/bundle/start/sudo.vim)
-	$(call _clone_github_repo,longkey1/vim-lf,vim/pack/bundle/start/vim-lf)
-	$(call _clone_github_repo,nanotech/jellybeans.vim,vim/pack/bundle/start/jellybeans.vim)
-	$(call _clone_github_repo,ConradIrwin/vim-bracketed-paste,vim/pack/bundle/start/vim-bracketed-paste)
-
+build: ## build all packages
+	$(MAKE) build-composer
+	$(MAKE) build-dep
+	$(MAKE) build-diary
+	$(MAKE) build-direnv
+	$(MAKE) build-ghq
+	$(MAKE) build-peco
+	$(MAKE) build-pt
+	$(MAKE) build-robo
+	$(MAKE) build-slack-term
+	$(MAKE) build-lf
+	$(MAKE) build-boilr
+	$(MAKE) build-zsh
+	$(MAKE) build-vim
 	$(MAKE) decrypt
 
 .PHONY: clean
-clean: ## delete builded files
+clean: ## delete all builded files
 	@find ./bin -type f | grep -v .gitignore | xargs rm -rf
 	@rm -f config/diary/config.toml
 	@rm -f config/git/config.local
@@ -140,6 +146,21 @@ _require-jq:
 .PHONY: _require-envsubst
 _require-envsubst:
 	@$(call _executable,"envsubst")
+
+.PHONY: build-zsh
+build-zsh: _require-jq
+	@if test ! -f ./config/zsh/.zshrc; then \
+		cd ./config/zsh && ln -s zshrc .zshrc; \
+	fi
+	$(call _clone_github_repo,zsh-users/antigen,config/zsh/antigen)
+
+.PHONY: build-vim
+build-vim: _require-jq
+	$(call _clone_github_repo,thinca/vim-quickrun,vim/pack/bundle/start/vim-quickrun)
+	$(call _clone_github_repo,vim-scripts/sudo.vim,vim/pack/bundle/start/sudo.vim)
+	$(call _clone_github_repo,longkey1/vim-lf,vim/pack/bundle/start/vim-lf)
+	$(call _clone_github_repo,nanotech/jellybeans.vim,vim/pack/bundle/start/jellybeans.vim)
+	$(call _clone_github_repo,ConradIrwin/vim-bracketed-paste,vim/pack/bundle/start/vim-bracketed-paste)
 
 .PHONY: build-composer
 build-composer: _require-jq

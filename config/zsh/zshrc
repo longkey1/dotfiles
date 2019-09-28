@@ -12,6 +12,9 @@ if [[ -d ${ZDOTDIR}/functions ]]; then
   export FPATH="${ZDOTDIR}/functions:$FPATH"
 fi
 
+## oh-my-zsh
+export DISABLE_AUTO_TITLE=true
+
 
 
 # functions
@@ -111,9 +114,6 @@ fi
 if excutable make; then
   export MAKEFLAGS="-j$(nproc)"
 fi
-
-# oh-my-zsh
-export DISABLE_AUTO_TITLE=true
 
 # select-history and select-path
 #
