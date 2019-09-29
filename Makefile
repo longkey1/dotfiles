@@ -13,7 +13,6 @@ _TARGETS := \
 "ideavimrc" \
 "netrc" \
 "ocamlinit" \
-"slack-term" \
 "vim" \
 "zshenv"
 
@@ -47,9 +46,7 @@ define _decrypt
 endef
 
 define _clone_github_repo
-	@if test ! -d "$(2)"; then \
-		git clone https://github.com/$(1).git $(2); \
-	fi
+	@[ ! -d "$(2)" ] && git clone https://github.com/$(1).git $(2) || true
 endef
 
 define _get_github_download_url
@@ -148,9 +145,7 @@ _require-envsubst:
 
 .PHONY: build-zsh
 build-zsh: _require-jq
-	@if test ! -f ./config/zsh/.zshrc; then \
-		cd ./config/zsh && ln -s zshrc .zshrc; \
-	fi
+	@[ ! -f ./config/zsh/.zshrc ] && cd ./config/zsh && ln -s zshrc .zshrc || true
 	$(call _clone_github_repo,zsh-users/antigen,config/zsh/antigen)
 
 .PHONY: build-vim
@@ -163,66 +158,44 @@ build-vim: _require-jq
 
 .PHONY: build-dep
 build-dep: _require-jq
-	@if test ! -f ./bin/dep; then \
-		wget $(call _get_github_download_url,"golang/dep") -O ./bin/dep && chmod +x ./bin/dep; \
-	fi
+	@[ ! -f ./bin/dep ] && wget $(call _get_github_download_url,"golang/dep") -O ./bin/dep && chmod +x ./bin/dep || true
 
 .PHONY: build-diary
 build-diary: _require-jq
-	@if test ! -f ./bin/diary; then \
-		wget $(call _get_github_download_url,"longkey1/diary") -O ./bin/diary && chmod +x ./bin/diary; \
-	fi
-	@if test ! -f ./config/diary/config.toml; then \
-		envsubst '$$HOME $$EDITOR' < config/diary/config.toml.dist > config/diary/config.toml; \
-	fi
+	@[ ! -f ./bin/diary ] && wget $(call _get_github_download_url,"longkey1/diary") -O ./bin/diary && chmod +x ./bin/diary || true
+	@[ ! -f ./config/diary/config.toml ] && envsubst '$$HOME $$EDITOR' < config/diary/config.toml.dist > config/diary/config.toml || true
 
 .PHONY: build-direnv
 build-direnv: _require-jq
-	@if test ! -f ./bin/direnv; then \
-		wget $(call _get_github_download_url,"direnv/direnv") -O ./bin/direnv && chmod +x ./bin/direnv; \
-	fi
+	@[ ! -f ./bin/direnv ] && wget $(call _get_github_download_url,"direnv/direnv") -O ./bin/direnv && chmod +x ./bin/direnv || true
 
 .PHONY: build-ghq
 build-ghq: _require-jq _require-bsdtar
-	@if test ! -f ./bin/ghq; then \
-		wget $(call _get_github_download_url,"motemen/ghq") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/ghq' && chmod +x ./bin/ghq; \
-	fi
+	@[ ! -f ./bin/ghq ] && wget $(call _get_github_download_url,"motemen/ghq") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/ghq' && chmod +x ./bin/ghq || true
 
 .PHONY: build-peco
 build-peco: _require-jq _require-bsdtar
-	@if test ! -f ./bin/peco; then \
-		wget $(call _get_github_download_url,"peco/peco") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/peco' && chmod +x ./bin/peco; \
-	fi
+	@[ ! -f ./bin/peco ] && wget $(call _get_github_download_url,"peco/peco") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/peco' && chmod +x ./bin/peco || true
 
 .PHONY: build-pt
 build-pt: _require-jq _require-bsdtar
-	@if test ! -f ./bin/pt; then \
-		wget $(call _get_github_download_url,"monochromegane/the_platinum_searcher") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/pt' && chmod +x ./bin/pt; \
-	fi
+	@[ ! -f ./bin/pt ] && wget $(call _get_github_download_url,"monochromegane/the_platinum_searcher") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/pt' && chmod +x ./bin/pt || true
 
 .PHONY: build-robo
 build-robo: _require-jq
-	@if test ! -f ./bin/robo; then \
-		wget $(call _get_github_download_url,"tj/robo") -O ./bin/robo && chmod +x ./bin/robo; \
-	fi
+	@[ ! -f ./bin/robo ] && wget $(call _get_github_download_url,"tj/robo") -O ./bin/robo && chmod +x ./bin/robo || true
 
 .PHONY: build-slack-term
 build-slack-term: _require-jq
-	@if test ! -f ./bin/slack-term; then \
-		wget $(call _get_github_download_url,"erroneousboat/slack-term") -O ./bin/slack-term && chmod +x ./bin/slack-term; \
-	fi
+	@[ ! -f ./bin/slack-term ] && wget $(call _get_github_download_url,"erroneousboat/slack-term") -O ./bin/slack-term && chmod +x ./bin/slack-term || true
 
 .PHONY: build-lf
 build-lf: _require-jq _require-bsdtar
-	@if test ! -f ./bin/lf; then \
-		wget $(call _get_github_download_url,"gokcehan/lf") -O- | bsdtar -xvf- -C ./bin 'lf' && chmod +x ./bin/lf; \
-	fi
+	@[ ! -f ./bin/lf ] && wget $(call _get_github_download_url,"gokcehan/lf") -O- | bsdtar -xvf- -C ./bin 'lf' && chmod +x ./bin/lf || true
 
 .PHONY: build-boilr
 build-boilr: _require-jq _require-bsdtar
-	@if test ! -f ./bin/boilr; then \
-		wget $(call _get_github_download_url,"tmrts/boilr") -O- | bsdtar -xvf- -C ./bin 'boilr' && chmod +x ./bin/boilr; \
-	fi
+	@[ ! -f ./bin/boilr ] && wget $(call _get_github_download_url,"tmrts/boilr") -O- | bsdtar -xvf- -C ./bin 'boilr' && chmod +x ./bin/boilr || true
 
 
 
