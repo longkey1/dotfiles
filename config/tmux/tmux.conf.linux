@@ -1,0 +1,7 @@
+# copy to clipboard
+if "type xsel" '\
+  bind -T copy-mode-vi y send -X copy-pipe-and-cancel "xsel -ib"; \
+  bind -T copy-mode-vi enter send -X copy-pipe-and-cancel "xsel -ib"; \
+'
+MESSAGE='display-message -p "xsel is not installed"; set-hook -gu session-created;'
+if "! type xsel" 'set-hook -g session-created ${MESSAGE}'
