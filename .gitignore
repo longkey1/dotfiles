@@ -3,6 +3,7 @@
 /config/direnv/allow
 /config/memo/config.toml
 /config/nvim/.netrwhist
+/config/slack-term/slack-term
 /config/zsh/antigen
 /config/zsh/.antigen
 /config/zsh/.zcompdump

@@ -59,6 +59,7 @@ excutable ls && alias ll="ls -l"
 excutable vim && alias vi="vim"
 excutable jq && alias jq="jq -C"
 excutable colordiff && alias diff="colordiff"
+excutable slack-term && alias slack-term="slack-term -config ${XDG_CONFIG_HOME}/slack-term/slack-term"
 
 
 

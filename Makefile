@@ -7,6 +7,7 @@ _TARGETS := \
 "config/git" \
 "config/lf" \
 "config/nvim" \
+"config/slack-term" \
 "config/tmux" \
 "config/zsh" \
 "ideavimrc" \
@@ -99,7 +100,7 @@ clean: ## delete all builded files
 	@rm -f config/zsh/.zshrc.
 	@rm -f config/zsh/zshrc.local
 	@rm -f netrc
-	@rm -f slack-term
+	@rm -f config/slack-term/slack-term
 	@rm -rf vim/pack/bundle/start/*
 
 .PHONY: install
@@ -127,12 +128,12 @@ uninstall: ## delete created symlink
 .PHONY: encrypt
 encrypt: ## encrypt files
 	$(call _encrypt,"netrc")
-	$(call _encrypt,"slack-term")
+	$(call _encrypt,"config/slack-term/slack-term")
 
 .PHONY: decrypt
 decrypt: ## decrypt files
 	$(call _decrypt,"netrc")
-	$(call _decrypt,"slack-term")
+	$(call _decrypt,"config/slack-term/slack-term")
 
 .PHONY: _require-bsdtar
 _require-bsdtar:
