@@ -96,7 +96,6 @@ clean: ## delete all builded files
 	@rm -f config/git/config.local
 	@rm -f config/memo/config.toml
 	@rm -rf config/zsh/antigen
-	@rm -rf config/zsh/.antigen
 	@rm -f config/zsh/.zshrc.
 	@rm -f config/zsh/zshrc.local
 	@rm -f netrc
