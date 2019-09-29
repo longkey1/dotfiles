@@ -1,31 +1,29 @@
 # include .zshrc.antigen
 [[ -f ${ZDOTDIR}/zshrc.antigen ]] && source ${ZDOTDIR}/zshrc.antigen
 
-# zsh
-## history
-export HISTFILE="${ZDOTDIR}/history"
-export HISTSIZE=100000
-export SAVEHIST=${HISTSIZE}
-
-## fpath functions
-if [[ -d ${ZDOTDIR}/functions ]]; then
-  export FPATH="${ZDOTDIR}/functions:$FPATH"
-fi
-
-## oh-my-zsh
-export DISABLE_AUTO_TITLE=true
-
-
+# variables
+_ostype=$(uname -s | tr '[:upper:]' '[:lower:]')
 
 # functions
 function excutable() {
   type "$1" &> /dev/null;
 }
 
-# environment variables
+# common environment variables
 export EDITOR="vim"
 export VISUAL="vim"
 export PAGER="less"
+
+# history
+export HISTFILE="${ZDOTDIR}/history"
+export HISTSIZE=100000
+export SAVEHIST=${HISTSIZE}
+
+# fpath functions
+[[ -d ${ZDOTDIR}/functions ]] && export FPATH="${ZDOTDIR}/functions:$FPATH"
+
+# oh-my-zsh
+export DISABLE_AUTO_TITLE=true
 
 # no create core dump file
 ulimit -c 0
@@ -42,17 +40,11 @@ fi
 # git/diff-highlight
 #
 ## for mac
-if [[ -d /usr/local/share/git-core/contrib/diff-highlight ]]; then
-  export PATH=${PATH}:/usr/local/share/git-core/contrib/diff-highlight
-#
+[[ -d /usr/local/share/git-core/contrib/diff-highlight ]] && export PATH=${PATH}:/usr/local/share/git-core/contrib/diff-highlight
 ## for arch
-elif [[ -d /usr/share/git/diff-highlight ]]; then
-  export PATH=$PATH:/usr/share/git/diff-highlight
-#
+[[ -d /usr/share/git/diff-highlight ]] && export PATH=$PATH:/usr/share/git/diff-highlight
 ## for debian or ubuntu
-elif [[ -d /usr/share/doc/git/contrib/diff-highlight ]]; then
-  export PATH=${PATH}:/usr/share/doc/git/contrib/diff-highlight
-fi
+[[ -d /usr/share/doc/git/contrib/diff-highlight ]] && exprt PATH=${PATH}:/usr/share/doc/git/contrib/diff-highlight
 
 # direnv
 if excutable direnv; then
@@ -60,34 +52,26 @@ if excutable direnv; then
   eval "$(direnv hook zsh)"
 fi
 
+
+
 # alias
-#
-## ls
-if excutable ls; then
-  alias ll="ls -l"
-fi
-#
-## vim
-if excutable vim; then
-  alias vi="vim"
-fi
-#
-## grep
+excutable ls && alias ll="ls -l"
+excutable vim && alias vi="vim"
+excutable jq && alias jq="jq -C"
+excutable colordiff && alias diff="colordiff"
+
+
+
+# grep
 if excutable grep; then
   alias grep="grep -I --color=auto"
-  # for grep's glob
-  setopt nonomatch
+  setopt nonomatch # for grep's glob
 fi
-#
-## jq
-if excutable jq; then
-  alias jq="jq -C"
-fi
-#
-## tmux
+
+# tmux
 if excutable tmux; then
   export TMUX_TMPDIR="${XDG_RUNTIME_DIR}"
-  if "${OSTYPE}" =~ ^darwin*; then
+  if [[ "${_ostype}" = "darwin" ]]; then
     alias tmux="tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf -2 -u"
   else
     alias tmux="tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf"
@@ -95,41 +79,26 @@ if excutable tmux; then
 fi
 
 # less
-export LESS="-R -F -X"
-if excutable less && excutable source-highlight-esc.sh; then
-  export LESSOPEN="| source-highlight-esc.sh %s"
-fi
-
-# colordiff
-if excutable colordiff; then
-  alias diff="colordiff"
+if excutable less; then
+  export LESS="-R -F -X"
+  if [[ $(excutable source-highlight-esc.sh) ]]; then
+    export LESSOPEN="| source-highlight-esc.sh %s"
+  fi
 fi
 
 # ansible
-if excutable ansible; then
-  export ANSIBLE_NOCOWS=1
-fi
-
-# nproc
-if ! excutable nproc && excutable sysctl; then
-  alias nproc='sysctl -n hw.physicalcpu'
-fi
+excutable ansible && export ANSIBLE_NOCOWS=1
 
 # make
-if excutable make; then
-  export MAKEFLAGS="-j$(nproc)"
-fi
+excutable make && export MAKEFLAGS="-j$(grep processor /proc/cpuinfo | wc -l)"
 
 # select-history and select-path
 #
 ## fzf
-if excutable fzf-tmux ]]; then
+if excutable fzf-tmux; then
   # historical search with peco binded to ^r
   function select-history-fzf() {
-    # historyを番号なし、逆順、最初から表示。
-    # 順番を保持して重複を削除。
-    # カーソルの左側の文字列をクエリにしてpecoを起動
-    # \nを改行に変換
+    # historyを番号なし、逆順、最初から表示。順番を保持して重複を削除。カーソルの左側の文字列をクエリにしてfzfを起動。\nを改行に変換
     BUFFER="$(\history -nr 1 | awk '!a[$0]++' | fzf-tmux --query "${LBUFFER}" --prompt 'HISTORY>' | sed 's/\\n/\n/')"
     # カーソルを文末に移動
     CURSOR=${#BUFFER}
@@ -142,13 +111,13 @@ if excutable fzf-tmux ]]; then
   # path selection with peco binded to ^f
   function select-path-fzf() {
     local filepath="$(find . | grep -v '/\.' | fzf-tmux --prompt 'PATH>')"
-    [ -z "${filepath}" ] && return
-    if [ -n "${LBUFFER}" ]; then
+    [[ -z "${filepath}" ]] && return
+    if [[ -n "${LBUFFER}" ]]; then
       BUFFER="${LBUFFER}${filepath}"
     else
-      if [ -d "${filepath}" ]; then
+      if [[ -d "${filepath}" ]]; then
         BUFFER="cd ${filepath}"
-      elif [ -f "${filepath}" ]; then
+      elif [[ -f "${filepath}" ]]; then
         BUFFER="${EDITOR} ${filepath}"
       fi
     fi
@@ -163,10 +132,7 @@ if excutable fzf-tmux ]]; then
 elif excutable peco; then
   # historical search with peco binded to ^r
   function select-history-peco() {
-    # historyを番号なし、逆順、最初から表示。
-    # 順番を保持して重複を削除。
-    # カーソルの左側の文字列をクエリにしてpecoを起動
-    # \nを改行に変換
+    # historyを番号なし、逆順、最初から表示。順番を保持して重複を削除。カーソルの左側の文字列をクエリにしてpecoを起動。\nを改行に変換
     BUFFER="$(\history -nr 1 | awk '!a[$0]++' | peco --query "${LBUFFER}" | sed 's/\\n/\n/')"
     # カーソルを文末に移動
     CURSOR=${#BUFFER}
@@ -180,13 +146,13 @@ elif excutable peco; then
   # path selection with peco binded to ^f
   function select-path-peco() {
     local filepath="$(find . | grep -v '/\.' | peco --prompt 'PATH>')"
-    [ -z "${filepath}" ] && return
+    [[ -z "${filepath}" ]] && return
     if [ -n "${LBUFFER}" ]; then
       BUFFER="${LBUFFER}${filepath}"
     else
-      if [ -d "${filepath}" ]; then
+      if [[ -d "${filepath}" ]]; then
         BUFFER="cd ${filepath}"
-      elif [ -f "${filepath}" ]; then
+      elif [[ -f "${filepath}" ]]; then
         BUFFER="${EDITOR} ${filepath}"
       fi
     fi
@@ -198,14 +164,14 @@ elif excutable peco; then
 fi
 
 # gg
-#
-## fzf
-if excutable ghq && excutable fzf-tmux; then
-  alias gg='cd $(ghq list -p | fzf-tmux)'
-#
-## peco
-elif excutable ghq && excutable peco; then
-  alias gg='cd $(ghq list -p | peco)'
+if excutable ghq; then
+  ## fzf
+  if excutable fzf-tmux; then
+    alias gg='cd $(ghq list -p | fzf-tmux)'
+  ## peco
+  elif excutable ghq && excutable peco; then
+    alias gg='cd $(ghq list -p | peco)'
+  fi
 fi
 
 # historica backward/forward search with linehead string binded to ^p/^n
@@ -219,5 +185,6 @@ bindkey "^n" history-beginning-search-forward-end
 autoload -U compinit
 compinit
 
-# include .zshrc.local
+# include files
+[[ -f ${ZDOTDIR}/zshrc.${_ostype} ]] && source ${ZDOTDIR}/zshrc.${_ostype}
 [[ -f ${ZDOTDIR}/zshrc.local ]] && source ${ZDOTDIR}/zshrc.local
