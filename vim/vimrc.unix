@@ -1,0 +1,16 @@
+" clipboard
+set clipboard&
+set clipboard^=unnamedplus
+
+" 挿入モードから出る時にIMEを自動的にオフにする
+if executable('fcitx-remote')
+  augroup AutoFcitxOff
+    autocmd!
+    autocmd InsertLeave * call system('fcitx-remote -c')
+  augroup END
+elseif executable('ibus')
+  augroup AutoIBusOff
+    autocmd!
+    autocmd InsertLeave * call system('ibus engine "xkb:us::eng"')
+  augroup END
+endif

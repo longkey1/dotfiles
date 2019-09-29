@@ -1,0 +1,8 @@
+" clipboard
+set clipboard+=unnamed
+
+" 挿入モードから出る時にIMEを自動的にオフにする
+augroup AutoIMEOff
+  autocmd!
+  autocmd InsertLeave * :call system('osascript -e "tell application \"System Events\" to key code 102"')
+augroup END

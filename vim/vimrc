@@ -1,12 +1,6 @@
-" ======================================================= plugin =====
-" colorscheme
-if isdirectory(expand('~/.vim/pack/bundle/start/jellybeans.vim'))
-  colorscheme jellybeans
-endif
-
-" ======================================================= general =====
 syntax on " シンタックス
 filetype plugin on " ファイルタイププラグイン
+colorscheme jellybeans
 
 set autoindent " オートインデント
 set number " 行番号表示
@@ -15,14 +9,6 @@ set listchars=trail:-
 
 " netrw
 let g:netrw_liststyle = 3
-
-" clipboard
-if has('mac')
-  set clipboard+=unnamed
-else
-  set clipboard&
-  set clipboard^=unnamedplus
-endif
 
 " タブインデント
 set expandtab      " tabをスペースに置き換えない
@@ -37,26 +23,18 @@ augroup TrimTrailingBlankSpace
   autocmd BufWritePre * :TrimTrailingBlank"
 augroup END
 
-" 挿入モードから出る時にIMEを自動的にオフにする
-set ttimeoutlen=1  "待ち時間を短くする
-if has('mac')
-  augroup AutoIMEOff
-    autocmd!
-    autocmd InsertLeave * :call system('osascript -e "tell application \"System Events\" to key code 102"')
-  augroup END
-elseif executable('fcitx-remote')
-  augroup AutoFcitxOff
-    autocmd!
-    autocmd InsertLeave * call system('fcitx-remote -c')
-  augroup END
-elseif executable('ibus')
-  augroup AutoIBusOff
-    autocmd!
-    autocmd InsertLeave * call system('ibus engine "xkb:us::eng"')
-  augroup END
-endif
+" IME切り替えの待ち時間を短くする
+set ttimeoutlen=1
 
-" local
-if filereadable(expand('~/.vimrc.local'))
-  source ~/.vimrc.local
+" for mac
+if has('mac') && filereadable(expand('~/.vim/vimrc.mac'))
+  source ~/.vim/vimrc.mac
+endif
+" for unix
+if has('unix') && filereadable(expand('~/.vim/vimrc.unix'))
+  source ~/.vim/vimrc.unix
+endif
+" for local
+if filereadable(expand('~/.vim/vimrc.local'))
+  source ~/.vim/vimrc.local
 endif
