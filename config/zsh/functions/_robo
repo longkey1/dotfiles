@@ -1,16 +1,14 @@
 #compdef robo
 
-function _robo() {
-  local output="$(robo 2>&1)"
-  if echo $output | grep -q "error loading configuration"; then
-    return
+local output="$(robo 2>&1)"
+if echo $output | grep -q "error loading configuration"; then
+  return
+fi
+local values=()
+echo $output | while read line
+do
+  if [ "$line" ]; then
+    values+=$(echo $line | sed -e 's/ – /[/' | sed -e 's/$/]/')
   fi
-  local values=()
-  echo $output | while read line
-  do
-    if [ "$line" ]; then
-      values+=$(echo $line | sed -e 's/ – /[/' | sed -e 's/$/]/')
-    fi
-  done
-  _values '' $values
-}
+done
+_values '' $values
