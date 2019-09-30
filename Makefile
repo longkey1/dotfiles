@@ -79,6 +79,7 @@ build: ## build all packages
 	$(MAKE) build-ghq
 	$(MAKE) build-pt
 	$(MAKE) build-robo
+	$(MAKE) build-fzf
 	$(MAKE) build-slack-term
 	$(MAKE) build-lf
 	$(MAKE) build-boilr
@@ -176,6 +177,10 @@ build-ghq: _require-jq _require-bsdtar
 .PHONY: build-peco
 build-peco: _require-jq _require-bsdtar
 	@[ ! -f ./bin/peco ] && wget $(call _get_github_download_url,"peco/peco") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/peco' && chmod +x ./bin/peco || true
+
+.PHONY: build-fzf
+build-fzf: _require-jq _require-bsdtar
+	@[ ! -f ./bin/fzf ] && wget $(call _get_github_download_url,"junegunn/fzf-bin") -O- | bsdtar -xvf- -C ./bin 'fzf' && chmod +x ./bin/fzf || true
 
 .PHONY: build-pt
 build-pt: _require-jq _require-bsdtar
