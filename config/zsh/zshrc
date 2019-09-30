@@ -1,13 +1,16 @@
 # include .zshrc.antigen
 [[ -f ${ZDOTDIR}/zshrc.antigen ]] && source ${ZDOTDIR}/zshrc.antigen
 
-# variables
-_ostype=$(uname -s | tr '[:upper:]' '[:lower:]')
+# fpath functions
+[[ -d ${ZDOTDIR}/functions ]] && export FPATH="${ZDOTDIR}/functions:$FPATH"
 
 # functions
 function excutable() {
   type "$1" &> /dev/null;
 }
+
+# variables
+_ostype=$(uname -s | tr '[:upper:]' '[:lower:]')
 
 # common environment variables
 export EDITOR="vim"
@@ -19,8 +22,6 @@ export HISTFILE="${ZDOTDIR}/history"
 export HISTSIZE=100000
 export SAVEHIST=${HISTSIZE}
 
-# fpath functions
-[[ -d ${ZDOTDIR}/functions ]] && export FPATH="${ZDOTDIR}/functions:$FPATH"
 
 # oh-my-zsh
 export DISABLE_AUTO_TITLE=true
@@ -96,11 +97,11 @@ excutable make && export MAKEFLAGS="-j$(grep processor /proc/cpuinfo | wc -l)"
 # select-history and select-path
 #
 ## fzf
-if excutable fzf-tmux; then
+if excutable fzf; then
   # historical search with peco binded to ^r
   function select-history-fzf() {
     # historyを番号なし、逆順、最初から表示。順番を保持して重複を削除。カーソルの左側の文字列をクエリにしてfzfを起動。\nを改行に変換
-    BUFFER="$(\history -nr 1 | awk '!a[$0]++' | fzf-tmux --query "${LBUFFER}" --prompt 'HISTORY>' | sed 's/\\n/\n/')"
+    BUFFER="$(\history -nr 1 | awk '!a[$0]++' | fzf --query "${LBUFFER}" --prompt 'HISTORY>' | sed 's/\\n/\n/')"
     # カーソルを文末に移動
     CURSOR=${#BUFFER}
     # refresh
@@ -111,7 +112,7 @@ if excutable fzf-tmux; then
 
   # path selection with peco binded to ^f
   function select-path-fzf() {
-    local filepath="$(find . | grep -v '/\.' | fzf-tmux --prompt 'PATH>')"
+    local filepath="$(find . | grep -v '/\.' | fzf --prompt 'PATH>')"
     [[ -z "${filepath}" ]] && return
     if [[ -n "${LBUFFER}" ]]; then
       BUFFER="${LBUFFER}${filepath}"
@@ -167,8 +168,8 @@ fi
 # gg
 if excutable ghq; then
   ## fzf
-  if excutable fzf-tmux; then
-    alias gg='cd $(ghq list -p | fzf-tmux)'
+  if excutable fzf; then
+    alias gg='cd $(ghq list -p | fzf)'
   ## peco
   elif excutable ghq && excutable peco; then
     alias gg='cd $(ghq list -p | peco)'
