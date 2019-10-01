@@ -10,7 +10,7 @@
 [alias]
   pushf = push --force-with-lease
   wip = commit -m '[ci skip][wip] initial commit' --allow-empty
-  sync = remote update --prune
+  sync = ! git remote update --prune && git pull origin master:master --rebase && git branch --merged | grep -v master | grep -v '*' | xargs -I {} git branch -d {}
 [push]
   default = nothing
 [pager]
