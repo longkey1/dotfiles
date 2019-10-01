@@ -29,11 +29,11 @@ set ttimeoutlen=1
 " for mac
 if has('mac') && filereadable(expand('~/.vim/vimrc.mac'))
   source ~/.vim/vimrc.mac
-endif
 " for unix
-if has('unix') && filereadable(expand('~/.vim/vimrc.unix'))
+elseif has('unix') && filereadable(expand('~/.vim/vimrc.unix'))
   source ~/.vim/vimrc.unix
 endif
+
 " for local
 if filereadable(expand('~/.vim/vimrc.local'))
   source ~/.vim/vimrc.local
