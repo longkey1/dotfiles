@@ -1,6 +1,12 @@
 # include .zshrc.antigen
 [[ -f ${ZDOTDIR}/zshrc.antigen ]] && source ${ZDOTDIR}/zshrc.antigen
 
+# variables
+_ostype=$(uname -s | tr '[:upper:]' '[:lower:]')
+
+# include ostype files
+[[ -f ${ZDOTDIR}/zshrc.${_ostype} ]] && source ${ZDOTDIR}/zshrc.${_ostype}
+
 # fpath functions
 [[ -d ${ZDOTDIR}/functions ]] && export FPATH="${ZDOTDIR}/functions:$FPATH"
 
@@ -8,9 +14,6 @@
 function excutable() {
   type "$1" &> /dev/null;
 }
-
-# variables
-_ostype=$(uname -s | tr '[:upper:]' '[:lower:]')
 
 # common environment variables
 export EDITOR="vim"
@@ -92,7 +95,7 @@ fi
 excutable ansible && export ANSIBLE_NOCOWS=1
 
 # make
-excutable make && export MAKEFLAGS="-j$(grep processor /proc/cpuinfo | wc -l)"
+excutable make && export MAKEFLAGS="-j$(nproc)"
 
 # select-history and select-path
 #
@@ -187,6 +190,5 @@ bindkey "^n" history-beginning-search-forward-end
 autoload -U compinit
 compinit
 
-# include files
-[[ -f ${ZDOTDIR}/zshrc.${_ostype} ]] && source ${ZDOTDIR}/zshrc.${_ostype}
+# include local file
 [[ -f ${ZDOTDIR}/zshrc.local ]] && source ${ZDOTDIR}/zshrc.local
