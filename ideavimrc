@@ -1,7 +1,1 @@
-" clipboard
-if has('mac')
-  set clipboard+=unnamed
-else
-  set clipboard&
-  set clipboard^=unnamedplus
-endif
+source ~/.vim/vimrc
