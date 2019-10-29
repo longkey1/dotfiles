@@ -7,7 +7,6 @@ _TARGETS := \
 "config/git" \
 "config/lf" \
 "config/nvim" \
-"config/slack-term" \
 "config/tmux" \
 "config/zsh" \
 "ideavimrc" \
@@ -80,7 +79,6 @@ build: ## build all packages
 	$(MAKE) build-pt
 	$(MAKE) build-robo
 	$(MAKE) build-fzf
-	$(MAKE) build-slack-term
 	$(MAKE) build-lf
 	$(MAKE) build-boilr
 	$(MAKE) build-zsh
@@ -97,7 +95,6 @@ clean: ## delete all builded files
 	@rm -f config/zsh/.zshrc.
 	@rm -f config/zsh/zshrc.local
 	@rm -f netrc
-	@rm -f config/slack-term/slack-term
 	@rm -rf vim/pack/bundle/start/*
 
 .PHONY: install
@@ -125,12 +122,10 @@ uninstall: ## delete created symlink
 .PHONY: encrypt
 encrypt: ## encrypt files
 	$(call _encrypt,"netrc")
-	$(call _encrypt,"config/slack-term/slack-term")
 
 .PHONY: decrypt
 decrypt: ## decrypt files
 	$(call _decrypt,"netrc")
-	$(call _decrypt,"config/slack-term/slack-term")
 
 .PHONY: _require-bsdtar
 _require-bsdtar:
@@ -189,10 +184,6 @@ build-pt: _require-jq _require-bsdtar
 .PHONY: build-robo
 build-robo: _require-jq
 	@[ ! -f ./bin/robo ] && wget $(call _get_github_download_url,"tj/robo") -O ./bin/robo && chmod +x ./bin/robo || true
-
-.PHONY: build-slack-term
-build-slack-term: _require-jq
-	@[ ! -f ./bin/slack-term ] && wget $(call _get_github_download_url,"erroneousboat/slack-term") -O ./bin/slack-term && chmod +x ./bin/slack-term || true
 
 .PHONY: build-lf
 build-lf: _require-jq _require-bsdtar
