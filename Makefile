@@ -90,7 +90,6 @@ clean: ## delete all builded files
 	@find ./bin -type f | grep -v .gitignore | xargs rm -rf
 	@rm -f config/diary/config.toml
 	@rm -f config/git/config.local
-	@rm -f config/memo/config.toml
 	@rm -rf config/zsh/antigen
 	@rm -f config/zsh/.zshrc.
 	@rm -f config/zsh/zshrc.local
