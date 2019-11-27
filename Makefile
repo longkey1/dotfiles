@@ -16,6 +16,7 @@ _TARGETS := \
 "zshenv"
 
 _LINUX_ONLY_TARGETS := \
+"config/fontconfig" \
 "xprofile"
 
 _OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
