@@ -92,7 +92,7 @@ clean: ## delete all builded files
 	@rm -f config/diary/config.toml
 	@rm -f config/git/config.local
 	@rm -rf config/zsh/antigen
-	@rm -f config/zsh/.zshrc.
+	@rm -f config/zsh/.zshrc
 	@rm -f config/zsh/zshrc.local
 	@rm -f netrc
 	@rm -rf vim/pack/bundle/start/*
