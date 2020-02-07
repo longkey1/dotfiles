@@ -73,17 +73,18 @@ endef
 
 .PHONY: build
 build: ## build all packages
+	$(MAKE) build-boilr
 	$(MAKE) build-dep
 	$(MAKE) build-diary
 	$(MAKE) build-direnv
+	$(MAKE) build-fzf
 	$(MAKE) build-ghq
+	$(MAKE) build-glow
+	$(MAKE) build-lf
 	$(MAKE) build-pt
 	$(MAKE) build-robo
-	$(MAKE) build-fzf
-	$(MAKE) build-lf
-	$(MAKE) build-boilr
-	$(MAKE) build-zsh
 	$(MAKE) build-vim
+	$(MAKE) build-zsh
 	$(MAKE) decrypt
 
 .PHONY: clean
