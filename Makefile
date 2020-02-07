@@ -194,6 +194,10 @@ build-lf: _require-jq _require-bsdtar
 build-boilr: _require-jq _require-bsdtar
 	@[ ! -f ./bin/boilr ] && wget $(call _get_github_download_url,"tmrts/boilr") -O- | bsdtar -xvf- -C ./bin 'boilr' && chmod +x ./bin/boilr || true
 
+.PHONY: build-glow
+build-glow: _require-jq _require-bsdtar
+	@[ ! -f ./bin/glow ] && wget $(call _get_github_download_url,"charmbracelet/glow") -O- | bsdtar -xvf- -C ./bin 'glow' && chmod +x ./bin/glow || true
+
 
 
 .PHONY: help
