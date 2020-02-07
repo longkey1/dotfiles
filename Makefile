@@ -20,7 +20,7 @@ _LINUX_ONLY_TARGETS := \
 "xprofile"
 
 _OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
-_ARCH := amd64
+_ARCH := (amd64|x86_64)
 
 define _executable
 	@if ! type $(1) &> /dev/null; then \
@@ -50,7 +50,7 @@ define _clone_github_repo
 endef
 
 define _get_github_download_url
-	$(shell curl -s https://api.github.com/repos/$(1)/releases/latest | jq -r ".assets[] | select(.name | contains(\"$(_OS)\") and contains(\"$(_ARCH)\") and (contains(\".sha256\") | not) and (contains(\".deb\") | not) and (contains(\".rpm\") | not)) | .browser_download_url")
+	$(shell curl -s https://api.github.com/repos/$(1)/releases/latest | jq -r ".assets[] | select(.name | test(\"$(_OS)\") and test(\"$(_ARCH)\") and (contains(\".sha256\") | not) and (contains(\".deb\") | not) and (contains(\".rpm\") | not)) | .browser_download_url")
 endef
 
 define _create_home_symlink
