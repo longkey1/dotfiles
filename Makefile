@@ -168,7 +168,7 @@ build-direnv: _require-jq
 
 .PHONY: build-ghq
 build-ghq: _require-jq _require-bsdtar
-	@[ ! -f ./bin/ghq ] && wget $(call _get_github_download_url,"motemen/ghq") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/ghq' && chmod +x ./bin/ghq || true
+	@[ ! -f ./bin/ghq ] && wget $(call _get_github_download_url,"x-motemen/ghq") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/ghq' && chmod +x ./bin/ghq || true
 
 .PHONY: build-peco
 build-peco: _require-jq _require-bsdtar
