@@ -19,7 +19,7 @@ _LINUX_ONLY_TARGETS := \
 "config/fontconfig" \
 "xprofile"
 
-_OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
+_OS := ($(shell uname -s)|$(shell uname -s | tr '[:upper:]' '[:lower:]'))
 _ARCH := (amd64|x86_64)
 
 define _executable
