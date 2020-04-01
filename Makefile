@@ -7,6 +7,7 @@ _TARGETS := \
 "config/git" \
 "config/lf" \
 "config/nvim" \
+"config/rofi" \
 "config/tmux" \
 "config/zsh" \
 "ideavimrc" \

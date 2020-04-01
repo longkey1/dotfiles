@@ -1,0 +1,2 @@
+rofi.modi: combi
+rofi.combi-modi: drun,system:~/.config/rofi/system.sh
