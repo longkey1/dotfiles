@@ -7,7 +7,6 @@ _TARGETS := \
 "config/git" \
 "config/lf" \
 "config/nvim" \
-"config/rofi" \
 "config/tmux" \
 "config/zsh" \
 "ideavimrc" \
@@ -18,6 +17,7 @@ _TARGETS := \
 
 _LINUX_ONLY_TARGETS := \
 "config/fontconfig" \
+"config/rofi" \
 "xprofile"
 
 _OS := ($(shell uname -s)|$(shell uname -s | tr '[:upper:]' '[:lower:]'))
