@@ -191,5 +191,9 @@ bindkey "^n" history-beginning-search-forward-end
 autoload -U compinit
 compinit
 
+# docker-compose
+export LOCAL_UID=$(id -u)
+export LOCAL_GID=$(id -g)
+
 # include local file
 [[ -f ${ZDOTDIR}/zshrc.local ]] && source ${ZDOTDIR}/zshrc.local
