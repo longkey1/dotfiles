@@ -11,6 +11,7 @@ _ostype=$(uname -s | tr '[:upper:]' '[:lower:]')
 [[ -d ${ZDOTDIR}/functions ]] && export FPATH="${ZDOTDIR}/functions:$FPATH"
 
 # functions
+#
 function excutable() {
   type "$1" &> /dev/null;
 }
@@ -25,12 +26,8 @@ export HISTFILE="${ZDOTDIR}/history"
 export HISTSIZE=100000
 export SAVEHIST=${HISTSIZE}
 
-
 # oh-my-zsh
 export DISABLE_AUTO_TITLE=true
-
-# no create core dump file
-ulimit -c 0
 
 # path .bin
 export PATH="${HOME}/.bin:${PATH}"
@@ -42,22 +39,11 @@ if [[ -d "${HOME}/.goenv" ]]; then
   eval "$(goenv init -)"
 fi
 
-# git/diff-highlight
-#
-## for mac
-[[ -d /usr/local/share/git-core/contrib/diff-highlight ]] && export PATH=${PATH}:/usr/local/share/git-core/contrib/diff-highlight
-## for arch
-[[ -d /usr/share/git/diff-highlight ]] && export PATH=$PATH:/usr/share/git/diff-highlight
-## for debian or ubuntu
-[[ -d /usr/share/doc/git/contrib/diff-highlight ]] && exprt PATH=${PATH}:/usr/share/doc/git/contrib/diff-highlight
-
 # direnv
 if excutable direnv; then
   export DIRENV_WARN_TIMEOUT=100s
   eval "$(direnv hook zsh)"
 fi
-
-
 
 # alias
 excutable ls && alias ll="ls -l"
@@ -65,8 +51,6 @@ excutable vim && alias vi="vim"
 excutable jq && alias jq="jq -C"
 excutable colordiff && alias diff="colordiff"
 excutable slack-term && alias slack-term="slack-term -config ${XDG_CONFIG_HOME}/slack-term/slack-term"
-
-
 
 # grep
 if excutable grep; then
