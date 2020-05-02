@@ -6,6 +6,7 @@ set autoindent " オートインデント
 set number " 行番号表示
 set list
 set listchars=trail:-
+set belloff=all " beep音オフ
 
 " netrw
 let g:netrw_liststyle = 3
