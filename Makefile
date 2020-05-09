@@ -75,6 +75,7 @@ endef
 .PHONY: build
 build: ## build all packages
 	$(MAKE) build-boilr
+	$(MAKE) build-countdown
 	$(MAKE) build-dep
 	$(MAKE) build-diary
 	$(MAKE) build-direnv
@@ -141,18 +142,13 @@ _require-jq:
 _require-envsubst:
 	@$(call _executable,"envsubst")
 
-.PHONY: build-zsh
-build-zsh: _require-jq
-	@[ ! -f ./config/zsh/.zshrc ] && cd ./config/zsh && ln -s zshrc .zshrc || true
-	$(call _clone_github_repo,zsh-users/antigen,config/zsh/antigen)
+.PHONY: build-boilr
+build-boilr: _require-jq _require-bsdtar
+	@[ ! -f ./bin/boilr ] && wget $(call _get_github_download_url,"tmrts/boilr") -O- | bsdtar -xvf- -C ./bin 'boilr' && chmod +x ./bin/boilr || true
 
-.PHONY: build-vim
-build-vim: _require-jq
-	$(call _clone_github_repo,thinca/vim-quickrun,vim/pack/bundle/start/vim-quickrun)
-	$(call _clone_github_repo,vim-scripts/sudo.vim,vim/pack/bundle/start/sudo.vim)
-	$(call _clone_github_repo,longkey1/vim-lf,vim/pack/bundle/start/vim-lf)
-	$(call _clone_github_repo,nanotech/jellybeans.vim,vim/pack/bundle/start/jellybeans.vim)
-	$(call _clone_github_repo,ConradIrwin/vim-bracketed-paste,vim/pack/bundle/start/vim-bracketed-paste)
+.PHONY: build-countdown
+build-countdown: _require-jq
+	@[ ! -f ./bin/countdown ] && wget $(call _get_github_download_url,"antonmedv/countdown") -O ./bin/countdown && chmod +x ./bin/countdown || true
 
 .PHONY: build-dep
 build-dep: _require-jq
@@ -167,17 +163,25 @@ build-diary: _require-jq
 build-direnv: _require-jq
 	@[ ! -f ./bin/direnv ] && wget $(call _get_github_download_url,"direnv/direnv") -O ./bin/direnv && chmod +x ./bin/direnv || true
 
+.PHONY: build-fzf
+build-fzf: _require-jq _require-bsdtar
+	@[ ! -f ./bin/fzf ] && wget $(call _get_github_download_url,"junegunn/fzf-bin") -O- | bsdtar -xvf- -C ./bin 'fzf' && chmod +x ./bin/fzf || true
+
 .PHONY: build-ghq
 build-ghq: _require-jq _require-bsdtar
 	@[ ! -f ./bin/ghq ] && wget $(call _get_github_download_url,"x-motemen/ghq") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/ghq' && chmod +x ./bin/ghq || true
 
+.PHONY: build-glow
+build-glow: _require-jq _require-bsdtar
+	@[ ! -f ./bin/glow ] && wget $(call _get_github_download_url,"charmbracelet/glow") -O- | bsdtar -xvf- -C ./bin 'glow' && chmod +x ./bin/glow || true
+
+.PHONY: build-lf
+build-lf: _require-jq _require-bsdtar
+	@[ ! -f ./bin/lf ] && wget $(call _get_github_download_url,"gokcehan/lf") -O- | bsdtar -xvf- -C ./bin 'lf' && chmod +x ./bin/lf || true
+
 .PHONY: build-peco
 build-peco: _require-jq _require-bsdtar
 	@[ ! -f ./bin/peco ] && wget $(call _get_github_download_url,"peco/peco") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/peco' && chmod +x ./bin/peco || true
-
-.PHONY: build-fzf
-build-fzf: _require-jq _require-bsdtar
-	@[ ! -f ./bin/fzf ] && wget $(call _get_github_download_url,"junegunn/fzf-bin") -O- | bsdtar -xvf- -C ./bin 'fzf' && chmod +x ./bin/fzf || true
 
 .PHONY: build-pt
 build-pt: _require-jq _require-bsdtar
@@ -187,17 +191,18 @@ build-pt: _require-jq _require-bsdtar
 build-robo: _require-jq
 	@[ ! -f ./bin/robo ] && wget $(call _get_github_download_url,"tj/robo") -O ./bin/robo && chmod +x ./bin/robo || true
 
-.PHONY: build-lf
-build-lf: _require-jq _require-bsdtar
-	@[ ! -f ./bin/lf ] && wget $(call _get_github_download_url,"gokcehan/lf") -O- | bsdtar -xvf- -C ./bin 'lf' && chmod +x ./bin/lf || true
+.PHONY: build-vim
+build-vim: _require-jq
+	$(call _clone_github_repo,thinca/vim-quickrun,vim/pack/bundle/start/vim-quickrun)
+	$(call _clone_github_repo,vim-scripts/sudo.vim,vim/pack/bundle/start/sudo.vim)
+	$(call _clone_github_repo,longkey1/vim-lf,vim/pack/bundle/start/vim-lf)
+	$(call _clone_github_repo,nanotech/jellybeans.vim,vim/pack/bundle/start/jellybeans.vim)
+	$(call _clone_github_repo,ConradIrwin/vim-bracketed-paste,vim/pack/bundle/start/vim-bracketed-paste)
 
-.PHONY: build-boilr
-build-boilr: _require-jq _require-bsdtar
-	@[ ! -f ./bin/boilr ] && wget $(call _get_github_download_url,"tmrts/boilr") -O- | bsdtar -xvf- -C ./bin 'boilr' && chmod +x ./bin/boilr || true
-
-.PHONY: build-glow
-build-glow: _require-jq _require-bsdtar
-	@[ ! -f ./bin/glow ] && wget $(call _get_github_download_url,"charmbracelet/glow") -O- | bsdtar -xvf- -C ./bin 'glow' && chmod +x ./bin/glow || true
+.PHONY: build-zsh
+build-zsh: _require-jq
+	@[ ! -f ./config/zsh/.zshrc ] && cd ./config/zsh && ln -s zshrc .zshrc || true
+	$(call _clone_github_repo,zsh-users/antigen,config/zsh/antigen)
 
 
 
