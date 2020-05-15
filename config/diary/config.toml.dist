@@ -1,5 +1,5 @@
 base_directory = "${HOME}/Dropbox/Documents/Diary"
-file_name = "2006/01/2006-01-02.md"
+file_name = "2006/2006-01-02.md"
 file_template = "# 2006-01-02\n"
 open_command = "${EDITOR} {{ .DayFile }}"
 list_command = "lf {{ .BaseDirectory }}/"
