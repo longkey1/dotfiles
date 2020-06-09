@@ -1,5 +1,5 @@
 " clipboard
-set clipboard+=unnamed
+set clipboard=unnamed
 
 " 挿入モードから出る時にIMEを自動的にオフにする
 augroup AutoIMEOff
