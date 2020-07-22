@@ -1,0 +1,20 @@
+# <type>[optional scope]: <description>
+#
+# [optional body]
+#
+# [optional footer(s)]
+
+# Conventional Commits (https://www.conventionalcommits.org/)
+#
+# Types
+# - build:    ビルドシステムまたは外部の依存関係に影響する変更（スコープの例：gulp、broccoli、npm）
+# - ci:       CI構成ファイルとスクリプトの変更（スコープの例：Travis、Circle、BrowserStack、SauceLabs）
+# - chore:    srcまたはテストファイルを変更しないその他の変更
+# - docs:     ドキュメントのみ変更
+# - feat:     新開発
+# - fix:      バグ修正
+# - perf:     パフォーマンスを向上させるコード変更
+# - refactor: バグの修正も機能の追加も行わないコード変更
+# - revert:   以前のコミットを元に戻す
+# - style:    コードの意味に影響を及ぼさない変更（空白、フォーマット、セミコロンの欠落など）
+# - test:     不足しているテストの追加または既存のテストの修正
