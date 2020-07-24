@@ -23,6 +23,8 @@ _LINUX_ONLY_TARGETS := \
 _OS := ($(shell uname -s)|$(shell uname -s | tr '[:upper:]' '[:lower:]'))
 _ARCH := (amd64|x86_64)
 
+_BIN := ./bin
+
 define _executable
 	@if ! type $(1) &> /dev/null; then \
 		echo "not found $(1) command."; \
@@ -54,6 +56,10 @@ define _get_github_download_url
 	$(shell curl -s https://api.github.com/repos/$(1)/releases/latest | jq -r ".assets[] | select(.name | test(\"$(_OS)\") and test(\"$(_ARCH)\") and (contains(\".sha256\") | not) and (contains(\".deb\") | not) and (contains(\".rpm\") | not)) | .browser_download_url")
 endef
 
+define _build_go_binary
+	curl -sf https://gobinaries.com/$(1) | PREFIX=$(_BIN) sh
+endef
+
 define _create_home_symlink
 	if test -e "$(HOME)/.$(1)"; then \
 		echo "already exists $(HOME)/.$(1)"; \
@@ -76,12 +82,12 @@ endef
 build: ## build all packages
 	$(MAKE) build-boilr
 	$(MAKE) build-countdown
-	$(MAKE) build-dep
 	$(MAKE) build-diary
 	$(MAKE) build-direnv
 	$(MAKE) build-fzf
 	$(MAKE) build-ghq
 	$(MAKE) build-glow
+	$(MAKE) build-gobump
 	$(MAKE) build-lf
 	$(MAKE) build-pt
 	$(MAKE) build-robo
@@ -91,7 +97,7 @@ build: ## build all packages
 
 .PHONY: clean
 clean: ## delete all builded files
-	@find ./bin -type f | grep -v .gitignore | xargs rm -rf
+	@find $(_BIN) -type f | grep -v .gitignore | xargs rm -rf
 	@rm -f config/diary/config.toml
 	@rm -f config/git/config.local
 	@rm -rf config/zsh/antigen
@@ -144,52 +150,52 @@ _require-envsubst:
 
 .PHONY: build-boilr
 build-boilr: _require-jq _require-bsdtar
-	@[ ! -f ./bin/boilr ] && wget $(call _get_github_download_url,"tmrts/boilr") -O- | bsdtar -xvf- -C ./bin 'boilr' && chmod +x ./bin/boilr || true
+	@[ ! -f $(_BIN)/boilr ] && wget $(call _get_github_download_url,"tmrts/boilr") -O- | bsdtar -xvf- -C $(_BIN) 'boilr' && chmod +x $(_BIN)/boilr || true
 
 .PHONY: build-countdown
-build-countdown: _require-jq
-	@[ ! -f ./bin/countdown ] && wget $(call _get_github_download_url,"antonmedv/countdown") -O ./bin/countdown && chmod +x ./bin/countdown || true
-
-.PHONY: build-dep
-build-dep: _require-jq
-	@[ ! -f ./bin/dep ] && wget $(call _get_github_download_url,"golang/dep") -O ./bin/dep && chmod +x ./bin/dep || true
+build-countdown:
+	@[ ! -f $(_BIN)/countdown ] && $(call _build_go_binary,"antonmedv/countdown") || true
 
 .PHONY: build-diary
 build-diary: _require-jq
-	@[ ! -f ./bin/diary ] && wget $(call _get_github_download_url,"longkey1/diary") -O ./bin/diary && chmod +x ./bin/diary || true
+	@[ ! -f $(_BIN)/diary ] && $(call _build_go_binary,"longkey1/diary") || true
 	@[ ! -f ./config/diary/config.toml ] && envsubst '$$HOME $$EDITOR' < config/diary/config.toml.dist > config/diary/config.toml || true
 
 .PHONY: build-direnv
 build-direnv: _require-jq
-	@[ ! -f ./bin/direnv ] && wget $(call _get_github_download_url,"direnv/direnv") -O ./bin/direnv && chmod +x ./bin/direnv || true
+	@[ ! -f $(_BIN)/direnv ] && wget $(call _get_github_download_url,"direnv/direnv") -O $(_BIN)/direnv && chmod +x $(_BIN)/direnv || true
 
 .PHONY: build-fzf
-build-fzf: _require-jq _require-bsdtar
-	@[ ! -f ./bin/fzf ] && wget $(call _get_github_download_url,"junegunn/fzf-bin") -O- | bsdtar -xvf- -C ./bin 'fzf' && chmod +x ./bin/fzf || true
+build-fzf:
+	@[ ! -f $(_BIN)/fzf ] && $(call _build_go_binary,"junegunn/fzf") || true
 
 .PHONY: build-ghq
-build-ghq: _require-jq _require-bsdtar
-	@[ ! -f ./bin/ghq ] && wget $(call _get_github_download_url,"x-motemen/ghq") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/ghq' && chmod +x ./bin/ghq || true
+build-ghq:
+	@[ ! -f $(_BIN)/ghq ] && $(call _build_go_binary,"x-motemen/ghq") || true
 
 .PHONY: build-glow
-build-glow: _require-jq _require-bsdtar
-	@[ ! -f ./bin/glow ] && wget $(call _get_github_download_url,"charmbracelet/glow") -O- | bsdtar -xvf- -C ./bin 'glow' && chmod +x ./bin/glow || true
+build-glow:
+	@[ ! -f $(_BIN)/glow ] && $(call _build_go_binary,"charmbracelet/glow") || true
+
+.PHONY: build-gobump
+build-gobump:
+	@[ ! -f $(_BIN)/gobump ] && wget $(call _get_github_download_url,"x-motemen/gobump") -O- | bsdtar -xvf- -C $(_BIN) --strip=1 '*/gobump' && chmod +x $(_BIN)/gobump || true
 
 .PHONY: build-lf
 build-lf: _require-jq _require-bsdtar
-	@[ ! -f ./bin/lf ] && wget $(call _get_github_download_url,"gokcehan/lf") -O- | bsdtar -xvf- -C ./bin 'lf' && chmod +x ./bin/lf || true
+	@[ ! -f $(_BIN)/lf ] && wget $(call _get_github_download_url,"gokcehan/lf") -O- | bsdtar -xvf- -C $(_BIN) 'lf' && chmod +x $(_BIN)/lf || true
 
 .PHONY: build-peco
 build-peco: _require-jq _require-bsdtar
-	@[ ! -f ./bin/peco ] && wget $(call _get_github_download_url,"peco/peco") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/peco' && chmod +x ./bin/peco || true
+	@[ ! -f $(_BIN)/peco ] && wget $(call _get_github_download_url,"peco/peco") -O- | bsdtar -xvf- -C $(_BIN) --strip=1 '*/peco' && chmod +x $(_BIN)/peco || true
 
 .PHONY: build-pt
 build-pt: _require-jq _require-bsdtar
-	@[ ! -f ./bin/pt ] && wget $(call _get_github_download_url,"monochromegane/the_platinum_searcher") -O- | bsdtar -xvf- -C ./bin --strip=1 '*/pt' && chmod +x ./bin/pt || true
+	@[ ! -f $(_BIN)/pt ] && wget $(call _get_github_download_url,"monochromegane/the_platinum_searcher") -O- | bsdtar -xvf- -C $(_BIN) --strip=1 '*/pt' && chmod +x $(_BIN)/pt || true
 
 .PHONY: build-robo
-build-robo: _require-jq
-	@[ ! -f ./bin/robo ] && wget $(call _get_github_download_url,"tj/robo") -O ./bin/robo && chmod +x ./bin/robo || true
+build-robo:
+	@[ ! -f $(_BIN)/robo ] && $(call _build_go_binary,"tj/robo") || true
 
 .PHONY: build-vim
 build-vim: _require-jq
