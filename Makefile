@@ -178,14 +178,12 @@ build-ghq:
 build-glow:
 	@[ ! -f $(_BIN)/glow ] && $(call _build_go_binary,"charmbracelet/glow") || true
 
-
-
 .PHONY: build-go-gitlint
 build-go-gitlint:
 	@[ ! -f $(_BIN)/go-gitlint ] && $(call _build_go_binary,"llorllale/go-gitlint/cmd/go-gitlint") || true
 
 .PHONY: build-gobump
-build-gobump:
+build-gobump: _require-jq _require-bsdtar
 	@[ ! -f $(_BIN)/gobump ] && wget $(call _get_github_download_url,"x-motemen/gobump") -O- | bsdtar -xvf- -C $(_BIN) --strip=1 '*/gobump' && chmod +x $(_BIN)/gobump || true
 
 .PHONY: build-lf
