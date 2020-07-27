@@ -6,6 +6,7 @@
 /config/slack-term/slack-term
 /config/zsh/antigen
 /config/zsh/.antigen
+/config/zsh/.chpwd-recent-dirs
 /config/zsh/.zcompdump
 /config/zsh/.zshrc
 /config/zsh/.zshrc.zwc
