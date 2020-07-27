@@ -14,6 +14,7 @@ if [[ -f "${ZGEN_DIR}/zgen.zsh" ]]; then
     zgen load zsh-users/zsh-completions
     zgen load zsh-users/zsh-history-substring-search
     zgen load zsh-users/zsh-syntax-highlighting
+    zgen load mollifier/anyframe
 
     # theme
     zgen oh-my-zsh themes/fishy

@@ -14,6 +14,7 @@ if [[ -f "${ZDOTDIR}/antigen/antigen.zsh" ]]; then
   antigen bundle zsh-users/zsh-completions
   antigen bundle zsh-users/zsh-history-substring-search
   antigen bundle zsh-users/zsh-syntax-highlighting
+  antigen bundle mollifier/anyframe
 
   # Load the theme.
   antigen theme fishy

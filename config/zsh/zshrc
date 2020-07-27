@@ -82,86 +82,21 @@ excutable ansible && export ANSIBLE_NOCOWS=1
 # make
 excutable make && export MAKEFLAGS="-j$(nproc)"
 
-# select-history and select-path
+# cdr (ref http://zsh.sourceforge.net/Doc/Release/User-Contributions.html#Recent-Directories)
+autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
+add-zsh-hook chpwd chpwd_recent_dirs
+
+# anyframe
 #
-## fzf
-if excutable fzf; then
-  # historical search with peco binded to ^r
-  function select-history-fzf() {
-    # historyを番号なし、逆順、最初から表示。順番を保持して重複を削除。カーソルの左側の文字列をクエリにしてfzfを起動。\nを改行に変換
-    BUFFER="$(\history -nr 1 | awk '!a[$0]++' | fzf --query "${LBUFFER}" --prompt 'HISTORY>' | sed 's/\\n/\n/')"
-    # カーソルを文末に移動
-    CURSOR=${#BUFFER}
-    # refresh
-    zle -R -c
-  }
-  zle -N select-history-fzf
-  bindkey '^r' select-history-fzf
-
-  # path selection with peco binded to ^f
-  function select-path-fzf() {
-    local filepath="$(find . | grep -v '/\.' | fzf --prompt 'PATH>')"
-    [[ -z "${filepath}" ]] && return
-    if [[ -n "${LBUFFER}" ]]; then
-      BUFFER="${LBUFFER}${filepath}"
-    else
-      if [[ -d "${filepath}" ]]; then
-        BUFFER="cd ${filepath}"
-      elif [[ -f "${filepath}" ]]; then
-        BUFFER="${EDITOR} ${filepath}"
-      fi
-    fi
-    CURSOR=${#BUFFER}
-  }
-
-  zle -N select-path-fzf
-  # Ctrl+f で起動
-  bindkey '^f' select-path-fzf
+## execute-history
+bindkey '^r' anyframe-widget-execute-history
 #
-## peco
-elif excutable peco; then
-  # historical search with peco binded to ^r
-  function select-history-peco() {
-    # historyを番号なし、逆順、最初から表示。順番を保持して重複を削除。カーソルの左側の文字列をクエリにしてpecoを起動。\nを改行に変換
-    BUFFER="$(\history -nr 1 | awk '!a[$0]++' | peco --query "${LBUFFER}" | sed 's/\\n/\n/')"
-    # カーソルを文末に移動
-    CURSOR=${#BUFFER}
-    # refresh
-    zle -R -c
-  }
-  zle -N select-history-peco
-  # Ctrl+f
-  bindkey '^r' select-history-peco
-
-  # path selection with peco binded to ^f
-  function select-path-peco() {
-    local filepath="$(find . | grep -v '/\.' | peco --prompt 'PATH>')"
-    [[ -z "${filepath}" ]] && return
-    if [ -n "${LBUFFER}" ]; then
-      BUFFER="${LBUFFER}${filepath}"
-    else
-      if [[ -d "${filepath}" ]]; then
-        BUFFER="cd ${filepath}"
-      elif [[ -f "${filepath}" ]]; then
-        BUFFER="${EDITOR} ${filepath}"
-      fi
-    fi
-    CURSOR=${#BUFFER}
-  }
-  zle -N select-path-peco
-  # Ctrl+f
-  bindkey '^f' select-path-peco
-fi
-
-# gg
+## cdr
+bindkey '^b' anyframe-widget-cdr
+#
+## ghq (ghq)
 if excutable ghq; then
-  ## fzf
-  if excutable fzf; then
-    alias gg='cd $(ghq list -p | fzf)'
-  ## peco
-  elif excutable ghq && excutable peco; then
-    alias gg='cd $(ghq list -p | peco)'
-  fi
+  bindkey '^g' anyframe-widget-cd-ghq-repository
 fi
 
 # historica backward/forward search with linehead string binded to ^p/^n
