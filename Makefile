@@ -22,8 +22,8 @@ _LINUX_ONLY_TARGETS := \
 
 _OS := ($(shell uname -s)|$(shell uname -s | tr '[:upper:]' '[:lower:]'))
 _ARCH := (amd64|x86_64)
-
 _BIN := ./bin
+_CONFIG := ./config
 
 define _executable
 	@if ! type $(1) &> /dev/null; then \
@@ -99,11 +99,11 @@ build: ## build all packages
 .PHONY: clean
 clean: ## delete all builded files
 	@find $(_BIN) -type f | grep -v .gitignore | xargs rm -rf
-	@rm -f config/diary/config.toml
-	@rm -f config/git/config.local
-	@rm -rf config/zsh/antigen
-	@rm -f config/zsh/.zshrc
-	@rm -f config/zsh/zshrc.local
+	@rm -f $(_CONFIG)/diary/config.toml
+	@rm -f $(_CONFIG)/git/config.local
+	@rm -rf $(_CONFIG)/zsh/antigen
+	@rm -f $(_CONFIG)/zsh/.zshrc
+	@rm -f $(_CONFIG)/zsh/zshrc.local
 	@rm -f netrc
 	@rm -rf vim/pack/bundle/start/*
 
@@ -160,7 +160,7 @@ build-countdown:
 .PHONY: build-diary
 build-diary: _require-jq
 	@[ ! -f $(_BIN)/diary ] && $(call _build_go_binary,"longkey1/diary") || true
-	@[ ! -f ./config/diary/config.toml ] && envsubst '$$HOME $$EDITOR' < config/diary/config.toml.dist > config/diary/config.toml || true
+	@[ ! -f $(_CONFIG)/diary/config.toml ] && envsubst '$$HOME $$EDITOR' < $(_CONFIG)/diary/config.toml.dist > $(_CONFIG)/diary/config.toml || true
 
 .PHONY: build-direnv
 build-direnv: _require-jq
@@ -212,7 +212,7 @@ build-vim: _require-jq
 
 .PHONY: build-zsh
 build-zsh: _require-jq
-	@[ ! -f ./config/zsh/.zshrc ] && cd ./config/zsh && ln -s zshrc .zshrc || true
+	@[ ! -f $(_CONFIG)/zsh/.zshrc ] && cd $(_CONFIG)/zsh && ln -s zshrc .zshrc || true
 	$(call _clone_github_repo,zsh-users/antigen,config/zsh/antigen)
 
 
