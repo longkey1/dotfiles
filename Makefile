@@ -88,7 +88,7 @@ build: ## build all packages
 	$(MAKE) build-ghq
 	$(MAKE) build-glow
 	$(MAKE) build-gobump
-	$(MAKE) build-go-gitlint
+	$(MAKE) build-gitlint
 	$(MAKE) build-lf
 	$(MAKE) build-pt
 	$(MAKE) build-robo
@@ -178,9 +178,9 @@ build-ghq:
 build-glow:
 	@[ ! -f $(_BIN)/glow ] && $(call _build_go_binary,"charmbracelet/glow") || true
 
-.PHONY: build-go-gitlint
-build-go-gitlint:
-	@[ ! -f $(_BIN)/go-gitlint ] && $(call _build_go_binary,"llorllale/go-gitlint/cmd/go-gitlint") || true
+.PHONY: build-gitlint
+build-gitlint:
+	@[ ! -f $(_BIN)/gitlint ] && $(call _build_go_binary,"llorllale/go-gitlint/cmd/go-gitlint") && mv $(_BIN)/go-gitlint $(_BIN)/gitlint || true
 
 .PHONY: build-gobump
 build-gobump: _require-jq _require-bsdtar
