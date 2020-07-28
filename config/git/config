@@ -2,6 +2,7 @@
   editor = vim -c \"set fenc=utf-8\"
   quotepath = false
   pager = nkf -w | LESSCHARSET=utf-8 less
+  hooksPath = ~/.config/git/hooks
 [user]
   email = longkey1@gmail.com
   name = longkey1
