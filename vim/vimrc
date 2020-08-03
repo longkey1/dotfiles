@@ -8,6 +8,7 @@ set list                     " 不可視文字を表示
 set listchars=trail:-        " 空白を-で表示
 set expandtab                " tabをスペースに置き換えない
 set tabstop=2                " tabをスペース何文字分で表示するかの指定
+set tabpagemax=100           " tabを最大100開けるようにする
 set shiftwidth=2             " オートインデント時に挿入されるスペース文字数
 set softtabstop=2            " tabキーで挿入されるスペース文字数
 set splitright               " 新しいウィンドウは右側に追加される
