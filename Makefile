@@ -89,6 +89,7 @@ build: ## build all packages
 	$(MAKE) build-glow
 	$(MAKE) build-gobump
 	$(MAKE) build-gitlint
+	$(MAKE) build-just
 	$(MAKE) build-lf
 	$(MAKE) build-pt
 	$(MAKE) build-robo
@@ -185,6 +186,10 @@ build-gitlint:
 .PHONY: build-gobump
 build-gobump: _require-jq _require-bsdtar
 	@[ ! -f $(_BIN)/gobump ] && wget $(call _get_github_download_url,"x-motemen/gobump") -O- | bsdtar -xvf- -C $(_BIN) --strip=1 '*/gobump' && chmod +x $(_BIN)/gobump || true
+
+.PHONY: build-just
+build-just: _require-jq _require-bsdtar
+	@[ ! -f $(_BIN)/just ] && wget $(call _get_github_download_url,"casey/just") -O- | bsdtar -xvf- -C $(_BIN) 'just' && chmod +x $(_BIN)/just || true
 
 .PHONY: build-lf
 build-lf: _require-jq _require-bsdtar
