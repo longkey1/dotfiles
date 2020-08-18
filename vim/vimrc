@@ -35,17 +35,11 @@ let g:quickrun_config.markdown = {'runner': 'shell', 'command': 'glow'}
 " for mac
 if has('mac') && filereadable(expand('~/.vim/vimrc.mac'))
   source ~/.vim/vimrc.mac
-endif
 " for unix
-if has('linux') && filereadable(expand('~/.vim/vimrc.linux'))
+elseif has('linux') && filereadable(expand('~/.vim/vimrc.linux'))
   source ~/.vim/vimrc.linux
 endif
 " for local
 if filereadable(expand('~/.vim/vimrc.local'))
   source ~/.vim/vimrc.local
 endif
-
-
-"
-" clipboard
-set clipboard=unnamed
