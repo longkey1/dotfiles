@@ -94,6 +94,7 @@ build: ## build all packages
 	$(MAKE) build-pt
 	$(MAKE) build-robo
 	$(MAKE) build-vim
+	$(MAKE) build-yq
 	$(MAKE) build-zsh
 	$(MAKE) decrypt
 
@@ -214,6 +215,10 @@ build-vim: _require-jq
 	$(call _clone_github_repo,longkey1/vim-lf,vim/pack/bundle/start/vim-lf)
 	$(call _clone_github_repo,nanotech/jellybeans.vim,vim/pack/bundle/start/jellybeans.vim)
 	$(call _clone_github_repo,ConradIrwin/vim-bracketed-paste,vim/pack/bundle/start/vim-bracketed-paste)
+
+.PHONY: build-yq
+build-yq: _require-jq
+	@[ ! -f $(_BIN)/yq ] && wget $(call _get_github_download_url,"mikefarah/yq") -O $(_BIN)/yq && chmod +x $(_BIN)/yq || true
 
 .PHONY: build-zsh
 build-zsh: _require-jq
