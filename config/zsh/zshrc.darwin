@@ -1,5 +1,5 @@
 # no create core dump file
 ulimit -n 32768
 
-# git/diff-highlight
-[[ -d /usr/local/share/git-core/contrib/diff-highlight ]] && export PATH=${PATH}:/usr/local/share/git-core/contrib/diff-highlight
+# diff-highlight
+[[ -d /usr/local/share/git-core/contrib/diff-highlight ]] && export PATH=/usr/local/share/git-core/contrib/diff-highlight:${PATH}
