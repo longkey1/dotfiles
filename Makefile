@@ -10,7 +10,6 @@ _TARGETS := \
 "config/tmux" \
 "config/zsh" \
 "ideavimrc" \
-"netrc" \
 "ocamlinit" \
 "vim" \
 "zshenv"
