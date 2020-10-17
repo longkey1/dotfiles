@@ -5,6 +5,7 @@ set -euCo pipefail
 function main() {
   local -Ar menu=(
     ['Logout']='cinnamon-session-quit --no-prompt'
+    ['Suspend']='systemctl suspend'
     ['Poweroff']='systemctl poweroff'
     ['Reboot']='systemctl reboot'
   )
