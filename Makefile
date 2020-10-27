@@ -133,11 +133,11 @@ uninstall: ## delete created symlink
 
 .PHONY: encrypt
 encrypt: ## encrypt files
-	$(call _encrypt,"netrc")
+#	$(call _encrypt,"netrc")
 
 .PHONY: decrypt
 decrypt: ## decrypt files
-	$(call _decrypt,"netrc")
+#	$(call _decrypt,"netrc")
 
 .PHONY: _require-bsdtar
 _require-bsdtar:
