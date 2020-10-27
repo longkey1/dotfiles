@@ -79,6 +79,7 @@ endef
 
 .PHONY: build
 build: ## build all packages
+	$(MAKE) build-bat
 	$(MAKE) build-boilr
 	$(MAKE) build-countdown
 	$(MAKE) build-diary
@@ -149,6 +150,10 @@ _require-jq:
 .PHONY: _require-envsubst
 _require-envsubst:
 	@$(call _executable,"envsubst")
+
+.PHONY: build-bat
+build-bat:
+	@[ ! -f $(_BIN)/bat ] && $(call _build_go_binary,"astaxie/bat") || true
 
 .PHONY: build-boilr
 build-boilr: _require-jq _require-bsdtar
