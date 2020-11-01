@@ -1,5 +1,9 @@
 # no create core dump file
 ulimit -n 32768
 
+# gnu
+type gdate > /dev/null 2>&1 && alias date='gdate'
+type gsed > /dev/null 2>&1 && alias sed='gsed'
+
 # diff-highlight
 [[ -d /usr/local/share/git-core/contrib/diff-highlight ]] && export PATH=/usr/local/share/git-core/contrib/diff-highlight:${PATH}
