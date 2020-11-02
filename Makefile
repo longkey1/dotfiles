@@ -9,6 +9,7 @@ _TARGETS := \
 "config/nvim" \
 "config/tmux" \
 "config/zsh" \
+"goroots" \
 "ideavimrc" \
 "ocamlinit" \
 "vim" \
@@ -23,6 +24,15 @@ _OS := ($(shell uname -s)|$(shell uname -s | tr '[:upper:]' '[:lower:]'))
 _ARCH := (amd64|x86_64)
 _BIN := ./bin
 _CONFIG := ./config
+
+_GOROOTS := ./goroots
+_GOVERSIONS := \
+"1.15.3" \
+"1.14.9" \
+"1.13.15" \
+"1.12.17" \
+"1.11.13"
+
 
 define _executable
 	@if ! type $(1) &> /dev/null; then \
@@ -88,6 +98,7 @@ build: ## build all packages
 	$(MAKE) build-ghq
 	$(MAKE) build-glow
 	$(MAKE) build-gobump
+#	$(MAKE) build-go
 	$(MAKE) build-gitlint
 	$(MAKE) build-just
 	$(MAKE) build-lf
@@ -106,6 +117,7 @@ clean: ## delete all builded files
 	@rm -rf $(_CONFIG)/zsh/antigen
 	@rm -f $(_CONFIG)/zsh/.zshrc
 	@rm -f $(_CONFIG)/zsh/zshrc.local
+	@find $(_GOROOTS) -type f | grep -v .gitignore | xargs rm -rf
 	@rm -f netrc
 	@rm -rf vim/pack/bundle/start/*
 
@@ -191,6 +203,15 @@ build-gitlint:
 .PHONY: build-gobump
 build-gobump: _require-jq _require-bsdtar
 	@[ ! -f $(_BIN)/gobump ] && wget $(call _get_github_download_url,"x-motemen/gobump") -O- | bsdtar -xvf- -C $(_BIN) --strip=1 '*/gobump' && chmod +x $(_BIN)/gobump || true
+
+.PHONY: build-go
+build-go: _require-bsdtar
+	@for GOVERSION in $(_GOVERSIONS); do \
+		$(eval __OS := $(shell uname -s | tr "[:upper:]" "[:lower:]")) \
+		$(eval __ARCH := $(shell [ "$(shell uname -m)" = "x86_64" ] && echo "amd64" || echo "386")) \
+		$(eval __ARCHIVE := https://golang.org/dl/go$$GOVERSION.$(__OS)-$(__ARCH).tar.gz) \
+		[ ! -d $(_GOROOTS)/$$GOVERSION ] && mkdir $(_GOROOTS)/$$GOVERSION && wget $(__ARCHIVE) -O- | bsdtar -xvf- -C $(_GOROOTS)/$$GOVERSION --strip=1 || true; \
+	done
 
 .PHONY: build-just
 build-just: _require-jq _require-bsdtar
