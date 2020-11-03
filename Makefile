@@ -209,8 +209,7 @@ build-go: _require-bsdtar
 	@for GOVERSION in $(_GOVERSIONS); do \
 		$(eval __OS := $(shell uname -s | tr "[:upper:]" "[:lower:]")) \
 		$(eval __ARCH := $(shell [ "$(shell uname -m)" = "x86_64" ] && echo "amd64" || echo "386")) \
-		$(eval __ARCHIVE := https://golang.org/dl/go$$GOVERSION.$(__OS)-$(__ARCH).tar.gz) \
-		[ ! -d $(_GOROOTS)/$$GOVERSION ] && mkdir $(_GOROOTS)/$$GOVERSION && wget $(__ARCHIVE) -O- | bsdtar -xvf- -C $(_GOROOTS)/$$GOVERSION --strip=1 || true; \
+		[ ! -d $(_GOROOTS)/$$GOVERSION ] && mkdir $(_GOROOTS)/$$GOVERSION && wget https://golang.org/dl/go$$GOVERSION.$(__OS)-$(__ARCH).tar.gz -O- | bsdtar -xvf- -C $(_GOROOTS)/$$GOVERSION --strip=1 || true; \
 	done
 
 .PHONY: build-just
