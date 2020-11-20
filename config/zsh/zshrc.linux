@@ -10,3 +10,7 @@ ulimit -c 0
 
 # nproc
 alias nproc="grep processor /proc/cpuinfo | wc -l"
+
+# docker-compose
+export LOCAL_UID=$(id -u)
+export LOCAL_GID=$(id -g)
