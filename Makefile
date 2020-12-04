@@ -98,12 +98,12 @@ build: ## build all packages
 	$(MAKE) build-ghq
 	$(MAKE) build-glow
 	$(MAKE) build-gobump
-#	$(MAKE) build-go
 	$(MAKE) build-gitlint
 	$(MAKE) build-just
 	$(MAKE) build-lf
 	$(MAKE) build-pt
 	$(MAKE) build-robo
+	$(MAKE) build-ran
 	$(MAKE) build-vim
 	$(MAKE) build-yq
 	$(MAKE) build-zsh
@@ -227,6 +227,10 @@ build-peco: _require-jq _require-bsdtar
 .PHONY: build-pt
 build-pt: _require-jq _require-bsdtar
 	@[ ! -f $(_BIN)/pt ] && wget $(call _get_github_download_url,"monochromegane/the_platinum_searcher") -O- | bsdtar -xvf- -C $(_BIN) --strip=1 '*/pt' && chmod +x $(_BIN)/pt || true
+
+.PHONY: build-ran
+build-ran:
+	@[ ! -f $(_BIN)/ran ] && $(call _build_go_binary,"m3ng9i/ran") || true
 
 .PHONY: build-robo
 build-robo:
