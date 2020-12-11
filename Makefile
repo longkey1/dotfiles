@@ -62,7 +62,7 @@ define _clone_github_repo
 endef
 
 define _get_github_download_url
-	$(shell curl -s https://api.github.com/repos/$(1)/releases/latest | jq -r ".assets[] | select(.name | test(\"$(_OS)\") and test(\"$(_ARCH)\") and (contains(\".sha256\") | not) and (contains(\".deb\") | not) and (contains(\".rpm\") | not)) | .browser_download_url")
+	$(shell curl -s https://api.github.com/repos/$(1)/releases/latest | ./bin/gojq -r ".assets[] | select(.name | test(\"$(_OS)\") and test(\"$(_ARCH)\") and (contains(\".sha256\") | not) and (contains(\".deb\") | not) and (contains(\".rpm\") | not)) | .browser_download_url")
 endef
 
 define _build_go_binary
@@ -157,7 +157,8 @@ _require-bsdtar:
 
 .PHONY: _require-jq
 _require-jq:
-	@$(call _executable,"jq")
+	#@$(call _executable,"jq")
+	$(MAKE) build-gojq
 
 .PHONY: _require-envsubst
 _require-envsubst:
@@ -211,6 +212,10 @@ build-go: _require-bsdtar
 		$(eval __ARCH := $(shell [ "$(shell uname -m)" = "x86_64" ] && echo "amd64" || echo "386")) \
 		[ ! -d $(_GOROOTS)/$$GOVERSION ] && mkdir $(_GOROOTS)/$$GOVERSION && wget https://golang.org/dl/go$$GOVERSION.$(__OS)-$(__ARCH).tar.gz -O- | bsdtar -xvf- -C $(_GOROOTS)/$$GOVERSION --strip=1 || true; \
 	done
+
+.PHONY: build-gojq
+build-gojq:
+	@[ ! -f $(_BIN)/gojq ] && $(call _build_go_binary,"itchyny/gojq/cmd/gojq") || true
 
 .PHONY: build-just
 build-just: _require-jq _require-bsdtar
