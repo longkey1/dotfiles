@@ -48,7 +48,7 @@ fi
 # alias
 excutable ls && alias ll="ls -l"
 excutable vim && alias vi="vim"
-excutable jq && alias jq="jq -C"
+excutable gojq && alias jq="gojq -C"
 excutable colordiff && alias diff="colordiff"
 excutable tput && alias beep="tput bel"
 
