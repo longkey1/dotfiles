@@ -96,9 +96,9 @@ build: ## build all packages
 	$(MAKE) build-direnv
 	$(MAKE) build-fzf
 	$(MAKE) build-ghq
+	$(MAKE) build-gitlint
 	$(MAKE) build-glow
 	$(MAKE) build-gobump
-	$(MAKE) build-gitlint
 	$(MAKE) build-just
 	$(MAKE) build-lf
 	$(MAKE) build-pt
@@ -157,7 +157,7 @@ _require-bsdtar:
 
 .PHONY: _require-jq
 _require-jq:
-	#@$(call _executable,"jq")
+#	@$(call _executable,"jq")
 	$(MAKE) build-gojq
 
 .PHONY: _require-envsubst
