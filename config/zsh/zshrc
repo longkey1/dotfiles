@@ -10,8 +10,7 @@ _ostype=$(uname -s | tr '[:upper:]' '[:lower:]')
 # fpath functions
 [[ -d ${ZDOTDIR}/functions ]] && export FPATH="${ZDOTDIR}/functions:$FPATH"
 
-# functions
-#
+# function/excutable
 function excutable() {
   type "$1" &> /dev/null;
 }
@@ -54,11 +53,6 @@ fi
 # tmux
 if excutable tmux; then
   export TMUX_TMPDIR="${XDG_RUNTIME_DIR}"
-  if [[ "${_ostype}" = "darwin" ]]; then
-    alias tmux="tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf -2 -u"
-  else
-    alias tmux="tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf"
-  fi
 fi
 
 # less
@@ -103,5 +97,12 @@ bindkey "^n" history-beginning-search-forward-end
 autoload -U compinit
 compinit
 
+# docker-compose
+export LOCAL_UID=$(id -u)
+export LOCAL_GID=$(id -g)
+
 # include local file
 [[ -f ${ZDOTDIR}/zshrc.local ]] && source ${ZDOTDIR}/zshrc.local
+
+# fix duplicated path
+typeset -U PATH
