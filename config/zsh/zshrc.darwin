@@ -4,9 +4,14 @@ ulimit -n 32768
 # nproc
 alias nproc="sysctl -n hw.logicalcpu_max"
 
+# git/diff-highlight
+[[ -d /usr/local/share/git-core/contrib/diff-highlight ]] && export PATH=${PATH}:/usr/local/share/git-core/contrib/diff-highlight
+
+# tmux
+if type tmux &> /dev/null; then
+  alias tmux="tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf -2 -u"
+fi
+
 # gnu
 type gdate > /dev/null 2>&1 && alias date='gdate'
 type gsed > /dev/null 2>&1 && alias sed='gsed'
-
-# diff-highlight
-[[ -d /usr/local/share/git-core/contrib/diff-highlight ]] && export PATH=/usr/local/share/git-core/contrib/diff-highlight:${PATH}
