@@ -1,6 +1,0 @@
-memodir = "${HOME}/Dropbox/Documents/Memo"
-editor = "vim"
-column = 20
-selectcmd = "fzf-tmux"
-grepcmd = "pt ${PATTERN} ${FILES}"
-assetsdir = "."
