@@ -1,6 +1,9 @@
 # no create core dump file
 ulimit -n 32768
 
+# nproc
+alias nproc="sysctl -n hw.logicalcpu_max"
+
 # gnu
 type gdate > /dev/null 2>&1 && alias date='gdate'
 type gsed > /dev/null 2>&1 && alias sed='gsed'
