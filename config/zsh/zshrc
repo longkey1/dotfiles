@@ -30,14 +30,7 @@ export SAVEHIST=${HISTSIZE}
 export DISABLE_AUTO_TITLE=true
 
 # path .bin
-export PATH="${HOME}/.bin:${PATH}"
-
-# goenv
-if [[ -d "${HOME}/.goenv" ]]; then
-  export GOENV_ROOT=${HOME}/.goenv
-  export PATH=${GOENV_ROOT}/bin:${PATH}
-  eval "$(goenv init -)"
-fi
+export PATH="${PATH}:${HOME}/.bin"
 
 # direnv
 if excutable direnv; then
