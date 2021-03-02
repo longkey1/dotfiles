@@ -1,5 +1,5 @@
 syntax on                    " シンタックス
-filetype plugin on           " ファイルタイププラグイン
+"filetype plugin on           " ファイルタイププラグイン
 colorscheme jellybeans       " カラースキーム
 
 set autoindent               " オートインデント
@@ -17,7 +17,6 @@ set belloff=all              " beep音オフ
 " netrw
 let g:netrw_liststyle = 3
 
-
 " 保存時に行末の空白を除去するコマンド
 command TrimTrailingBlank %s/\s\+$//ge
 augroup TrimTrailingBlankSpace
@@ -31,6 +30,16 @@ set ttimeoutlen=1
 " quickrun
 let g:quickrun_config = {}
 let g:quickrun_config.markdown = {'runner': 'shell', 'command': 'glow'}
+
+" lsp
+nmap <buffer> gd <plug>(lsp-definition)
+nmap <buffer> <f2> <plug>(lsp-rename)
+nmap <buffer> <Leader>d <plug>(lsp-type-definition)
+nmap <buffer> <Leader>r <plug>(lsp-references)
+nmap <buffer> <Leader>i <plug>(lsp-implementation)
+
+" asyncomplete
+let g:asyncomplete_popup_delay = 200
 
 " for mac
 if has('mac') && filereadable(expand('~/.vim/vimrc.mac'))
