@@ -25,3 +25,5 @@
   path = ~/.config/git/config.local
 [ghq]
   root = ~/work/src
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
