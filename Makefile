@@ -27,8 +27,8 @@ _CONFIG := ./config
 
 _GOROOTS := ./goroots
 _GOVERSIONS := \
-"1.15.3" \
-"1.14.9" \
+"1.15.8" \
+"1.14.15" \
 "1.13.15" \
 "1.12.17" \
 "1.11.13"
@@ -248,6 +248,10 @@ build-vim: _require-jq
 	$(call _clone_github_repo,longkey1/vim-lf,vim/pack/bundle/start/vim-lf)
 	$(call _clone_github_repo,nanotech/jellybeans.vim,vim/pack/bundle/start/jellybeans.vim)
 	$(call _clone_github_repo,ConradIrwin/vim-bracketed-paste,vim/pack/bundle/start/vim-bracketed-paste)
+	$(call _clone_github_repo,prabirshrestha/vim-lsp,vim/pack/bundle/start/vim-lsp)
+	$(call _clone_github_repo,mattn/vim-lsp-settings,vim/pack/bundle/start/vim-lsp-settings)
+	$(call _clone_github_repo,prabirshrestha/asyncomplete.vim,vim/pack/bundle/start/asyncomplete.vim)
+	$(call _clone_github_repo,prabirshrestha/asyncomplete-lsp.vim,vim/pack/bundle/start/asyncomplete-lsp.vim)
 
 .PHONY: build-yq
 build-yq: _require-jq
