@@ -5,7 +5,7 @@ ulimit -n 32768
 alias nproc="sysctl -n hw.logicalcpu_max"
 
 # git/diff-highlight
-[[ -d /usr/local/share/git-core/contrib/diff-highlight ]] && export PATH=${PATH}:/usr/local/share/git-core/contrib/diff-highlight
+path=(${path} /usr/local/share/git-core/contrib/diff-highlight(N-/))
 
 # tmux
 if type tmux &> /dev/null; then
