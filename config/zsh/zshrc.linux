@@ -5,9 +5,10 @@ ulimit -c 0
 alias nproc="grep processor /proc/cpuinfo | wc -l"
 
 # git/diff-highlight for arch
-[[ -d /usr/share/git/diff-highlight ]] && export PATH=${PATH}:/usr/share/git/diff-highlight
+path=(${path} /usr/share/git/diff-highlight(N-/))
+
 # git/diff-highlight for debian or ubuntu
-[[ -d /usr/share/doc/git/contrib/diff-highlight ]] && export PATH=${PATH}:/usr/share/doc/git/contrib/diff-highlight
+path=(${path} /usr/share/doc/git/contrib/diff-highlight(N-/))
 
 # tmux
 if type tmux &> /dev/null; then
