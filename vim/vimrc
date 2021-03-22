@@ -12,7 +12,8 @@ set tabpagemax=100           " tabを最大100開けるようにする
 set shiftwidth=2             " オートインデント時に挿入されるスペース文字数
 set softtabstop=2            " tabキーで挿入されるスペース文字数
 set splitright               " 新しいウィンドウは右側に追加される
-set belloff=all              " beep音オフ
+set visualbell               " beep音をヴィジュアル化
+set noerrorbells             " beep音をならないように
 
 " netrw
 let g:netrw_liststyle = 3
