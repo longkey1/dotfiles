@@ -1,5 +1,5 @@
 syntax on                    " シンタックス
-"filetype plugin on           " ファイルタイププラグイン
+filetype plugin on           " ファイルタイププラグイン
 colorscheme jellybeans       " カラースキーム
 
 set autoindent               " オートインデント
