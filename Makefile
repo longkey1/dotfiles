@@ -118,7 +118,7 @@ clean: ## delete all builded files
 	@rm -rf $(_CONFIG)/zsh/antigen
 	@rm -f $(_CONFIG)/zsh/.zshrc
 	@rm -f $(_CONFIG)/zsh/zshrc.local
-	@find $(_GOROOTS) -type f | grep -v .gitignore | xargs rm -rf
+	@find $(_GOROOTS) -type d -mindepth 1 -maxdepth 1 | xargs rm -rf
 	@rm -f netrc
 	@rm -rf vim/pack/bundle/start/*
 
