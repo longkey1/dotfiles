@@ -33,15 +33,20 @@ let g:quickrun_config = {}
 let g:quickrun_config.markdown = {'runner': 'shell', 'command': 'glow'}
 
 " lsp
-nmap <buffer> gd <plug>(lsp-definition)
-nmap <buffer> <f2> <plug>(lsp-rename)
-nmap <buffer> <Leader>d <plug>(lsp-type-definition)
-nmap <buffer> <Leader>r <plug>(lsp-references)
-nmap <buffer> <Leader>i <plug>(lsp-implementation)
+nnoremap <buffer> gd <plug>(lsp-definition)
+nnoremap <buffer> <f2> <plug>(lsp-rename)
+nnoremap <buffer> <Leader>d <plug>(lsp-type-definition)
+nnoremap <buffer> <Leader>r <plug>(lsp-references)
+nnoremap <buffer> <Leader>i <plug>(lsp-implementation)
 
 " asyncomplete
 let g:asyncomplete_popup_delay = 200
 
+" abbreviations
+iabbrev ts <C-R>=strftime("%Y-%m-%d %H:%M:%S")<CR>
+
+" include files
+"
 " for mac
 if has('mac') && filereadable(expand('~/.vim/vimrc.mac'))
   source ~/.vim/vimrc.mac
