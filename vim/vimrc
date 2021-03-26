@@ -43,7 +43,9 @@ nnoremap <buffer> <Leader>i <plug>(lsp-implementation)
 let g:asyncomplete_popup_delay = 200
 
 " abbreviations
-iabbrev ts <C-R>=strftime("%Y-%m-%d %H:%M:%S")<CR>
+augroup ab_md_ts
+  autocmd FileType markdown iabbrev <buffer> ts <C-R>=strftime("%Y-%m-%d %H:%M:%S")<CR>
+augroup END
 
 " include files
 "
