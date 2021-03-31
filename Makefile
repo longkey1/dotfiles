@@ -92,7 +92,6 @@ endef
 build: ## build all packages
 	$(MAKE) build-bat
 	$(MAKE) build-boilr
-#	$(MAKE) build-comb
 	$(MAKE) build-countdown
 	$(MAKE) build-diary
 	$(MAKE) build-direnv
@@ -106,6 +105,7 @@ build: ## build all packages
 	$(MAKE) build-pt
 	$(MAKE) build-robo
 	$(MAKE) build-ran
+	$(MAKE) build-templ
 	$(MAKE) build-vim
 	$(MAKE) build-yq
 	$(MAKE) build-zsh
@@ -173,10 +173,6 @@ build-bat:
 .PHONY: build-boilr
 build-boilr: _require-jq _require-bsdtar
 	@[ ! -f $(_BIN)/boilr ] && wget $(call _get_github_download_url,"tmrts/boilr") -O- | bsdtar -xvf- -C $(_BIN) 'boilr' && chmod +x $(_BIN)/boilr || true
-
-#.PHONY: build-comb
-#build-comb:
-#	@[ ! -f $(_BIN)/comb ] && $(call _build_go_binary,"longkey1/comb/cmd") || true
 
 .PHONY: build-countdown
 build-countdown:
@@ -246,6 +242,10 @@ build-ran:
 .PHONY: build-robo
 build-robo:
 	@[ ! -f $(_BIN)/robo ] && $(call _build_go_binary,"tj/robo") || true
+
+.PHONY: build-tmpl
+build-tmpl:
+	@[ ! -f $(_BIN)/tmpl ] && $(call _build_go_binary,"longkey1/tmpl") || true
 
 .PHONY: build-vim
 build-vim: _require-jq
