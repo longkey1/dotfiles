@@ -128,7 +128,7 @@ install: ## create target's symlink in home directory
 	@for TARGET in $(_TARGETS); do \
 		$(call _create_home_symlink,"$$TARGET"); \
 	done
-	@if test "$(shell uname -s)" = "Linux"; then \
+	@if test "$(_OS)" = "linux"; then \
 		for TARGET in $(_LINUX_ONLY_TARGETS); do \
 			$(call _create_home_symlink,"$$TARGET"); \
 		done \
@@ -139,7 +139,7 @@ uninstall: ## delete created symlink
 	@for TARGET in $(_TARGETS); do \
 		$(call _delete_home_symlink,"$$TARGET"); \
 	done
-	@if test "$(shell uname -s)" = "Linux"; then \
+	@if test "$(_OS)" = "linux"; then \
 		for TARGET in $(_LINUX_ONLY_TARGETS); do \
 			$(call _delete_home_symlink,"$$TARGET"); \
 		done \
