@@ -44,7 +44,7 @@ let g:asyncomplete_popup_delay = 200
 
 " abbreviations
 augroup ab_md_ts
-  autocmd FileType markdown iabbrev <buffer> :ts: <C-R>=strftime("%Y-%m-%d %H:%M:%S")<CR>
+  autocmd FileType markdown iabbrev <buffer> :ts: <C-R>=strftime("%Y-%m-%d %H:%M")<CR>
 augroup END
 
 " include files
@@ -56,6 +56,7 @@ if has('mac') && filereadable(expand('~/.vim/vimrc.mac'))
 elseif has('linux') && filereadable(expand('~/.vim/vimrc.linux'))
   source ~/.vim/vimrc.linux
 endif
+"
 " for local
 if filereadable(expand('~/.vim/vimrc.local'))
   source ~/.vim/vimrc.local
