@@ -105,7 +105,7 @@ build: ## build all packages
 	$(MAKE) build-pt
 	$(MAKE) build-robo
 	$(MAKE) build-ran
-	$(MAKE) build-templ
+	$(MAKE) build-tmpl
 	$(MAKE) build-vim
 	$(MAKE) build-yq
 	$(MAKE) build-zsh
