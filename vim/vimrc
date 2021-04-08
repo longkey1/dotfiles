@@ -20,7 +20,7 @@ let g:netrw_liststyle = 3
 
 " 保存時に行末の空白を除去するコマンド
 command TrimTrailingBlank %s/\s\+$//ge
-augroup TrimTrailingBlankSpace
+augroup trim_trailing_blank_space
   autocmd!
   autocmd BufWritePre * :TrimTrailingBlank"
 augroup END
@@ -43,8 +43,14 @@ nnoremap <buffer> <Leader>i <plug>(lsp-implementation)
 let g:asyncomplete_popup_delay = 200
 
 " abbreviations
-augroup ab_md_ts
+augroup abbreviations_md_ts
   autocmd FileType markdown iabbrev <buffer> :ts: <C-R>=strftime("%Y-%m-%d %H:%M")<CR>
+augroup END
+
+" just filetype
+augroup filetypedetect_justfile
+  autocmd!
+  autocmd BufNewFile,BufRead justfile setf make
 augroup END
 
 " include files
