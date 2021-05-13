@@ -4,6 +4,7 @@ _TARGETS := \
 "bin" \
 "config/diary" \
 "config/direnv" \
+"config/gh" \
 "config/git" \
 "config/lf" \
 "config/nvim" \

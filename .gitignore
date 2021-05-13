@@ -1,6 +1,7 @@
 /bundle/cache
 /config/diary/config.toml
 /config/direnv/allow
+/config/gh/state.yml
 /config/memo/config.toml
 /config/nvim/.netrwhist
 /config/slack-term/slack-term
