@@ -96,6 +96,7 @@ build: ## build all packages
 	$(MAKE) build-diary
 	$(MAKE) build-direnv
 	$(MAKE) build-fzf
+	$(MAKE) build-gh
 	$(MAKE) build-ghq
 	$(MAKE) build-gitlint
 	$(MAKE) build-glow
@@ -190,6 +191,10 @@ build-direnv: _require-jq
 .PHONY: build-fzf
 build-fzf:
 	@[ ! -f $(_BIN)/fzf ] && $(call _build_go_binary,"junegunn/fzf") || true
+
+.PHONY: build-gh
+build-gh:
+	@[ ! -f $(_BIN)/gh ] && wget $(call _get_github_download_url,"cli/cli") -O- | bsdtar -xvf- -C $(_BIN) --strip=2 '*/bin/gh' && chmod +x $(_BIN)/gh || true
 
 .PHONY: build-ghq
 build-ghq:
