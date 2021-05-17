@@ -149,11 +149,11 @@ uninstall: ## delete created symlink
 
 .PHONY: encrypt
 encrypt: ## encrypt files
-#	$(call _encrypt,"netrc")
+	$(call _encrypt,$(_CONFIG)/gh/hosts.yml)
 
 .PHONY: decrypt
 decrypt: ## decrypt files
-#	$(call _decrypt,"netrc")
+	$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
 
 .PHONY: _require-bsdtar
 _require-bsdtar:
@@ -196,10 +196,7 @@ build-fzf:
 .PHONY: build-gh
 build-gh:
 	@[ ! -f $(_BIN)/gh ] && wget $(call _get_github_download_url,"cli/cli") -O- | bsdtar -xvf- -C $(_BIN) --strip=2 '*/bin/gh' && chmod +x $(_BIN)/gh || true
-
-.PHONY: build-ghq
-build-ghq:
-	@[ ! -f $(_BIN)/ghq ] && $(call _build_go_binary,"x-motemen/ghq") || true
+	@$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
 
 .PHONY: build-glow
 build-glow:
