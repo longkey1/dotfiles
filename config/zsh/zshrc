@@ -101,5 +101,8 @@ compinit
 export LOCAL_UID=$(id -u)
 export LOCAL_GID=$(id -g)
 
+# disable beep
+setopt no_beep
+
 # include local file
 [[ -f ${ZDOTDIR}/zshrc.local ]] && source ${ZDOTDIR}/zshrc.local
