@@ -198,6 +198,10 @@ build-gh:
 	@[ ! -f $(_BIN)/gh ] && wget $(call _get_github_download_url,"cli/cli") -O- | bsdtar -xvf- -C $(_BIN) --strip=2 '*/bin/gh' && chmod +x $(_BIN)/gh || true
 	@$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
 
+.PHONY: build-ghq
+build-ghq:
+	@[ ! -f $(_BIN)/ghq ] && $(call _build_go_binary,"x-motemen/ghq") || true
+
 .PHONY: build-glow
 build-glow:
 	@[ ! -f $(_BIN)/glow ] && $(call _build_go_binary,"charmbracelet/glow") || true
