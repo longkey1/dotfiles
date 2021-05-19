@@ -91,6 +91,7 @@ endef
 
 .PHONY: build
 build: ## build all packages
+	@git submodule update --init --recursive
 	$(MAKE) build-bat
 	$(MAKE) build-boilr
 	$(MAKE) build-countdown
