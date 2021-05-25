@@ -8,6 +8,7 @@ _TARGETS := \
 "config/git" \
 "config/lf" \
 "config/nvim" \
+"config/tmpl" \
 "config/tmux" \
 "config/zsh" \
 "goroots" \
@@ -254,6 +255,7 @@ build-robo:
 .PHONY: build-tmpl
 build-tmpl:
 	@[ ! -f $(_BIN)/tmpl ] && $(call _build_go_binary,"longkey1/tmpl") || true
+	@[ ! -f $(_CONFIG)/tmpl/config.toml ] && envsubst '$$HOME' < $(_CONFIG)/tmpl/config.toml.dist > $(_CONFIG)/tmpl/config.toml || true
 
 .PHONY: build-vim
 build-vim: _require-jq
