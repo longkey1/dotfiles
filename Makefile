@@ -268,6 +268,7 @@ build-vim: _require-jq
 	$(call _clone_github_repo,mattn/vim-lsp-settings,vim/pack/bundle/start/vim-lsp-settings)
 	$(call _clone_github_repo,prabirshrestha/asyncomplete.vim,vim/pack/bundle/start/asyncomplete.vim)
 	$(call _clone_github_repo,prabirshrestha/asyncomplete-lsp.vim,vim/pack/bundle/start/asyncomplete-lsp.vim)
+	$(call _clone_github_repo,tyru/open-browser.vim,vim/pack/bundle/start/open-browser.vim)
 
 .PHONY: build-yq
 build-yq: _require-jq
