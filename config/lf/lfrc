@@ -1,5 +1,5 @@
 cmd open ${{
-    case $(file --mime-type $f -b) in
+    case $(file --brief --dereference --mime-type $f) in
         text/*)
           if [[ $EDITOR == "vim" ]]; then
             $EDITOR -p $fx
