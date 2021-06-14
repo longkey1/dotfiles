@@ -1,6 +1,6 @@
 cmd open ${{
     case $(file --brief --dereference --mime-type $f) in
-        text/*)
+        text/* | application/json)
           if [[ $EDITOR == "vim" ]]; then
             $EDITOR -p $fx
           else
