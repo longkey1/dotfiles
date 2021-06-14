@@ -8,6 +8,7 @@ _TARGETS := \
 "config/git" \
 "config/lf" \
 "config/nvim" \
+"config/rofi" \
 "config/tmpl" \
 "config/tmux" \
 "config/zsh" \
