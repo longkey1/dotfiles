@@ -67,7 +67,7 @@ endef
 
 define _get_github_download_url
 	$(eval __OS := ($(_OS)|$(shell echo $(_OS) | tr "[:upper:]" "[:lower:]")))
-	$(eval __ARCH := (amd64|x86_64)) \
+	$(eval __ARCH := (amd64|x86_64))
 	$(shell curl -s https://api.github.com/repos/$(1)/releases/latest | ./bin/gojq -r ".assets[] | select(.name | test(\"$(__OS)\") and test(\"$(__ARCH)\") and (contains(\".sha256\") | not) and (contains(\".deb\") | not) and (contains(\".rpm\") | not)) | .browser_download_url")
 endef
 
@@ -165,7 +165,6 @@ _require-bsdtar:
 
 .PHONY: _require-jq
 _require-jq:
-#	@$(call _executable,"jq")
 	$(MAKE) build-gojq
 
 .PHONY: _require-envsubst
