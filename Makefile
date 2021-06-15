@@ -97,7 +97,6 @@ endef
 build: ## build all packages
 	@git submodule update --init --recursive
 	$(MAKE) build-bat
-	$(MAKE) build-boilr
 	$(MAKE) build-countdown
 	$(MAKE) build-diary
 	$(MAKE) build-direnv
@@ -176,10 +175,6 @@ _require-envsubst:
 .PHONY: build-bat
 build-bat:
 	@[ ! -f $(_BIN)/bat ] && $(call _build_go_binary,"astaxie/bat") || true
-
-.PHONY: build-boilr
-build-boilr: _require-jq _require-bsdtar
-	@[ ! -f $(_BIN)/boilr ] && wget $(call _get_github_download_url,"tmrts/boilr") -O- | bsdtar -xvf- -C $(_BIN) 'boilr' && chmod +x $(_BIN)/boilr || true
 
 .PHONY: build-countdown
 build-countdown:
