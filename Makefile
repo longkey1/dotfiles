@@ -228,6 +228,7 @@ build-go: _require-bsdtar
 .PHONY: build-gojq
 build-gojq:
 	@[ ! -f $(_BIN)/gojq ] && $(call _build_go_binary,"itchyny/gojq/cmd/gojq") || true
+	@[ ! -e $(_BIN)/jq ] && cd $(_BIN) && ln -s gojq jq || true
 
 .PHONY: build-just
 build-just: _require-jq _require-bsdtar
