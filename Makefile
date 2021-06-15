@@ -37,8 +37,8 @@ _GOVERSIONS := \
 
 _GH_DL_OS := ($(shell uname -s)|$(shell uname -s | tr '[:upper:]' '[:lower:]'))
 _GH_DL_ARCH := (amd64|x86_64)
-_GO_BD_OS := $(shell uname -s | tr "[:upper:]" "[:lower:]"))
-_GO_BD_ARCH := $(shell [ "$(shell uname -m)" = "x86_64" ] && echo "amd64" || echo "386"))
+_GO_BD_OS := $(shell uname -s | tr "[:upper:]" "[:lower:]")
+_GO_BD_ARCH := $(shell [ "$(shell uname -m)" = "x86_64" ] && echo "amd64" || echo "386")
 
 define _executable
 	@if ! type $(1) &> /dev/null; then \
@@ -68,13 +68,7 @@ define _clone_github_repo
 endef
 
 define _get_github_download_url
-<<<<<<< HEAD
-	$(eval __OS := ($(_OS)|$(shell echo $(_OS) | tr "[:upper:]" "[:lower:]")))
-	$(eval __ARCH := (amd64|x86_64))
-	$(shell curl -s https://api.github.com/repos/$(1)/releases/latest | ./bin/gojq -r ".assets[] | select(.name | test(\"$(__OS)\") and test(\"$(__ARCH)\") and (contains(\".sha256\") | not) and (contains(\".deb\") | not) and (contains(\".rpm\") | not)) | .browser_download_url")
-=======
 	$(shell curl -s https://api.github.com/repos/$(1)/releases/latest | ./bin/gojq -r ".assets[] | select(.name | test(\"$(_GH_DL_OS)\") and test(\"$(_GH_DL_ARCH)\") and (contains(\".sha256\") | not) and (contains(\".deb\") | not) and (contains(\".rpm\") | not)) | .browser_download_url")
->>>>>>> fix
 endef
 
 define _build_go_binary
@@ -140,11 +134,7 @@ install: ## create target's symlink in home directory
 	@for TARGET in $(_TARGETS); do \
 		$(call _create_home_symlink,"$$TARGET"); \
 	done
-<<<<<<< HEAD
-	@if test "$(_OS)" = "Linux"; then \
-=======
 	@if test "$(shell uname -s)" = "Linux"; then \
->>>>>>> fix
 		for TARGET in $(_LINUX_ONLY_TARGETS); do \
 			$(call _create_home_symlink,"$$TARGET"); \
 		done \
@@ -155,11 +145,7 @@ uninstall: ## delete created symlink
 	@for TARGET in $(_TARGETS); do \
 		$(call _delete_home_symlink,"$$TARGET"); \
 	done
-<<<<<<< HEAD
-	@if test "$(_OS)" = "Linux"; then \
-=======
 	@if test "$(shell uname -s)" = "Linux"; then \
->>>>>>> fix
 		for TARGET in $(_LINUX_ONLY_TARGETS); do \
 			$(call _delete_home_symlink,"$$TARGET"); \
 		done \
