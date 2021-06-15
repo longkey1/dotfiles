@@ -23,8 +23,8 @@ _LINUX_ONLY_TARGETS := \
 "config/rofi" \
 "xprofile"
 
-_OS := ($(shell uname -s)|$(shell uname -s | tr '[:upper:]' '[:lower:]'))
-_ARCH := (amd64|x86_64)
+_OS := $(shell uname -s)
+_ARCH := $(shell uname -m)
 _BIN := ./bin
 _CONFIG := ./config
 
@@ -66,7 +66,9 @@ define _clone_github_repo
 endef
 
 define _get_github_download_url
-	$(shell curl -s https://api.github.com/repos/$(1)/releases/latest | ./bin/gojq -r ".assets[] | select(.name | test(\"$(_OS)\") and test(\"$(_ARCH)\") and (contains(\".sha256\") | not) and (contains(\".deb\") | not) and (contains(\".rpm\") | not)) | .browser_download_url")
+	$(eval __OS := ($(_OS)|$(shell echo $(_OS) | tr "[:upper:]" "[:lower:]")))
+	$(eval __ARCH := (amd64|x86_64)) \
+	$(shell curl -s https://api.github.com/repos/$(1)/releases/latest | ./bin/gojq -r ".assets[] | select(.name | test(\"$(__OS)\") and test(\"$(__ARCH)\") and (contains(\".sha256\") | not) and (contains(\".deb\") | not) and (contains(\".rpm\") | not)) | .browser_download_url")
 endef
 
 define _build_go_binary
@@ -133,7 +135,7 @@ install: ## create target's symlink in home directory
 	@for TARGET in $(_TARGETS); do \
 		$(call _create_home_symlink,"$$TARGET"); \
 	done
-	@if test "$(_OS)" = "linux"; then \
+	@if test "$(_OS)" = "Linux"; then \
 		for TARGET in $(_LINUX_ONLY_TARGETS); do \
 			$(call _create_home_symlink,"$$TARGET"); \
 		done \
@@ -144,7 +146,7 @@ uninstall: ## delete created symlink
 	@for TARGET in $(_TARGETS); do \
 		$(call _delete_home_symlink,"$$TARGET"); \
 	done
-	@if test "$(_OS)" = "linux"; then \
+	@if test "$(_OS)" = "Linux"; then \
 		for TARGET in $(_LINUX_ONLY_TARGETS); do \
 			$(call _delete_home_symlink,"$$TARGET"); \
 		done \
