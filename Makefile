@@ -14,7 +14,6 @@ _TARGETS := \
 "config/zsh" \
 "goroots" \
 "ideavimrc" \
-"ocamlinit" \
 "vim" \
 "zshenv"
 
@@ -68,7 +67,7 @@ define _clone_github_repo
 endef
 
 define _get_github_download_url
-	$(shell curl -s https://api.github.com/repos/$(1)/releases/latest | ./bin/gojq -r ".assets[] | select(.name | test(\"$(_GH_DL_OS)\") and test(\"$(_GH_DL_ARCH)\") and (contains(\".sha256\") | not) and (contains(\".deb\") | not) and (contains(\".rpm\") | not)) | .browser_download_url")
+	$(shell curl -s https://api.github.com/repos/$(1)/releases/latest | $(_BIN)/gojq -r ".assets[] | select(.name | test(\"$(_GH_DL_OS)\") and test(\"$(_GH_DL_ARCH)\") and (contains(\".sha256\") | not) and (contains(\".deb\") | not) and (contains(\".rpm\") | not)) | .browser_download_url")
 endef
 
 define _build_go_binary
@@ -96,20 +95,16 @@ endef
 .PHONY: build
 build: ## build all packages
 	@git submodule update --init --recursive
+	$(MAKE) build-archiver
 	$(MAKE) build-bat
-	$(MAKE) build-countdown
 	$(MAKE) build-diary
 	$(MAKE) build-direnv
 	$(MAKE) build-fzf
 	$(MAKE) build-gh
 	$(MAKE) build-ghq
 	$(MAKE) build-gitlint
-	$(MAKE) build-glow
-	$(MAKE) build-gobump
 	$(MAKE) build-just
 	$(MAKE) build-lf
-	$(MAKE) build-pt
-	$(MAKE) build-robo
 	$(MAKE) build-ran
 	$(MAKE) build-tmpl
 	$(MAKE) build-vim
@@ -171,47 +166,56 @@ _require-jq:
 _require-envsubst:
 	@$(call _executable,"envsubst")
 
+.PHONY: build-archiver
+build-archiver:
+	@[ ! -f $(_BIN)/arc ] && $(call _build_go_binary,mholt/archiver/cmd/arc) || true
+
 .PHONY: build-bat
 build-bat:
-	@[ ! -f $(_BIN)/bat ] && $(call _build_go_binary,"astaxie/bat") || true
+	@[ ! -f $(_BIN)/bat ] && $(call _build_go_binary,astaxie/bat) || true
 
 .PHONY: build-countdown
 build-countdown:
-	@[ ! -f $(_BIN)/countdown ] && $(call _build_go_binary,"antonmedv/countdown") || true
+	@[ ! -f $(_BIN)/countdown ] && $(call _build_go_binary,antonmedv/countdown) || true
 
 .PHONY: build-diary
-build-diary: _require-jq
-	@[ ! -f $(_BIN)/diary ] && $(call _build_go_binary,"longkey1/diary") || true
+build-diary:
+	@[ ! -f $(_BIN)/diary ] && $(call _build_go_binary,longkey1/diary) || true
 	@[ ! -f $(_CONFIG)/diary/config.toml ] && envsubst '$$HOME $$EDITOR' < $(_CONFIG)/diary/config.toml.dist > $(_CONFIG)/diary/config.toml || true
 
 .PHONY: build-direnv
-build-direnv: _require-jq
-	@[ ! -f $(_BIN)/direnv ] && wget $(call _get_github_download_url,"direnv/direnv") -O $(_BIN)/direnv && chmod +x $(_BIN)/direnv || true
+build-direnv:
+	@[ ! -f $(_BIN)/direnv ] && $(call _build_go_binary,direnv/direnv) || true
+
+.PHONY: build-envsubst
+build-envsubst:
+	@[ ! -f $(_BIN)/envsubst ] && $(call _build_go_binary,a8m/envsubst/cmd/envsubst) || true
 
 .PHONY: build-fzf
 build-fzf:
-	@[ ! -f $(_BIN)/fzf ] && $(call _build_go_binary,"junegunn/fzf") || true
+	@[ ! -f $(_BIN)/fzf ] && $(call _build_go_binary,junegunn/fzf) || true
 
 .PHONY: build-gh
 build-gh:
-	@[ ! -f $(_BIN)/gh ] && wget $(call _get_github_download_url,"cli/cli") -O- | bsdtar -xvf- -C $(_BIN) --strip=2 '*/bin/gh' && chmod +x $(_BIN)/gh || true
+	@[ ! -f $(_BIN)/gh ] && wget $(call _get_github_download_url,cli/cli) -O- | bsdtar -xvf- -C $(_BIN) --strip=2 '*/bin/gh' && chmod +x $(_BIN)/gh || true
 	@$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
 
 .PHONY: build-ghq
 build-ghq:
-	@[ ! -f $(_BIN)/ghq ] && $(call _build_go_binary,"x-motemen/ghq") || true
+	@[ ! -f $(_BIN)/ghq ] && $(call _build_go_binary,x-motemen/ghq) || true
 
 .PHONY: build-glow
 build-glow:
-	@[ ! -f $(_BIN)/glow ] && $(call _build_go_binary,"charmbracelet/glow") || true
+	@[ ! -f $(_BIN)/glow ] && $(call _build_go_binary,charmbracelet/glow) || true
 
 .PHONY: build-gitlint
 build-gitlint:
-	@[ ! -f $(_BIN)/gitlint ] && $(call _build_go_binary,"llorllale/go-gitlint/cmd/go-gitlint") && mv $(_BIN)/go-gitlint $(_BIN)/gitlint || true
+	@[ ! -f $(_BIN)/go-gitlint ] && $(call _build_go_binary,llorllale/go-gitlint/cmd/go-gitlint) || true
+	@[ ! -e $(_BIN)/gitlint ] && cd $(_BIN) && ln -s go-gitlint gitlint || true
 
 .PHONY: build-gobump
-build-gobump: _require-jq _require-bsdtar
-	@[ ! -f $(_BIN)/gobump ] && wget $(call _get_github_download_url,"x-motemen/gobump") -O- | bsdtar -xvf- -C $(_BIN) --strip=1 '*/gobump' && chmod +x $(_BIN)/gobump || true
+build-gobump:
+	@[ ! -f $(_BIN)/gobump ] && $(call _build_go_binary,x-motemen/gobump/cmd/gobump) || true
 
 .PHONY: build-go
 build-go: _require-bsdtar
@@ -221,36 +225,36 @@ build-go: _require-bsdtar
 
 .PHONY: build-gojq
 build-gojq:
-	@[ ! -f $(_BIN)/gojq ] && $(call _build_go_binary,"itchyny/gojq/cmd/gojq") || true
+	@[ ! -f $(_BIN)/gojq ] && $(call _build_go_binary,itchyny/gojq/cmd/gojq) || true
 	@[ ! -e $(_BIN)/jq ] && cd $(_BIN) && ln -s gojq jq || true
 
 .PHONY: build-just
 build-just: _require-jq _require-bsdtar
-	@[ ! -f $(_BIN)/just ] && wget $(call _get_github_download_url,"casey/just") -O- | bsdtar -xvf- -C $(_BIN) 'just' && chmod +x $(_BIN)/just || true
+	@[ ! -f $(_BIN)/just ] && wget $(call _get_github_download_url,casey/just) -O- | bsdtar -xvf- -C $(_BIN) 'just' && chmod +x $(_BIN)/just || true
 
 .PHONY: build-lf
 build-lf: _require-jq _require-bsdtar
-	@[ ! -f $(_BIN)/lf ] && wget $(call _get_github_download_url,"gokcehan/lf") -O- | bsdtar -xvf- -C $(_BIN) 'lf' && chmod +x $(_BIN)/lf || true
+	@[ ! -f $(_BIN)/lf ] && wget $(call _get_github_download_url,gokcehan/lf) -O- | bsdtar -xvf- -C $(_BIN) 'lf' && chmod +x $(_BIN)/lf || true
 
 .PHONY: build-peco
-build-peco: _require-jq _require-bsdtar
-	@[ ! -f $(_BIN)/peco ] && wget $(call _get_github_download_url,"peco/peco") -O- | bsdtar -xvf- -C $(_BIN) --strip=1 '*/peco' && chmod +x $(_BIN)/peco || true
-
-.PHONY: build-pt
-build-pt: _require-jq _require-bsdtar
-	@[ ! -f $(_BIN)/pt ] && wget $(call _get_github_download_url,"monochromegane/the_platinum_searcher") -O- | bsdtar -xvf- -C $(_BIN) --strip=1 '*/pt' && chmod +x $(_BIN)/pt || true
+build-peco:
+	@[ ! -f $(_BIN)/peco ] && $(call _build_go_binary,peco/peco/cmd/peco) || true
 
 .PHONY: build-ran
 build-ran:
-	@[ ! -f $(_BIN)/ran ] && $(call _build_go_binary,"m3ng9i/ran") || true
+	@[ ! -f $(_BIN)/ran ] && $(call _build_go_binary,m3ng9i/ran) || true
+
+.PHONY: build-ripgrep
+build-ripgrep: _require-jq _require-bsdtar
+	@[ ! -f $(_BIN)/rg ] && wget $(call _get_github_download_url,BurntSushi/ripgrep) -O- | bsdtar -xvf- -C $(_BIN) --strip=1 '*/rg' && chmod +x $(_BIN)/rg || true
 
 .PHONY: build-robo
 build-robo:
-	@[ ! -f $(_BIN)/robo ] && $(call _build_go_binary,"tj/robo") || true
+	@[ ! -f $(_BIN)/robo ] && $(call _build_go_binary,tj/robo) || true
 
 .PHONY: build-tmpl
 build-tmpl:
-	@[ ! -f $(_BIN)/tmpl ] && $(call _build_go_binary,"longkey1/tmpl") || true
+	@[ ! -f $(_BIN)/tmpl ] && $(call _build_go_binary,longkey1/tmpl) || true
 	@[ ! -f $(_CONFIG)/tmpl/config.toml ] && envsubst '$$HOME' < $(_CONFIG)/tmpl/config.toml.dist > $(_CONFIG)/tmpl/config.toml || true
 
 .PHONY: build-vim
@@ -267,8 +271,8 @@ build-vim: _require-jq
 	$(call _clone_github_repo,tyru/open-browser.vim,vim/pack/bundle/start/open-browser.vim)
 
 .PHONY: build-yq
-build-yq: _require-jq
-	@[ ! -f $(_BIN)/yq ] && wget $(call _get_github_download_url,"mikefarah/yq") -O $(_BIN)/yq && chmod +x $(_BIN)/yq || true
+build-yq:
+	@[ ! -f $(_BIN)/yq ] && $(call _build_go_binary,mikefarah/yq) || true
 
 .PHONY: build-zsh
 build-zsh: _require-jq
