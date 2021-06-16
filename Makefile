@@ -94,7 +94,6 @@ endef
 
 .PHONY: build
 build: ## build all packages
-	@git submodule update --init --recursive
 	$(MAKE) build-archiver
 	$(MAKE) build-bat
 	$(MAKE) build-diary
@@ -188,10 +187,23 @@ build-envsubst:
 build-fzf:
 	@[ ! -f $(_BIN)/fzf ] && $(call _build_go_binary,junegunn/fzf) || true
 
+define _download_github_binary
+	mkdir -p /tmp/dotfiles/$(1); \
+	wget $(_GH_DL_URL) -O /tmp/dotfiles/$(1)/$(_ARCHIVE_FILE); \
+	arc $(3) unarchive /tmp/dotfiles/$(1)/$(_ARCHIVE_FILE) /tmp/dotfiles/$(1); \
+	mv /tmp/dotfiles/$(1)/$(2) $(_BIN)/$(2); \
+	rm -rf /tmp/dotfiles/$(1);
+
+endef
+
 .PHONY: build-gh
 build-gh: build-gojq _require-bsdtar
-	@[ ! -f $(_BIN)/gh ] && wget $(call _get_github_download_url,cli/cli) -O- | bsdtar -xvf- -C $(_BIN) --strip=2 '*/bin/gh' && chmod +x $(_BIN)/gh || true
-	@$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
+#	@[ ! -f $(_BIN)/gh ] && wget $(call _get_github_download_url,cli/cli) -O- | bsdtar -xvf- -C $(_BIN) --strip=2 '*/bin/gh' && chmod +x $(_BIN)/gh || true
+#	@$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
+	@[ -f $(_BIN)/gh ] && exit 0
+	$(eval _GH_DL_URL := $(call _get_github_download_url,$(1)))
+	$(eval _ARCHIVE_FILE := $(shell basename $(_GH_DL_URL)))
+	$(call _download_github_binary,cli/cli,gh,-strip-components 2)
 
 .PHONY: build-ghq
 build-ghq:
@@ -239,7 +251,7 @@ build-ran:
 
 .PHONY: build-ripgrep
 build-ripgrep: build-gojq _require-bsdtar
-	@[ ! -f $(_BIN)/rg ] && wget $(call _get_github_download_url,BurntSushi/ripgrep) -O- | bsdtar -xvf- -C $(_BIN) --strip=1 '*/rg' && chmod +x $(_BIN)/rg || true
+	@[ ! -f $(_BIN)/rg ] && .builder/ripgrep
 
 .PHONY: build-robo
 build-robo:

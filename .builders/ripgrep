@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+BIN_DIR="../bin"
+OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+ARCH=$(uname -m)
+DL_URL=$(curl -s https://api.github.com/repos/BurntSushi/ripgrep/releases/latest | ${BIN_DIR}/gojq -r ".assets[] | select(.name | test(\"${OS}\") and test(\"${ARCH}\")) | .browser_download_url")
+ARCHIVE_FILE=$(basename ${DL_URL})
+WORK_DIR=/tmp/dotfiles/${USER}/ripgrep
+
+mkdir -p ${WORK_DIR}
+wget ${DL_URL} -O ${WORK_DIR}/${ARCHIVE_FILE}
+${BIN_DIR}/arc -strip-components 1 unarchive ${WORK_DIR}/${ARCHIVE_FILE} ${WORK_DIR}
+mv ${WORK_DIR}/rg ${BIN_DIR}/rg
+rm -rf ${WORK_DIR}
