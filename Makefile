@@ -93,25 +93,7 @@ define _delete_home_symlink
 endef
 
 .PHONY: build
-build: ## build all packages
-	@git submodule update --init --recursive
-	$(MAKE) build-archiver
-	$(MAKE) build-bat
-	$(MAKE) build-diary
-	$(MAKE) build-direnv
-	$(MAKE) build-fzf
-	$(MAKE) build-envsubst
-	$(MAKE) build-gh
-	$(MAKE) build-ghq
-	$(MAKE) build-gitlint
-	$(MAKE) build-just
-	$(MAKE) build-lf
-	$(MAKE) build-ran
-	$(MAKE) build-tmpl
-	$(MAKE) build-vim
-	$(MAKE) build-yq
-	$(MAKE) build-zsh
-	$(MAKE) decrypt
+build: build-archiver build-bat build-diary build-direnv build-fzf build-envsubst build-gh build-ghq build-gitlint build-just build-lf build-ran build-tmpl build-vim build-yq build-zsh decrypt ## build all packages
 
 .PHONY: clean
 clean: ## delete all builded files
@@ -189,9 +171,8 @@ build-fzf:
 	@[ ! -f $(_BIN)/fzf ] && $(call _build_go_binary,junegunn/fzf) || true
 
 .PHONY: build-gh
-build-gh: build-gojq _require-bsdtar
-	@[ ! -f $(_BIN)/gh ] && wget $(call _get_github_download_url,cli/cli) -O- | bsdtar -xvf- -C $(_BIN) --strip=2 '*/bin/gh' && chmod +x $(_BIN)/gh || true
-	@$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
+build-gh: build-gojq
+	@[ ! -f $(_BIN)/gh ] && ./builders/gh || true
 
 .PHONY: build-ghq
 build-ghq:
@@ -222,12 +203,12 @@ build-gojq:
 	@[ ! -e $(_BIN)/jq ] && cd $(_BIN) && ln -s gojq jq || true
 
 .PHONY: build-just
-build-just: build-gojq _require-bsdtar
-	@[ ! -f $(_BIN)/just ] && wget $(call _get_github_download_url,casey/just) -O- | bsdtar -xvf- -C $(_BIN) 'just' && chmod +x $(_BIN)/just || true
+build-just: build-gojq build-archiver
+	@[ ! -f $(_BIN)/just ] && ./builders/just || true
 
 .PHONY: build-lf
-build-lf: build-gojq _require-bsdtar
-	@[ ! -f $(_BIN)/lf ] && wget $(call _get_github_download_url,gokcehan/lf) -O- | bsdtar -xvf- -C $(_BIN) 'lf' && chmod +x $(_BIN)/lf || true
+build-lf: build-gojq build-archiver
+	@[ ! -f $(_BIN)/lf ] && ./builders/lf || true
 
 .PHONY: build-peco
 build-peco:
@@ -238,8 +219,8 @@ build-ran:
 	@[ ! -f $(_BIN)/ran ] && $(call _build_go_binary,m3ng9i/ran) || true
 
 .PHONY: build-ripgrep
-build-ripgrep: build-gojq _require-bsdtar
-	@[ ! -f $(_BIN)/rg ] && wget $(call _get_github_download_url,BurntSushi/ripgrep) -O- | bsdtar -xvf- -C $(_BIN) --strip=1 '*/rg' && chmod +x $(_BIN)/rg || true
+build-ripgrep: build-gojq
+	@[ ! -f $(_BIN)/rg ] && ./builders/ripgrep || true
 
 .PHONY: build-robo
 build-robo:
