@@ -93,7 +93,7 @@ define _delete_home_symlink
 endef
 
 .PHONY: build
-build: build-archiver build-bat build-diary build-direnv build-fzf build-envsubst build-gh build-ghq build-gitlint build-just build-lf build-ran build-tmpl build-vim build-yq build-zsh decrypt ## build all packages
+build: build-archiver build-bat build-diary build-direnv build-fzf build-envsubst build-gh build-ghq build-gitlint build-just build-lf build-ran build-ripgrep build-tmpl build-vim build-yq build-zsh decrypt ## build all packages
 
 .PHONY: clean
 clean: ## delete all builded files
