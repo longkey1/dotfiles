@@ -52,8 +52,8 @@ _ROOT := $(patsubst %/,%,$(dir $(realpath $(firstword $(MAKEFILE_LIST)))))
 _BIN := bin
 _CONFIG := config
 
-_GO_ROOTS := goroots
-_GO_VERSIONS := \
+_GOROOTS := goroots
+_GOVERSIONS := \
 "1.16.5" \
 "1.15.13" \
 "1.14.15" \

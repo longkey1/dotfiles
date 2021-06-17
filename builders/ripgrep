@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 
+BIN=${1}
+
 BINARY_FINE="rg"
 REPOSITORY="BurntSushi/ripgrep"
 
-BIN_DIR=$(dirname $(cd $(dirname $0); pwd))/bin
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 ARCH=$(uname -m)
-DL_URL=$(curl -s https://api.github.com/repos/${REPOSITORY}/releases/latest | ${BIN_DIR}/gojq -r ".assets[] | select(.name | test(\"${OS}\") and test(\"${ARCH}\")) | .browser_download_url")
+DL_URL=$(curl -s https://api.github.com/repos/${REPOSITORY}/releases/latest | ${BIN}/gojq -r ".assets[] | select(.name | test(\"${OS}\") and test(\"${ARCH}\")) | .browser_download_url")
 echo $DL_URL
 ARCHIVE_FILE=$(basename ${DL_URL})
 WORK_DIR=/tmp/dotfiles-${USER}-${BINARY_FINE}
@@ -14,6 +15,6 @@ ARC_OPTION="-strip-components 1"
 
 mkdir -p ${WORK_DIR}
 wget ${DL_URL} -O ${WORK_DIR}/${ARCHIVE_FILE}
-${BIN_DIR}/arc ${ARC_OPTION} unarchive ${WORK_DIR}/${ARCHIVE_FILE} ${WORK_DIR}
-mv ${WORK_DIR}/${BINARY_FINE} ${BIN_DIR}/${BINARY_FINE}
+${BIN}/arc ${ARC_OPTION} unarchive ${WORK_DIR}/${ARCHIVE_FILE} ${WORK_DIR}
+mv ${WORK_DIR}/${BINARY_FINE} ${BIN}/${BINARY_FINE}
 rm -rf ${WORK_DIR}
