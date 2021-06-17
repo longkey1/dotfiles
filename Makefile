@@ -69,19 +69,11 @@ define _executable
 endef
 
 define _encrypt
-	@if test -e "$(1).encrypted"; then \
-		echo "already exists $(1).encrypted."; \
-	else \
-		openssl aes-256-cbc -e -salt -pbkdf2 -in $(1) -out $(1).encrypted; \
-	fi
+	@[ ! -e "$(1).encrypted" ] && openssl aes-256-cbc -e -salt -pbkdf2 -in $(1) -out $(1).encrypted || true
 endef
 
 define _decrypt
-	@if test -e "$(1)"; then \
-		echo "already exists $(1)"; \
-	else \
-		openssl aes-256-cbc -d -salt -pbkdf2 -in $(1).encrypted -out $(1); \
-	fi
+	@[ ! -e "$(1)" ] && openssl aes-256-cbc -d -salt -pbkdf2 -in $(1).encrypted -out $(1) || true
 endef
 
 define _clone_github_repo
