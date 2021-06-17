@@ -186,6 +186,7 @@ build-fzf:
 .PHONY: build-gh
 build-gh: build-gojq
 	@[ ! -f $(_BIN)/gh ] && ./builders/gh "$(_ROOT)/$(_BIN)" || true
+	@$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
 
 .PHONY: build-ghq
 build-ghq:
