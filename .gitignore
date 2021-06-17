@@ -1,11 +1,7 @@
-/bundle/cache
 /config/diary/config.toml
-/config/direnv/allow
 /config/gh/hosts.yml
 /config/gh/state.yml
-/config/memo/config.toml
-/config/nvim/.netrwhist
-/config/slack-term/slack-term
+/config/tmpl/config.toml
 /config/zsh/antigen
 /config/zsh/.antigen
 /config/zsh/.chpwd-recent-dirs
@@ -14,9 +10,6 @@
 /config/zsh/.zshrc.zwc
 /config/zsh/history
 /config/zsh/zshrc.antigen.zwc
-
-/netrc
-/slack-term
 /vim/.netrwhist
 /vim/pack/bundle/start
 *.local
