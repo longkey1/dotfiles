@@ -207,7 +207,7 @@ build-gobump:
 .PHONY: build-go
 build-go: build-archiver
 	@for GOVERSION in $(_GOVERSIONS); do \
-		./builders/go "$(_ROOT)/$(_BIN)" "$(_ROOT)/$(_GOROOTS)" "$$GOVERSION" || true; \
+		[ ! -d $(_GOROOTS)/$$GOVERSION ] && ./builders/go "$(_ROOT)/$(_BIN)" "$(_ROOT)/$(_GOROOTS)" "$$GOVERSION" || true; \
 	done
 
 .PHONY: build-gojq
