@@ -28,6 +28,7 @@ build-zsh
 
 _TARGETS := \
 "bin" \
+"config/composer" \
 "config/diary" \
 "config/direnv" \
 "config/gh" \
@@ -108,6 +109,7 @@ build: $(_BUILD);
 .PHONY: clean
 clean: ## delete all builded files
 	@find $(_BIN) -type f -o -type l | grep -v .gitignore | xargs rm -rf
+	@rm -f $(_CONFIG)/composer/auth.json
 	@rm -f $(_CONFIG)/diary/config.toml
 	@rm -f $(_CONFIG)/git/config.local
 	@rm -rf $(_CONFIG)/zsh/antigen
@@ -140,10 +142,12 @@ uninstall: ## delete created symlink
 
 .PHONY: encrypt
 encrypt: ## encrypt files
+	$(call _encrypt,$(_CONFIG)/composer/auth.json)
 	$(call _encrypt,$(_CONFIG)/gh/hosts.yml)
 
 .PHONY: decrypt
 decrypt: ## decrypt files
+	$(call _decrypt,$(_CONFIG)/composer/auth.json)
 	$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
 
 .PHONY: build-archiver
