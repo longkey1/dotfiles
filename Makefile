@@ -1,5 +1,31 @@
 .DEFAULT_GOAL := help
 
+_BUILD := \
+build-archiver \
+build-bat \
+build-countdown \
+build-diary \
+build-direnv \
+build-envsubst \
+build-fzf \
+build-gh \
+build-ghq \
+build-glow \
+build-gitlint \
+build-gobump \
+build-go \
+build-gojq \
+build-just \
+build-lf \
+build-peco \
+build-ran \
+build-ripgrep \
+build-robo \
+build-tmpl \
+build-vim \
+build-yq \
+build-zsh
+
 _TARGETS := \
 "bin" \
 "config/diary" \
@@ -22,22 +48,18 @@ _LINUX_ONLY_TARGETS := \
 "config/rofi" \
 "xprofile"
 
-_BIN := ./bin
-_CONFIG := ./config
+_ROOT := $(patsubst %/,%,$(dir $(realpath $(firstword $(MAKEFILE_LIST)))))
+_BIN := bin
+_CONFIG := config
 
-_GOROOTS := ./goroots
-_GOVERSIONS := \
+_GO_ROOTS := goroots
+_GO_VERSIONS := \
 "1.16.5" \
 "1.15.13" \
 "1.14.15" \
 "1.13.15" \
 "1.12.17" \
 "1.11.13"
-
-_GH_DL_OS := ($(shell uname -s)|$(shell uname -s | tr '[:upper:]' '[:lower:]'))
-_GH_DL_ARCH := (amd64|x86_64)
-_GO_BD_OS := $(shell uname -s | tr "[:upper:]" "[:lower:]")
-_GO_BD_ARCH := $(shell [ "$(shell uname -m)" = "x86_64" ] && echo "amd64" || echo "386")
 
 define _executable
 	@if ! type $(1) &> /dev/null; then \
@@ -66,10 +88,6 @@ define _clone_github_repo
 	@[ ! -d "$(2)" ] && git clone https://github.com/$(1).git $(2) || true
 endef
 
-define _get_github_download_url
-	$(shell curl -s https://api.github.com/repos/$(1)/releases/latest | $(_BIN)/gojq -r ".assets[] | select(.name | test(\"$(_GH_DL_OS)\") and test(\"$(_GH_DL_ARCH)\") and (contains(\".sha256\") | not) and (contains(\".deb\") | not) and (contains(\".rpm\") | not)) | .browser_download_url")
-endef
-
 define _build_go_binary
 	curl -sf https://gobinaries.com/$(1) | PREFIX=$(_BIN) sh
 endef
@@ -93,18 +111,17 @@ define _delete_home_symlink
 endef
 
 .PHONY: build
-build: build-archiver build-bat build-diary build-direnv build-fzf build-envsubst build-gh build-ghq build-gitlint build-just build-lf build-ran build-ripgrep build-tmpl build-vim build-yq build-zsh decrypt ## build all packages
+build: $(_BUILD);
 
 .PHONY: clean
 clean: ## delete all builded files
-	@find $(_BIN) -type f | grep -v .gitignore | xargs rm -rf
+	@find $(_BIN) -type f -o -type l | grep -v .gitignore | xargs rm -rf
 	@rm -f $(_CONFIG)/diary/config.toml
 	@rm -f $(_CONFIG)/git/config.local
 	@rm -rf $(_CONFIG)/zsh/antigen
 	@rm -f $(_CONFIG)/zsh/.zshrc
 	@rm -f $(_CONFIG)/zsh/zshrc.local
-	@find $(_GOROOTS) -type d -mindepth 1 -maxdepth 1 | xargs rm -rf
-	@rm -f netrc
+	@find $(_GOROOTS) -mindepth 1 -maxdepth 1 -type d | xargs rm -rf
 	@rm -rf vim/pack/bundle/start/*
 
 .PHONY: install
@@ -137,10 +154,6 @@ encrypt: ## encrypt files
 decrypt: ## decrypt files
 	$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
 
-.PHONY: _require-bsdtar
-_require-bsdtar:
-	@$(call _executable,"bsdtar")
-
 .PHONY: build-archiver
 build-archiver:
 	@[ ! -f $(_BIN)/arc ] && $(call _build_go_binary,mholt/archiver/cmd/arc) || true
@@ -172,7 +185,7 @@ build-fzf:
 
 .PHONY: build-gh
 build-gh: build-gojq
-	@[ ! -f $(_BIN)/gh ] && ./builders/gh || true
+	@[ ! -f $(_BIN)/gh ] && ./builders/gh "$(_ROOT)/$(_BIN)" || true
 
 .PHONY: build-ghq
 build-ghq:
@@ -192,9 +205,9 @@ build-gobump:
 	@[ ! -f $(_BIN)/gobump ] && $(call _build_go_binary,x-motemen/gobump/cmd/gobump) || true
 
 .PHONY: build-go
-build-go: _require-bsdtar
+build-go: build-archiver
 	@for GOVERSION in $(_GOVERSIONS); do \
-		[ ! -d $(_GOROOTS)/$$GOVERSION ] && mkdir $(_GOROOTS)/$$GOVERSION && wget https://golang.org/dl/go$$GOVERSION.$(_GO_BD_OS)-$(_GO_BD_ARCH).tar.gz -O- | bsdtar -xvf- -C $(_GOROOTS)/$$GOVERSION --strip=1 || true; \
+		./builders/go "$(_ROOT)/$(_BIN)" "$(_ROOT)/$(_GOROOTS)" "$$GOVERSION" || true; \
 	done
 
 .PHONY: build-gojq
@@ -204,11 +217,11 @@ build-gojq:
 
 .PHONY: build-just
 build-just: build-gojq build-archiver
-	@[ ! -f $(_BIN)/just ] && ./builders/just || true
+	@[ ! -f $(_BIN)/just ] && ./builders/just "$(_ROOT)/$(_BIN)" || true
 
 .PHONY: build-lf
 build-lf: build-gojq build-archiver
-	@[ ! -f $(_BIN)/lf ] && ./builders/lf || true
+	@[ ! -f $(_BIN)/lf ] && ./builders/lf "$(_ROOT)/$(_BIN)" || true
 
 .PHONY: build-peco
 build-peco:
@@ -220,7 +233,7 @@ build-ran:
 
 .PHONY: build-ripgrep
 build-ripgrep: build-gojq
-	@[ ! -f $(_BIN)/rg ] && ./builders/ripgrep || true
+	@[ ! -f $(_BIN)/rg ] && ./builders/ripgrep "$(_ROOT)/$(_BIN)" || true
 
 .PHONY: build-robo
 build-robo:
