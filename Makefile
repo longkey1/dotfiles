@@ -117,6 +117,7 @@ clean: ## delete all builded files
 	@rm -f $(_CONFIG)/zsh/zshrc.local
 	@find $(_GOROOTS) -mindepth 1 -maxdepth 1 -type d | xargs rm -rf
 	@rm -rf vim/pack/bundle/start/*
+	@$(_CONFIG)/zsh/functions/_just
 
 .PHONY: install
 install: ## create target's symlink in home directory
@@ -259,9 +260,10 @@ build-yq:
 	@[ ! -f $(_BIN)/yq ] && $(call _build_go_binary,mikefarah/yq) || true
 
 .PHONY: build-zsh
-build-zsh:
+build-zsh: build-just
 	@[ ! -f $(_CONFIG)/zsh/.zshrc ] && cd $(_CONFIG)/zsh && ln -s zshrc .zshrc || true
 	$(call _clone_github_repo,zsh-users/antigen,config/zsh/antigen)
+	$(_BIN)/just --completions zsh > $(_CONFIG)/zsh/functions/_just
 
 
 
