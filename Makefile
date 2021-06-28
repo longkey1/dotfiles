@@ -7,7 +7,9 @@ build-countdown \
 build-diary \
 build-direnv \
 build-envsubst \
+build-esampo \
 build-fzf \
+build-gcal \
 build-gh \
 build-ghq \
 build-glow \
@@ -176,9 +178,17 @@ build-direnv:
 build-envsubst:
 	@[ ! -f $(_BIN)/envsubst ] && $(call _build_go_binary,a8m/envsubst/cmd/envsubst) || true
 
+.PHONY: build-esampo
+build-esampo:
+	@[ ! -f $(_BIN)/esampo ] && $(call _build_go_binary,longkey1/esampo) || true
+
 .PHONY: build-fzf
 build-fzf:
 	@[ ! -f $(_BIN)/fzf ] && $(call _build_go_binary,junegunn/fzf) || true
+
+.PHONY: build-gcal
+build-gcal:
+	@[ ! -f $(_BIN)/gcal ] && $(call _build_go_binary,longkey1/gcal) || true
 
 .PHONY: build-gh
 build-gh: build-gojq
