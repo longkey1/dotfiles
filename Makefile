@@ -248,8 +248,8 @@ build-robo:
 	@[ ! -f $(_BIN)/robo ] && $(call _build_go_binary,tj/robo) || true
 
 .PHONY: build-tmpl
-build-tmpl: build-envsubst
-	@[ ! -f $(_BIN)/tmpl ] && $(call _build_go_binary,longkey1/tmpl) || true
+build-tmpl:  build-gojq build-envsubst
+	@[ ! -f $(_BIN)/tmpl ] && ./builders/tmpl "$(_ROOT)/$(_BIN)" || true
 	@[ ! -f $(_CONFIG)/tmpl/config.toml ] && envsubst '$$HOME' < $(_CONFIG)/tmpl/config.toml.dist > $(_CONFIG)/tmpl/config.toml || true
 
 .PHONY: build-vim
