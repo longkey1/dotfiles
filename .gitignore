@@ -1,5 +1,6 @@
 /config/composer/auth.json
 /config/diary/config.toml
+/config/gcal/config.toml
 /config/gh/hosts.yml
 /config/gh/state.yml
 /config/tmpl/config.toml
@@ -9,6 +10,10 @@
 /config/zsh/.zcompdump
 /config/zsh/.zshrc
 /config/zsh/.zshrc.zwc
+/config/zsh/functions/_diary
+/config/zsh/functions/_gcal
+/config/zsh/functions/_just
+/config/zsh/functions/_tmpl
 /config/zsh/history
 /config/zsh/zshrc.antigen.zwc
 /vim/.netrwhist
