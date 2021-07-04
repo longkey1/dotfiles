@@ -33,6 +33,7 @@ _TARGETS := \
 "config/composer" \
 "config/diary" \
 "config/direnv" \
+"config/gcal" \
 "config/gh" \
 "config/git" \
 "config/lf" \
@@ -113,13 +114,17 @@ clean: ## delete all builded files
 	@find $(_BIN) -type f -o -type l | grep -v .gitignore | xargs rm -rf
 	@rm -f $(_CONFIG)/composer/auth.json
 	@rm -f $(_CONFIG)/diary/config.toml
+	@rm -f $(_CONFIG)/gcal/config.toml
 	@rm -f $(_CONFIG)/git/config.local
 	@rm -rf $(_CONFIG)/zsh/antigen
 	@rm -f $(_CONFIG)/zsh/.zshrc
 	@rm -f $(_CONFIG)/zsh/zshrc.local
 	@find $(_GOROOTS) -mindepth 1 -maxdepth 1 -type d | xargs rm -rf
 	@rm -rf vim/pack/bundle/start/*
+	@$(_CONFIG)/zsh/functions/_diary
+	@$(_CONFIG)/zsh/functions/_gcal
 	@$(_CONFIG)/zsh/functions/_just
+	@$(_CONFIG)/zsh/functions/_tmpl
 
 .PHONY: install
 install: ## create target's symlink in home directory
@@ -146,11 +151,13 @@ uninstall: ## delete created symlink
 .PHONY: encrypt
 encrypt: ## encrypt files
 	$(call _encrypt,$(_CONFIG)/composer/auth.json)
+	$(call _encrypt,$(_CONFIG)/gcal/credentials.json)
 	$(call _encrypt,$(_CONFIG)/gh/hosts.yml)
 
 .PHONY: decrypt
 decrypt: ## decrypt files
 	$(call _decrypt,$(_CONFIG)/composer/auth.json)
+	$(call _decrypt,$(_CONFIG)/gcal/credentials.json)
 	$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
 
 .PHONY: build-archiver
@@ -189,6 +196,7 @@ build-fzf:
 .PHONY: build-gcal
 build-gcal:
 	@[ ! -f $(_BIN)/gcal ] && $(call _build_go_binary,longkey1/gcal) || true
+	@$(call _decrypt,$(_CONFIG)/gcal/credentials.json)
 
 .PHONY: build-gh
 build-gh: build-gojq
@@ -270,10 +278,13 @@ build-yq:
 	@[ ! -f $(_BIN)/yq ] && $(call _build_go_binary,mikefarah/yq) || true
 
 .PHONY: build-zsh
-build-zsh: build-just
+build-zsh:  build-diary build-gcal build-just build-tmpl
 	@[ ! -f $(_CONFIG)/zsh/.zshrc ] && cd $(_CONFIG)/zsh && ln -s zshrc .zshrc || true
 	$(call _clone_github_repo,zsh-users/antigen,config/zsh/antigen)
-	$(_BIN)/just --completions zsh > $(_CONFIG)/zsh/functions/_just
+	@$(_BIN)/diary --config $(_CONFIG)/diary/config.toml completion zsh > $(_CONFIG)/zsh/functions/_diary
+	@$(_BIN)/gcal --config $(_CONFIG)/gcal/config.toml completion zsh > $(_CONFIG)/zsh/functions/_gcal
+	@$(_BIN)/just --completions zsh > $(_CONFIG)/zsh/functions/_just
+	@$(_BIN)/tmpl --config $(_CONFIG)/tmpl/config.toml completion zsh > $(_CONFIG)/zsh/functions/_tmpl
 
 
 
