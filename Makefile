@@ -196,6 +196,7 @@ build-fzf:
 .PHONY: build-gcal
 build-gcal:
 	@[ ! -f $(_BIN)/gcal ] && $(call _build_go_binary,longkey1/gcal) || true
+	@[ ! -f $(_CONFIG)/gcal/config.toml ] && envsubst '$$HOME' < $(_CONFIG)/gcal/config.toml.dist > $(_CONFIG)/gcal/config.toml || true
 	@$(call _decrypt,$(_CONFIG)/gcal/credentials.json)
 
 .PHONY: build-gh
