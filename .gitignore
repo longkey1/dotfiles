@@ -1,6 +1,7 @@
 /config/composer/auth.json
 /config/diary/config.toml
 /config/gcal/config.toml
+/config/gcal/credentials.json
 /config/gh/hosts.yml
 /config/gh/state.yml
 /config/tmpl/config.toml
