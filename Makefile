@@ -16,6 +16,7 @@ build-glow \
 build-gitlint \
 build-gobump \
 build-go \
+build-godl \
 build-gojq \
 build-just \
 build-lf \
@@ -36,6 +37,7 @@ _TARGETS := \
 "config/gcal" \
 "config/gh" \
 "config/git" \
+"config/godl" \
 "config/lf" \
 "config/nvim" \
 "config/rofi" \
@@ -222,10 +224,14 @@ build-gobump:
 	@[ ! -f $(_BIN)/gobump ] && $(call _build_go_binary,x-motemen/gobump/cmd/gobump) || true
 
 .PHONY: build-go
-build-go: build-archiver
+build-go: build-godl
 	@for GOVERSION in $(_GOVERSIONS); do \
-		[ ! -d $(_GOROOTS)/$$GOVERSION ] && ./builders/go "$(_ROOT)/$(_BIN)" "$(_ROOT)/$(_GOROOTS)" "$$GOVERSION" || true; \
+		$(_BIN)/godl install $$GOVERSION || true; \
 	done
+
+.PHONY: build-godl
+build-godl:
+	@[ ! -f $(_BIN)/godl ] && $(call _build_go_binary,longkey1/godl) || true
 
 .PHONY: build-gojq
 build-gojq:
@@ -284,6 +290,7 @@ build-zsh:  build-diary build-gcal build-just build-tmpl
 	$(call _clone_github_repo,zsh-users/antigen,config/zsh/antigen)
 	@$(_BIN)/diary --config $(_CONFIG)/diary/config.toml completion zsh > $(_CONFIG)/zsh/functions/_diary
 	@$(_BIN)/gcal --config $(_CONFIG)/gcal/config.toml completion zsh > $(_CONFIG)/zsh/functions/_gcal
+	@$(_BIN)/godl completion zsh > $(_CONFIG)/zsh/functions/_godl
 	@$(_BIN)/just --completions zsh > $(_CONFIG)/zsh/functions/_just
 	@$(_BIN)/tmpl --config $(_CONFIG)/tmpl/config.toml completion zsh > $(_CONFIG)/zsh/functions/_tmpl
 
