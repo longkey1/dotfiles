@@ -285,7 +285,7 @@ build-yq:
 	@[ ! -f $(_BIN)/yq ] && $(call _build_go_binary,mikefarah/yq) || true
 
 .PHONY: build-zsh
-build-zsh:  build-diary build-gcal build-just build-tmpl
+build-zsh:  build-diary build-gcal build-godl build-just build-tmpl
 	@[ ! -f $(_CONFIG)/zsh/.zshrc ] && cd $(_CONFIG)/zsh && ln -s zshrc .zshrc || true
 	$(call _clone_github_repo,zsh-users/antigen,config/zsh/antigen)
 	@$(_BIN)/diary --config $(_CONFIG)/diary/config.toml completion zsh > $(_CONFIG)/zsh/functions/_diary
