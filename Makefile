@@ -225,7 +225,7 @@ build-gobump:
 .PHONY: build-go
 build-go: build-godl
 	@for GOVERSION in $(_GOVERSIONS); do \
-		$(_BIN)/godl install $$GOVERSION || true; \
+		$(_BIN)/godl --goroots $(_CONFIG)/godl/goroots --temp $(_CONFIG)/godl/tmp install $$GOVERSION || true; \
 	done
 
 .PHONY: build-godl
