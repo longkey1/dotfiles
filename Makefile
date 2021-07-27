@@ -40,11 +40,9 @@ _TARGETS := \
 "config/godl" \
 "config/lf" \
 "config/nvim" \
-"config/rofi" \
 "config/tmpl" \
 "config/tmux" \
 "config/zsh" \
-"goroots" \
 "ideavimrc" \
 "vim" \
 "zshenv"
@@ -121,12 +119,13 @@ clean: ## delete all builded files
 	@rm -rf $(_CONFIG)/zsh/antigen
 	@rm -f $(_CONFIG)/zsh/.zshrc
 	@rm -f $(_CONFIG)/zsh/zshrc.local
-	@find $(_GOROOTS) -mindepth 1 -maxdepth 1 -type d | xargs rm -rf
+	@find $(_CONFIG)/godl/goroots -mindepth 1 -maxdepth 1 -type d | xargs rm -rf
 	@rm -rf vim/pack/bundle/start/*
-	@$(_CONFIG)/zsh/functions/_diary
-	@$(_CONFIG)/zsh/functions/_gcal
-	@$(_CONFIG)/zsh/functions/_just
-	@$(_CONFIG)/zsh/functions/_tmpl
+	@rm -f $(_CONFIG)/zsh/functions/_diary
+	@rm -f $(_CONFIG)/zsh/functions/_gcal
+	@rm -f $(_CONFIG)/zsh/functions/_godl
+	@rm -f $(_CONFIG)/zsh/functions/_just
+	@rm -f $(_CONFIG)/zsh/functions/_tmpl
 
 .PHONY: install
 install: ## create target's symlink in home directory
