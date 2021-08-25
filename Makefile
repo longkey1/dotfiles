@@ -49,7 +49,7 @@ _TARGETS := \
 
 _LINUX_ONLY_TARGETS := \
 "config/fontconfig" \
-"config/rofi" \
+"config/ulauncher" \
 "pam_environment"
 
 _ROOT := $(patsubst %/,%,$(dir $(realpath $(firstword $(MAKEFILE_LIST)))))
