@@ -50,7 +50,7 @@ _TARGETS := \
 _LINUX_ONLY_TARGETS := \
 "config/fontconfig" \
 "config/rofi" \
-"xprofile"
+"pam_environment"
 
 _ROOT := $(patsubst %/,%,$(dir $(realpath $(firstword $(MAKEFILE_LIST)))))
 _BIN := bin
