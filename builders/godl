@@ -2,8 +2,8 @@
 
 BIN=${1}
 
-BINARY_FINE="tmpl"
-REPOSITORY="longkey1/tmpl"
+BINARY_FINE="godl"
+REPOSITORY="longkey1/godl"
 
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 ARCH="amd64"

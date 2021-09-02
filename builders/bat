@@ -2,23 +2,19 @@
 
 BIN=${1}
 
-BINARY_FINE="gh"
-REPOSITORY="cli/cli"
+BINARY_FINE="bat"
+REPOSITORY="astaxie/bat"
 
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-if [ "${OS}" = "darwin" ]; then
-  OS="macOS"
-fi
 ARCH="amd64"
 
-DL_URL=$(curl -s https://api.github.com/repos/${REPOSITORY}/releases/latest | jq -r ".assets[] | select(.name | contains(\"${OS}\") and contains(\"${ARCH}\") and (test(\"(.deb$|.rpm$)\") | not)) | .browser_download_url")
+DL_URL=$(curl -s https://api.github.com/repos/${REPOSITORY}/releases/latest | jq -r ".assets[] | select(.name | contains(\"${OS}\") and contains(\"${ARCH}\")) | .browser_download_url")
 ARCHIVE_FILE=$(basename ${DL_URL})
 WORK_DIR=/tmp/dotfiles-${USER}-${BINARY_FINE}
-ARC_OPTION="-strip-components 2"
+ARC_OPTION="-strip-components 1"
 
 mkdir -p ${WORK_DIR}
 wget ${DL_URL} -O ${WORK_DIR}/${ARCHIVE_FILE}
 ${BIN}/arc ${ARC_OPTION} unarchive ${WORK_DIR}/${ARCHIVE_FILE} ${WORK_DIR}
 mv ${WORK_DIR}/${BINARY_FINE} ${BIN}/${BINARY_FINE}
-chmod +x ${BIN}/${BINARY_FINE}
 rm -rf ${WORK_DIR}

@@ -2,20 +2,22 @@
 
 BIN=${1}
 
-BINARY_FINE="lf"
-REPOSITORY="gokcehan/lf"
+BINARY_FINE="ran"
+REPOSITORY="m3ng9i/ran"
 
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 ARCH="amd64"
 
 DL_URL=$(curl -s https://api.github.com/repos/${REPOSITORY}/releases/latest | jq -r ".assets[] | select(.name | contains(\"${OS}\") and contains(\"${ARCH}\")) | .browser_download_url")
 ARCHIVE_FILE=$(basename ${DL_URL})
+UNACHIVED_BINARY_FILE=$(echo "${ARCHIVE_FILE}" | cut -f 1 -d '.')
+
 WORK_DIR=/tmp/dotfiles-${USER}-${BINARY_FINE}
-ARC_OPTION=""
+ARC_OPTION="-folder-safe=false"
 
 mkdir -p ${WORK_DIR}
 wget ${DL_URL} -O ${WORK_DIR}/${ARCHIVE_FILE}
 ${BIN}/arc ${ARC_OPTION} unarchive ${WORK_DIR}/${ARCHIVE_FILE} ${WORK_DIR}
-mv ${WORK_DIR}/${BINARY_FINE} ${BIN}/${BINARY_FINE}
+mv ${WORK_DIR}/${UNACHIVED_BINARY_FILE} ${BIN}/${BINARY_FINE}
 chmod +x ${BIN}/${BINARY_FINE}
 rm -rf ${WORK_DIR}
