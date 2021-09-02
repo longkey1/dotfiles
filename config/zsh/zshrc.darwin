@@ -1,11 +1,18 @@
+# homebrew
+if [ -e /opt/homebrew/bin/brew ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+  path=(${path} $(brew --prefix git)/bin ${path}(N-/))
+  path=(${path} $(brew --prefix openssl)/bin ${path}(N-/))
+fi
+
+# git/diff-highlight
+path=(${path} $(brew --prefix git)/share/git-core/contrib/diff-highlight(N-/))
+
 # no create core dump file
 ulimit -n 32768
 
 # nproc
 alias nproc="sysctl -n hw.logicalcpu_max"
-
-# git/diff-highlight
-path=(${path} /usr/local/share/git-core/contrib/diff-highlight(N-/))
 
 # tmux
 if type tmux &> /dev/null; then
