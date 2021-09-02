@@ -3,27 +3,20 @@
 _BUILD := \
 build-archiver \
 build-bat \
-build-countdown \
 build-diary \
 build-direnv \
 build-envsubst \
-build-esampo \
 build-fzf \
 build-gcal \
 build-gh \
 build-ghq \
-build-glow \
 build-gitlint \
-build-gobump \
 build-go \
 build-godl \
-build-gojq \
 build-just \
 build-lf \
-build-peco \
 build-ran \
 build-ripgrep \
-build-robo \
 build-tmpl \
 build-vim \
 build-yq \
