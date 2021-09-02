@@ -156,64 +156,47 @@ decrypt: ## decrypt files
 
 .PHONY: build-archiver
 build-archiver:
-	@[ ! -f $(_BIN)/arc ] && $(call _build_go_binary,mholt/archiver/cmd/arc) || true
+	@[ ! -f $(_BIN)/arc ] && ./builders/archiver "$(_ROOT)/$(_BIN)" || true
 
 .PHONY: build-bat
-build-bat:
-	@[ ! -f $(_BIN)/bat ] && $(call _build_go_binary,astaxie/bat) || true
-
-.PHONY: build-countdown
-build-countdown:
-	@[ ! -f $(_BIN)/countdown ] && $(call _build_go_binary,antonmedv/countdown) || true
+build-bat: build-archiver
+	@[ ! -f $(_BIN)/bat ] && ./builders/bat "$(_ROOT)/$(_BIN)" || true
 
 .PHONY: build-diary
 build-diary: build-envsubst
-	@[ ! -f $(_BIN)/diary ] && $(call _build_go_binary,longkey1/diary) || true
+	@[ ! -f $(_BIN)/diary ] && ./builders/diary "$(_ROOT)/$(_BIN)" || true
 	@[ ! -f $(_CONFIG)/diary/config.toml ] && envsubst '$$HOME $$EDITOR' < $(_CONFIG)/diary/config.toml.dist > $(_CONFIG)/diary/config.toml || true
 
 .PHONY: build-direnv
 build-direnv:
-	@[ ! -f $(_BIN)/direnv ] && $(call _build_go_binary,direnv/direnv) || true
+	@[ ! -f $(_BIN)/direnv ] && ./builders/direnv "$(_ROOT)/$(_BIN)" || true
 
 .PHONY: build-envsubst
 build-envsubst:
-	@[ ! -f $(_BIN)/envsubst ] && $(call _build_go_binary,a8m/envsubst/cmd/envsubst) || true
-
-.PHONY: build-esampo
-build-esampo:
-	@[ ! -f $(_BIN)/esampo ] && $(call _build_go_binary,longkey1/esampo) || true
+	@[ ! -f $(_BIN)/envsubst ] && ./builders/envsubst "$(_ROOT)/$(_BIN)" || true
 
 .PHONY: build-fzf
-build-fzf:
-	@[ ! -f $(_BIN)/fzf ] && $(call _build_go_binary,junegunn/fzf) || true
+build-fzf: build-archiver
+	@[ ! -f $(_BIN)/fzf ] && ./builders/fzf "$(_ROOT)/$(_BIN)" || true
 
 .PHONY: build-gcal
 build-gcal:
-	@[ ! -f $(_BIN)/gcal ] && $(call _build_go_binary,longkey1/gcal) || true
+	@[ ! -f $(_BIN)/gcal ] && ./builders/gcal "$(_ROOT)/$(_BIN)" || true
 	@[ ! -f $(_CONFIG)/gcal/config.toml ] && envsubst '$$HOME' < $(_CONFIG)/gcal/config.toml.dist > $(_CONFIG)/gcal/config.toml || true
 	@$(call _decrypt,$(_CONFIG)/gcal/credentials.json)
 
 .PHONY: build-gh
-build-gh: build-gojq
+build-gh: build-archiver
 	@[ ! -f $(_BIN)/gh ] && ./builders/gh "$(_ROOT)/$(_BIN)" || true
 	@$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
 
 .PHONY: build-ghq
-build-ghq:
-	@[ ! -f $(_BIN)/ghq ] && $(call _build_go_binary,x-motemen/ghq) || true
-
-.PHONY: build-glow
-build-glow:
-	@[ ! -f $(_BIN)/glow ] && $(call _build_go_binary,charmbracelet/glow) || true
+build-ghq: build-archiver
+	@[ ! -f $(_BIN)/ghq ] && ./builders/ghq "$(_ROOT)/$(_BIN)" || true
 
 .PHONY: build-gitlint
 build-gitlint:
-	@[ ! -f $(_BIN)/go-gitlint ] && $(call _build_go_binary,llorllale/go-gitlint/cmd/go-gitlint) || true
-	@[ ! -e $(_BIN)/gitlint ] && cd $(_BIN) && ln -s go-gitlint gitlint || true
-
-.PHONY: build-gobump
-build-gobump:
-	@[ ! -f $(_BIN)/gobump ] && $(call _build_go_binary,x-motemen/gobump/cmd/gobump) || true
+	@[ ! -f $(_BIN)/gitlint ] && ./builders/gitlint "$(_ROOT)/$(_BIN)" || true
 
 .PHONY: build-go
 build-go: build-godl
@@ -223,44 +206,31 @@ build-go: build-godl
 
 .PHONY: build-godl
 build-godl:
-	@[ ! -f $(_BIN)/godl ] && $(call _build_go_binary,longkey1/godl) || true
-
-.PHONY: build-gojq
-build-gojq:
-	@[ ! -f $(_BIN)/gojq ] && $(call _build_go_binary,itchyny/gojq/cmd/gojq) || true
-	@[ ! -e $(_BIN)/jq ] && cd $(_BIN) && ln -s gojq jq || true
+	@[ ! -f $(_BIN)/godl ] && ./builders/godl "$(_ROOT)/$(_BIN)" || true
 
 .PHONY: build-just
-build-just: build-gojq build-archiver
+build-just: build-archiver
 	@[ ! -f $(_BIN)/just ] && ./builders/just "$(_ROOT)/$(_BIN)" || true
 
 .PHONY: build-lf
-build-lf: build-gojq build-archiver
+build-lf: build-archiver
 	@[ ! -f $(_BIN)/lf ] && ./builders/lf "$(_ROOT)/$(_BIN)" || true
-
-.PHONY: build-peco
-build-peco:
-	@[ ! -f $(_BIN)/peco ] && $(call _build_go_binary,peco/peco/cmd/peco) || true
 
 .PHONY: build-ran
 build-ran:
-	@[ ! -f $(_BIN)/ran ] && $(call _build_go_binary,m3ng9i/ran) || true
+	@[ ! -f $(_BIN)/ran ] && ./builders/ran "$(_ROOT)/$(_BIN)" || true
 
 .PHONY: build-ripgrep
-build-ripgrep: build-gojq
+build-ripgrep:
 	@[ ! -f $(_BIN)/rg ] && ./builders/ripgrep "$(_ROOT)/$(_BIN)" || true
 
-.PHONY: build-robo
-build-robo:
-	@[ ! -f $(_BIN)/robo ] && $(call _build_go_binary,tj/robo) || true
-
 .PHONY: build-tmpl
-build-tmpl:  build-gojq build-envsubst
+build-tmpl: build-envsubst
 	@[ ! -f $(_BIN)/tmpl ] && ./builders/tmpl "$(_ROOT)/$(_BIN)" || true
 	@[ ! -f $(_CONFIG)/tmpl/config.toml ] && envsubst '$$HOME' < $(_CONFIG)/tmpl/config.toml.dist > $(_CONFIG)/tmpl/config.toml || true
 
 .PHONY: build-vim
-build-vim:  build-gojq
+build-vim:
 	$(call _clone_github_repo,thinca/vim-quickrun,vim/pack/bundle/start/vim-quickrun)
 	$(call _clone_github_repo,vim-scripts/sudo.vim,vim/pack/bundle/start/sudo.vim)
 	$(call _clone_github_repo,longkey1/vim-lf,vim/pack/bundle/start/vim-lf)
@@ -274,7 +244,7 @@ build-vim:  build-gojq
 
 .PHONY: build-yq
 build-yq:
-	@[ ! -f $(_BIN)/yq ] && $(call _build_go_binary,mikefarah/yq) || true
+	@[ ! -f $(_BIN)/yq ] && ./builders/yq "$(_ROOT)/$(_BIN)" || true
 
 .PHONY: build-zsh
 build-zsh:  build-diary build-gcal build-godl build-just build-tmpl
