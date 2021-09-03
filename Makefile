@@ -42,6 +42,7 @@ _TARGETS := \
 
 _LINUX_ONLY_TARGETS := \
 "config/fontconfig" \
+"config/systemd" \
 "config/ulauncher" \
 "pam_environment"
 
@@ -128,7 +129,8 @@ install: ## create target's symlink in home directory
 	@if test "$(shell uname -s)" = "Linux"; then \
 		for TARGET in $(_LINUX_ONLY_TARGETS); do \
 			$(call _create_home_symlink,"$$TARGET"); \
-		done \
+		done; \
+		[ -f /opt/trackpoint-adjuster/apply.sh ] && systemctl --user enable trackpoint-adjuster.service; \
 	fi
 
 .PHONY: uninstall
@@ -137,6 +139,7 @@ uninstall: ## delete created symlink
 		$(call _delete_home_symlink,"$$TARGET"); \
 	done
 	@if test "$(shell uname -s)" = "Linux"; then \
+		[ -f /opt/trackpoint-adjuster/apply.sh ] && systemctl --user disable trackpoint-adjuster.service; \
 		for TARGET in $(_LINUX_ONLY_TARGETS); do \
 			$(call _delete_home_symlink,"$$TARGET"); \
 		done \

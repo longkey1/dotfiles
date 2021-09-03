@@ -1,0 +1,8 @@
+[Unit]
+Description=Trackpoint Speed Adjuster
+
+[Service]
+ExecStart=/opt/trackpoint-adjuster/apply.sh &
+
+[Install]
+WantedBy=default.target
