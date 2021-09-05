@@ -130,7 +130,9 @@ install: ## create target's symlink in home directory
 		for TARGET in $(_LINUX_ONLY_TARGETS); do \
 			$(call _create_home_symlink,"$$TARGET"); \
 		done; \
-		[ -f /opt/trackpoint-adjuster/apply.sh ] && systemctl --user enable trackpoint-adjuster.service; \
+		if test -f /opt/trackpoint-adjuster/apply.sh; then \
+			systemctl --user enable trackpoint-adjuster.service; \
+		fi; \
 	fi
 
 .PHONY: uninstall
@@ -139,7 +141,9 @@ uninstall: ## delete created symlink
 		$(call _delete_home_symlink,"$$TARGET"); \
 	done
 	@if test "$(shell uname -s)" = "Linux"; then \
-		[ -f /opt/trackpoint-adjuster/apply.sh ] && systemctl --user disable trackpoint-adjuster.service; \
+		if test -f /opt/trackpoint-adjuster/apply.sh; then \
+			systemctl --user disable trackpoint-adjuster.service; \
+		fi; \
 		for TARGET in $(_LINUX_ONLY_TARGETS); do \
 			$(call _delete_home_symlink,"$$TARGET"); \
 		done \
