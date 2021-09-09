@@ -11,6 +11,4 @@ path=(${path} /usr/share/git/diff-highlight(N-/))
 path=(${path} /usr/share/doc/git/contrib/diff-highlight(N-/))
 
 # tmux
-if type tmux &> /dev/null; then
-  alias tmux="tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf"
-fi
+type tmux > /dev/null 2>&1 && alias tmux="tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf"
