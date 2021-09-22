@@ -1,3 +1,4 @@
+/config/composer/.htaccess
 /config/composer/auth.json
 /config/diary/config.toml
 /config/gcal/config.toml
