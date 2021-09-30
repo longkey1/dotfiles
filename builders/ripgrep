@@ -2,7 +2,7 @@
 
 BIN=${1}
 
-BINARY_FINE="rg"
+BINARY_FILE="rg"
 REPOSITORY="BurntSushi/ripgrep"
 
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
@@ -11,12 +11,12 @@ ARCH="x86_64"
 DL_URL=$(curl -s https://api.github.com/repos/${REPOSITORY}/releases/latest | jq -r ".assets[] | select(.name | test(\"${OS}\") and test(\"${ARCH}\")) | .browser_download_url")
 echo $DL_URL
 ARCHIVE_FILE=$(basename ${DL_URL})
-WORK_DIR=/tmp/dotfiles-${USER}-${BINARY_FINE}
+WORK_DIR=/tmp/dotfiles-${USER}-${BINARY_FILE}
 ARC_OPTION="-strip-components 1"
 
 mkdir -p ${WORK_DIR}
 wget ${DL_URL} -O ${WORK_DIR}/${ARCHIVE_FILE}
 ${BIN}/arc ${ARC_OPTION} unarchive ${WORK_DIR}/${ARCHIVE_FILE} ${WORK_DIR}
-mv ${WORK_DIR}/${BINARY_FINE} ${BIN}/${BINARY_FINE}
-chmod +x ${BIN}/${BINARY_FINE}
+mv ${WORK_DIR}/${BINARY_FILE} ${BIN}/${BINARY_FILE}
+chmod +x ${BIN}/${BINARY_FILE}
 rm -rf ${WORK_DIR}

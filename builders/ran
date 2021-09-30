@@ -2,7 +2,7 @@
 
 BIN=${1}
 
-BINARY_FINE="ran"
+BINARY_FILE="ran"
 REPOSITORY="m3ng9i/ran"
 
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
@@ -12,12 +12,12 @@ DL_URL=$(curl -s https://api.github.com/repos/${REPOSITORY}/releases/latest | jq
 ARCHIVE_FILE=$(basename ${DL_URL})
 UNACHIVED_BINARY_FILE=$(echo "${ARCHIVE_FILE}" | cut -f 1 -d '.')
 
-WORK_DIR=/tmp/dotfiles-${USER}-${BINARY_FINE}
+WORK_DIR=/tmp/dotfiles-${USER}-${BINARY_FILE}
 ARC_OPTION="-folder-safe=false"
 
 mkdir -p ${WORK_DIR}
 wget ${DL_URL} -O ${WORK_DIR}/${ARCHIVE_FILE}
 ${BIN}/arc ${ARC_OPTION} unarchive ${WORK_DIR}/${ARCHIVE_FILE} ${WORK_DIR}
-mv ${WORK_DIR}/${UNACHIVED_BINARY_FILE} ${BIN}/${BINARY_FINE}
-chmod +x ${BIN}/${BINARY_FINE}
+mv ${WORK_DIR}/${UNACHIVED_BINARY_FILE} ${BIN}/${BINARY_FILE}
+chmod +x ${BIN}/${BINARY_FILE}
 rm -rf ${WORK_DIR}

@@ -2,7 +2,7 @@
 
 BIN=${1}
 
-BINARY_FINE="arc"
+BINARY_FILE="arc"
 REPOSITORY="mholt/archiver"
 
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
@@ -12,6 +12,5 @@ fi
 ARCH="amd64"
 
 DL_URL=$(curl -s https://api.github.com/repos/${REPOSITORY}/releases/latest | jq -r ".assets[] | select(.name | contains(\"${OS}\") and contains(\"${ARCH}\")) | .browser_download_url")
-DL_FILE=$(basename ${DL_URL})
-wget ${DL_URL} -O ${BIN}/${BINARY_FINE}
-chmod +x ${BIN}/${BINARY_FINE}
+wget ${DL_URL} -O ${BIN}/${BINARY_FILE}
+chmod +x ${BIN}/${BINARY_FILE}

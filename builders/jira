@@ -2,8 +2,8 @@
 
 BIN=${1}
 
-BINARY_FILE="gcal"
-REPOSITORY="longkey1/gcal"
+BINARY_FILE="jira"
+REPOSITORY="go-jira/jira"
 
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 ARCH="amd64"
