@@ -13,6 +13,7 @@ build-ghq \
 build-gitlint \
 build-go \
 build-godl \
+build-jira \
 build-just \
 build-lf \
 build-ran \
@@ -214,6 +215,10 @@ build-go: build-godl
 .PHONY: build-godl
 build-godl:
 	@[ ! -f $(_BIN)/godl ] && ./builders/godl "$(_ROOT)/$(_BIN)" || true
+
+.PHONY: build-jira
+build-jira:
+	@[ ! -f $(_BIN)/jira ] && ./builders/jira "$(_ROOT)/$(_BIN)" || true
 
 .PHONY: build-just
 build-just: build-archiver
