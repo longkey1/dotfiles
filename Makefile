@@ -112,6 +112,7 @@ clean: ## delete all builded files
 	@rm -f $(_CONFIG)/diary/config.toml
 	@rm -f $(_CONFIG)/gcal/config.toml
 	@rm -f $(_CONFIG)/git/config.local
+	@rm -f $(_CONFIG)/ideavim/ideavimrc
 	@rm -rf $(_CONFIG)/zsh/antigen
 	@rm -f $(_CONFIG)/zsh/.zshrc
 	@rm -f $(_CONFIG)/zsh/zshrc.local
