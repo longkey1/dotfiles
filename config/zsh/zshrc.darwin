@@ -18,5 +18,6 @@ alias nproc="sysctl -n hw.logicalcpu_max"
 type tmux > /dev/null 2>&1 && alias tmux="tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf -2 -u"
 
 # gnu
+type gcut > /dev/null 2>&1 && alias cut="gcut"
 type gdate > /dev/null 2>&1 && alias date="gdate"
 type gsed > /dev/null 2>&1 && alias sed="gsed"
