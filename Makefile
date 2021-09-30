@@ -32,12 +32,12 @@ _TARGETS := \
 "config/gh" \
 "config/git" \
 "config/godl" \
+"config/ideavim" \
 "config/lf" \
 "config/nvim" \
 "config/tmpl" \
 "config/tmux" \
 "config/zsh" \
-"ideavimrc" \
 "vim" \
 "zshenv"
 
@@ -50,6 +50,7 @@ _LINUX_ONLY_TARGETS := \
 _ROOT := $(patsubst %/,%,$(dir $(realpath $(firstword $(MAKEFILE_LIST)))))
 _BIN := bin
 _CONFIG := config
+_OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
 
 _GOROOTS := goroots
 _GOVERSIONS := \
@@ -215,6 +216,10 @@ build-go: build-godl
 .PHONY: build-godl
 build-godl:
 	@[ ! -f $(_BIN)/godl ] && ./builders/godl "$(_ROOT)/$(_BIN)" || true
+
+.PHONY: build-ideavim
+build-ideavim:
+	@[ ! -f $(_CONFIG)/ideavim/ideavimrc ] && cd $(_CONFIG)/ideavim && ln -s ideavimrc.$(_OS) ideavimrc || true
 
 .PHONY: build-jira
 build-jira:
