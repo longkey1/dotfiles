@@ -29,7 +29,7 @@ export SAVEHIST=${HISTSIZE}
 export DISABLE_AUTO_TITLE=true
 
 # path .bin
-path=(${path} ${HOME}/.bin(N-/))
+path=(${path} ${HOME}/.local/bin(N-/))
 
 # direnv
 if excutable direnv; then
