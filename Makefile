@@ -26,7 +26,6 @@ build-yq \
 build-zsh
 
 _TARGETS := \
-"bin" \
 "config/composer" \
 "config/diary" \
 "config/direnv" \
