@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := help
 
 _BUILD := \
-build-archiver \
+build-arc \
 build-bat \
 build-diary \
 build-direnv \
@@ -14,10 +14,12 @@ build-gitlint \
 build-go \
 build-godl \
 build-jira \
+build-jq \
 build-just \
 build-lf \
+build-mark \
 build-ran \
-build-ripgrep \
+build-rg \
 build-tmpl \
 build-vim \
 build-yq \
@@ -48,9 +50,10 @@ _LINUX_ONLY_TARGETS := \
 "pam_environment"
 
 _ROOT := $(patsubst %/,%,$(dir $(realpath $(firstword $(MAKEFILE_LIST)))))
-_BIN := bin
+_OPT := opt
 _CONFIG := config
 _OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
+_LOCAL_BIN := $(HOME)/.local/bin
 
 _GOROOTS := goroots
 _GOVERSIONS := \
@@ -81,7 +84,7 @@ define _clone_github_repo
 endef
 
 define _build_go_binary
-	curl -sf https://gobinaries.com/$(1) | PREFIX=$(_BIN) sh
+	curl -sf https://gobinaries.com/$(1) | PREFIX=$(_OPT) sh
 endef
 
 define _create_home_symlink
@@ -103,11 +106,11 @@ define _delete_home_symlink
 endef
 
 .PHONY: build
-build: $(_BUILD);
+build: $(_BUILD) ## build all
 
 .PHONY: clean
 clean: ## delete all builded files
-	@find $(_BIN) -type f -o -type l | grep -v .gitignore | xargs rm -rf
+	@find $(_OPT) -type f -o -type l | grep -v .gitignore | xargs rm -rf
 	@rm -f $(_CONFIG)/composer/auth.json
 	@rm -f $(_CONFIG)/diary/config.toml
 	@rm -f $(_CONFIG)/gcal/config.toml
@@ -164,88 +167,96 @@ decrypt: ## decrypt files
 	$(call _decrypt,$(_CONFIG)/gcal/credentials.json)
 	$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
 
-.PHONY: build-archiver
-build-archiver:
-	@[ ! -f $(_BIN)/arc ] && ./builders/archiver "$(_ROOT)/$(_BIN)" || true
+.PHONY: build-arc
+build-arc:
+	@[ ! -e $(_LOCAL_BIN)/arc ] && ./builders/arc || true
 
 .PHONY: build-bat
-build-bat: build-archiver
-	@[ ! -f $(_BIN)/bat ] && ./builders/bat "$(_ROOT)/$(_BIN)" || true
+build-bat:
+	@[ ! -e $(_LOCAL_BIN)/bat ] && ./builders/bat || true
 
 .PHONY: build-diary
-build-diary: build-envsubst
-	@[ ! -f $(_BIN)/diary ] && ./builders/diary "$(_ROOT)/$(_BIN)" || true
-	@[ ! -f $(_CONFIG)/diary/config.toml ] && envsubst '$$HOME $$EDITOR' < $(_CONFIG)/diary/config.toml.dist > $(_CONFIG)/diary/config.toml || true
+build-diary: build-jq build-envsubst
+	@[ ! -e $(_OPT)/diary ] && ./builders/diary "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -f $(_CONFIG)/diary/config.toml ] && $(_OPT)/envsubst '$$HOME $$EDITOR' < $(_CONFIG)/diary/config.toml.dist > $(_CONFIG)/diary/config.toml || true
 
 .PHONY: build-direnv
-build-direnv:
-	@[ ! -f $(_BIN)/direnv ] && ./builders/direnv "$(_ROOT)/$(_BIN)" || true
+build-direnv: build-jq
+	@[ ! -f $(_OPT)/direnv ] && ./builders/direnv "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-envsubst
-build-envsubst:
-	@[ ! -f $(_BIN)/envsubst ] && ./builders/envsubst "$(_ROOT)/$(_BIN)" || true
+build-envsubst: build-jq
+	@[ ! -e $(_OPT)/envsubst ] && ./builders/envsubst "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-fzf
-build-fzf: build-archiver
-	@[ ! -f $(_BIN)/fzf ] && ./builders/fzf "$(_ROOT)/$(_BIN)" || true
+build-fzf:
+	@[ ! -e $(_LOCAL_BIN)/fzf ] && ./builders/fzf || true
 
 .PHONY: build-gcal
-build-gcal:
-	@[ ! -f $(_BIN)/gcal ] && ./builders/gcal "$(_ROOT)/$(_BIN)" || true
-	@[ ! -f $(_CONFIG)/gcal/config.toml ] && envsubst '$$HOME' < $(_CONFIG)/gcal/config.toml.dist > $(_CONFIG)/gcal/config.toml || true
+build-gcal: build-jq build-envsubst
+	@[ ! -f $(_OPT)/gcal ] && ./builders/gcal "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -f $(_CONFIG)/gcal/config.toml ] && $(_OPT)/envsubst '$$HOME' < $(_CONFIG)/gcal/config.toml.dist > $(_CONFIG)/gcal/config.toml || true
 	@$(call _decrypt,$(_CONFIG)/gcal/credentials.json)
 
 .PHONY: build-gh
-build-gh: build-archiver
-	@[ ! -f $(_BIN)/gh ] && ./builders/gh "$(_ROOT)/$(_BIN)" || true
+build-gh:
+	@[ ! -e $(_LOCAL_BIN)/gh ] && ./builders/gh || true
 	@$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
 
 .PHONY: build-ghq
-build-ghq: build-archiver
-	@[ ! -f $(_BIN)/ghq ] && ./builders/ghq "$(_ROOT)/$(_BIN)" || true
+build-ghq: build-jq build-arc
+	@[ ! -f $(_OPT)/ghq ] && ./builders/ghq "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-gitlint
-build-gitlint:
-	@[ ! -f $(_BIN)/gitlint ] && ./builders/gitlint "$(_ROOT)/$(_BIN)" || true
+build-gitlint: build-jq
+	@[ ! -f $(_OPT)/gitlint ] && ./builders/gitlint "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-go
 build-go: build-godl
 	@for GOVERSION in $(_GOVERSIONS); do \
-		$(_BIN)/godl --goroots $(_CONFIG)/godl/goroots --temp $(_CONFIG)/godl/tmp install $$GOVERSION || true; \
+		$(_OPT)/godl --goroots $(_CONFIG)/godl/goroots --temp $(_CONFIG)/godl/tmp install $$GOVERSION || true; \
 	done
 
 .PHONY: build-godl
-build-godl:
-	@[ ! -f $(_BIN)/godl ] && ./builders/godl "$(_ROOT)/$(_BIN)" || true
+build-godl: build-jq
+	@[ ! -f $(_OPT)/godl ] && ./builders/godl "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-ideavim
 build-ideavim:
 	@[ ! -f $(_CONFIG)/ideavim/ideavimrc ] && cd $(_CONFIG)/ideavim && ln -s ideavimrc.$(_OS) ideavimrc || true
 
 .PHONY: build-jira
-build-jira:
-	@[ ! -f $(_BIN)/jira ] && ./builders/jira "$(_ROOT)/$(_BIN)" || true
+build-jira: build-jq
+	@[ ! -f $(_OPT)/jira ] && ./builders/jira "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-just
-build-just: build-archiver
-	@[ ! -f $(_BIN)/just ] && ./builders/just "$(_ROOT)/$(_BIN)" || true
+build-just: build-jq build-arc
+	@[ ! -f $(_OPT)/just ] && ./builders/just "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+
+.PHONY: build-jq
+build-jq:
+	@[ ! -e $(_LOCAL_BIN)/jq ] && ./builders/jq || true
 
 .PHONY: build-lf
-build-lf: build-archiver
-	@[ ! -f $(_BIN)/lf ] && ./builders/lf "$(_ROOT)/$(_BIN)" || true
+build-lf:
+	@[ ! -e $(_LOCAL_BIN)/lf ] && ./builders/lf || true
+
+.PHONY: build-mark
+build-mark:
+	@[ ! -e $(_OPT)/mark ] && ./builders/mark "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-ran
-build-ran:
-	@[ ! -f $(_BIN)/ran ] && ./builders/ran "$(_ROOT)/$(_BIN)" || true
+build-ran: build-jq
+	@[ ! -f $(_OPT)/ran ] && ./builders/ran "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
-.PHONY: build-ripgrep
-build-ripgrep:
-	@[ ! -f $(_BIN)/rg ] && ./builders/ripgrep "$(_ROOT)/$(_BIN)" || true
+.PHONY: build-rg
+build-rg:
+	@[ ! -e $(_LOCAL_BIN)/rg ] && ./builders/rg || true
 
 .PHONY: build-tmpl
-build-tmpl: build-envsubst
-	@[ ! -f $(_BIN)/tmpl ] && ./builders/tmpl "$(_ROOT)/$(_BIN)" || true
-	@[ ! -f $(_CONFIG)/tmpl/config.toml ] && envsubst '$$HOME' < $(_CONFIG)/tmpl/config.toml.dist > $(_CONFIG)/tmpl/config.toml || true
+build-tmpl: build-jq build-envsubst
+	@[ ! -f $(_OPT)/tmpl ] && ./builders/tmpl "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -f $(_CONFIG)/tmpl/config.toml ] && $(_OPT)/envsubst '$$HOME' < $(_CONFIG)/tmpl/config.toml.dist > $(_CONFIG)/tmpl/config.toml || true
 
 .PHONY: build-vim
 build-vim:
@@ -262,17 +273,17 @@ build-vim:
 
 .PHONY: build-yq
 build-yq:
-	@[ ! -f $(_BIN)/yq ] && ./builders/yq "$(_ROOT)/$(_BIN)" || true
+	@[ ! -e $(_LOCAL_BIN)/yq ] && ./builders/yq || true
 
 .PHONY: build-zsh
 build-zsh:  build-diary build-gcal build-godl build-just build-tmpl
 	@[ ! -f $(_CONFIG)/zsh/.zshrc ] && cd $(_CONFIG)/zsh && ln -s zshrc .zshrc || true
 	$(call _clone_github_repo,zsh-users/antigen,config/zsh/antigen)
-	@$(_BIN)/diary --config $(_CONFIG)/diary/config.toml completion zsh > $(_CONFIG)/zsh/functions/_diary
-	@$(_BIN)/gcal --config $(_CONFIG)/gcal/config.toml completion zsh > $(_CONFIG)/zsh/functions/_gcal
-	@$(_BIN)/godl completion zsh > $(_CONFIG)/zsh/functions/_godl
-	@$(_BIN)/just --completions zsh > $(_CONFIG)/zsh/functions/_just
-	@$(_BIN)/tmpl --config $(_CONFIG)/tmpl/config.toml completion zsh > $(_CONFIG)/zsh/functions/_tmpl
+	@$(_OPT)/diary --config $(_CONFIG)/diary/config.toml completion zsh > $(_CONFIG)/zsh/functions/_diary
+	@$(_OPT)/gcal --config $(_CONFIG)/gcal/config.toml completion zsh > $(_CONFIG)/zsh/functions/_gcal
+	@$(_OPT)/godl completion zsh > $(_CONFIG)/zsh/functions/_godl
+	@$(_OPT)/just --completions zsh > $(_CONFIG)/zsh/functions/_just
+	@$(_OPT)/tmpl --config $(_CONFIG)/tmpl/config.toml completion zsh > $(_CONFIG)/zsh/functions/_tmpl
 
 
 
