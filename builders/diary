@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 BIN=${1}
+OPT=${2}
 
 BINARY_FILE="diary"
 REPOSITORY="longkey1/diary"
@@ -8,7 +9,10 @@ REPOSITORY="longkey1/diary"
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 ARCH="amd64"
 
-DL_URL=$(curl -s https://api.github.com/repos/${REPOSITORY}/releases/latest | jq -r ".assets[] | select(.name | contains(\"${OS}\") and contains(\"${ARCH}\")) | .browser_download_url")
+DL_URL=$(curl -s https://api.github.com/repos/${REPOSITORY}/releases/latest | ${BIN}/jq -r ".assets[] | select(.name | contains(\"${OS}\") and contains(\"${ARCH}\")) | .browser_download_url")
 DL_FILE=$(basename ${DL_URL})
-wget ${DL_URL} -O ${BIN}/${BINARY_FILE}
-chmod +x ${BIN}/${BINARY_FILE}
+wget ${DL_URL} -O ${OPT}/${BINARY_FILE}
+chmod +x ${OPT}/${BINARY_FILE}
+
+rm -if ${BIN}/${BINARY_FILE}
+ln -s ${OPT}/${BINARY_FILE} ${BIN}/${BINARY_FILE}

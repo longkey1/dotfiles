@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 BIN=${1}
+OPT=${2}
 
 BINARY_FILE="just"
 REPOSITORY="casey/just"
@@ -8,7 +9,7 @@ REPOSITORY="casey/just"
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 ARCH="x86_64"
 
-DL_URL=$(curl -s https://api.github.com/repos/${REPOSITORY}/releases/latest | jq -r ".assets[] | select(.name | contains(\"${OS}\") and contains(\"${ARCH}\")) | .browser_download_url")
+DL_URL=$(curl -s https://api.github.com/repos/${REPOSITORY}/releases/latest | ${BIN}/jq -r ".assets[] | select(.name | contains(\"${OS}\") and contains(\"${ARCH}\")) | .browser_download_url")
 ARCHIVE_FILE=$(basename ${DL_URL})
 WORK_DIR=/tmp/dotfiles-${USER}-${BINARY_FILE}
 ARC_OPTION=""
@@ -16,7 +17,9 @@ ARC_OPTION=""
 mkdir -p ${WORK_DIR}
 wget ${DL_URL} -O ${WORK_DIR}/${ARCHIVE_FILE}
 ${BIN}/arc ${ARC_OPTION} unarchive ${WORK_DIR}/${ARCHIVE_FILE} ${WORK_DIR}
-mv ${WORK_DIR}/just-0/${BINARY_FILE} ${BIN}/${BINARY_FILE}
-chmod +x ${BIN}/${BINARY_FILE}
+mv ${WORK_DIR}/just-0/${BINARY_FILE} ${OPT}/${BINARY_FILE}
+chmod +x ${OPT}/${BINARY_FILE}
 rm -rf ${WORK_DIR}
 
+rm -if ${BIN}/${BINARY_FILE}
+ln -s ${OPT}/${BINARY_FILE} ${BIN}/${BINARY_FILE}

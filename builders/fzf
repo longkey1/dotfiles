@@ -1,24 +1,3 @@
 #!/usr/bin/env bash
 
-BIN=${1}
-
-BINARY_FILE="fzf"
-REPOSITORY="junegunn/fzf"
-
-OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-ARCH=$(uname -m)
-if [ "${ARCH}" = "x86_64" ]; then
-  ARCH="amd64"
-fi
-
-DL_URL=$(curl -s https://api.github.com/repos/${REPOSITORY}/releases/latest | jq -r ".assets[] | select(.name | contains(\"${OS}\") and contains(\"${ARCH}\")) | .browser_download_url")
-ARCHIVE_FILE=$(basename ${DL_URL})
-WORK_DIR=/tmp/dotfiles-${USER}-${BINARY_FILE}
-ARC_OPTION=""
-
-mkdir -p ${WORK_DIR}
-wget ${DL_URL} -O ${WORK_DIR}/${ARCHIVE_FILE}
-${BIN}/arc ${ARC_OPTION} unarchive ${WORK_DIR}/${ARCHIVE_FILE} ${WORK_DIR}
-mv ${WORK_DIR}/${BINARY_FILE} ${BIN}/${BINARY_FILE}
-chmod +x ${BIN}/${BINARY_FILE}
-rm -rf ${WORK_DIR}
+curl -fsS https://webinstall.dev/fzf | bash

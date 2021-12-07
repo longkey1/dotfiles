@@ -1,17 +1,3 @@
 #!/usr/bin/env bash
 
-BIN=${1}
-
-BINARY_FILE="yq"
-REPOSITORY="mikefarah/yq"
-
-OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-ARCH=$(uname -m)
-if [ "${ARCH}" = "x86_64" ]; then
-  ARCH="amd64"
-fi
-DL_URL=$(curl -s https://api.github.com/repos/${REPOSITORY}/releases/latest | jq -r ".assets[] | select(.name | contains(\"${OS}\") and contains(\"${ARCH}\") and (test(\".tar.gz$\") | not)) | .browser_download_url")
-
-DL_FILE=$(basename ${DL_URL})
-wget ${DL_URL} -O ${BIN}/${BINARY_FILE}
-chmod +x ${BIN}/${BINARY_FILE}
+curl -fsS https://webinstall.dev/yq | bash
