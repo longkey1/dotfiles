@@ -1,3 +1,6 @@
+set shell zsh
+set shellopts '-euy'
+
 cmd open ${{
     case $(file --brief --dereference --mime-type $f) in
         text/* | application/json)
