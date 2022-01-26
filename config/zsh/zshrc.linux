@@ -5,10 +5,22 @@ ulimit -c 0
 alias nproc="grep processor /proc/cpuinfo | wc -l"
 
 # git/diff-highlight for arch
-path=(${path} /usr/share/git/diff-highlight(N-/))
+if [ -e /usr/share/git/diff-highlight/diff-highlight ]; then
+  if [ -x /usr/share/git/diff-highlight/diff-highlight ]; then
+    path=(${path} /usr/share/git/diff-highlight(N-/))
+  else
+    echo "permisson error. [/usr/share/git/diff-highlight/diff-highlight]"
+  fi
+fi
 
 # git/diff-highlight for debian or ubuntu
-path=(${path} /usr/share/doc/git/contrib/diff-highlight(N-/))
+if [ -e /usr/share/doc/git/contrib/diff-highlight/diff-highlight ]; then
+  if [ -x /usr/share/doc/git/contrib/diff-highlight/diff-highlight ]; then
+    path=(${path} /usr/share/doc/git/contrib/diff-highlight(N-/))
+  else
+    echo "permisson error. [/usr/share/doc/git/contrib/diff-highlight/diff-highlight]"
+  fi
+fi
 
 # tmux
 type tmux > /dev/null 2>&1 && alias tmux="tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf"
