@@ -32,16 +32,6 @@ set ttimeoutlen=1
 let g:quickrun_config = {}
 let g:quickrun_config.markdown = {'runner': 'shell', 'command': 'glow'}
 
-" lsp
-nnoremap <buffer> gd <plug>(lsp-definition)
-nnoremap <buffer> <f2> <plug>(lsp-rename)
-nnoremap <buffer> <Leader>d <plug>(lsp-type-definition)
-nnoremap <buffer> <Leader>r <plug>(lsp-references)
-nnoremap <buffer> <Leader>i <plug>(lsp-implementation)
-
-" asyncomplete
-let g:asyncomplete_popup_delay = 200
-
 " abbreviations
 augroup abbreviations_md_ts
   autocmd FileType markdown iabbrev <buffer> :ts: <C-R>=strftime("%Y-%m-%d %H:%M")<CR>
@@ -58,16 +48,13 @@ let g:netrw_nogx = 1 " disable netrw's gx mapping.
 nmap gx <Plug>(openbrowser-smart-search)
 vmap gx <Plug>(openbrowser-smart-search)
 
-" include files
-"
 " for mac
 if has('mac') && filereadable(expand('~/.vim/vimrc.mac'))
   source ~/.vim/vimrc.mac
-" for unix
+" for linux
 elseif has('linux') && filereadable(expand('~/.vim/vimrc.linux'))
   source ~/.vim/vimrc.linux
 endif
-"
 " for local
 if filereadable(expand('~/.vim/vimrc.local'))
   source ~/.vim/vimrc.local
