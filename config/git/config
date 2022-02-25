@@ -16,9 +16,9 @@
 [push]
   default = nothing
 [pager]
-  log = diff-highlight | less
-  show = diff-highlight | less
-  diff = diff-highlight | less
+  log = diff-highlight | nkf -w | LESSCHARSET=utf-8 less
+  show = diff-highlight | nkf -w | LESSCHARSET=utf-8 less
+  diff = diff-highlight | nkf -w | LESSCHARSET=utf-8 less
 [commit]
   template =  ~/.config/git/commit-template
 [include]
@@ -26,4 +26,4 @@
 [ghq]
   root = ~/work/src
 [url "ssh://git@github.com/"]
-	insteadOf = https://github.com/
+  insteadOf = https://github.com/
