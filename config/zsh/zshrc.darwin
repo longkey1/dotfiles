@@ -21,3 +21,6 @@ type tmux > /dev/null 2>&1 && alias tmux="tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.c
 type gcut > /dev/null 2>&1 && alias cut="gcut"
 type gdate > /dev/null 2>&1 && alias date="gdate"
 type gsed > /dev/null 2>&1 && alias sed="gsed"
+
+# pbcopy
+export __CF_USER_TEXT_ENCODING=0x$(printf %x $(id -u)):0x08000100:14
