@@ -1,5 +1,5 @@
 php:
-  image: longkey1/php:8.0
+  image: ghcr.io/longkey1/php:8.0
   environment:
     - LOCAL_UID=${LOCAL_UID}
     - LOCAL_GID=${LOCAL_GID}
