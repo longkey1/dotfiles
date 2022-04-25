@@ -25,5 +25,3 @@ fi
 # tmux
 type tmux > /dev/null 2>&1 && alias tmux="tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf"
 
-# VcXsrv
-[[ "$(uname -r)" == *microsoft* ]] && export DISPLAY=`hostname`.mshome.net:0.0
