@@ -2,6 +2,14 @@
 if "type xsel" '\
   bind -T copy-mode-vi y send -X copy-pipe-and-cancel "xsel -ib"; \
   bind -T copy-mode-vi enter send -X copy-pipe-and-cancel "xsel -ib"; \
+'
+
+if "type clip.exe" '\
+  bind -T copy-mode-vi y send -X copy-pipe-and-cancel "clip.exe"; \
+  bind -T copy-mode-vi enter send -X copy-pipe-and-cancel "clip.exe"; \
+'
+
+if "type xsel || type clip.exe" '\
 ' '\
   MESSAGE="display-message -p \"xsel is not installed\"; set-hook -gu session-created;"; \
   set-hook -g session-created ${MESSAGE}; \
