@@ -25,3 +25,17 @@ fi
 # tmux
 type tmux > /dev/null 2>&1 && alias tmux="tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf"
 
+# for wsl
+if [[ "$(uname -r)" == *microsoft* ]]; then
+  # sshd
+  if [[ $(service ssh status) =~ "not running" ]] then
+    echo "please start ssh..."
+    sudo service ssh start
+  fi
+
+  # dockerd
+  if [[ $(service docker status) =~ "not running" ]] then
+    echo "please start docker..."
+    sudo service docker start
+  fi
+fi
