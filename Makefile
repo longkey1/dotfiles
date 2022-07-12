@@ -262,11 +262,11 @@ build-lf: build-eget
 	@[ ! -e $(_OPT)/lf ] && ./builders/lf "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-mark
-build-mark:
+build-mark: build-eget
 	@[ ! -e $(_OPT)/mark ] && ./builders/mark "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-rg
-build-rg:
+build-rg: build-eget
 	@[ ! -e $(_OPT)/rg ] && ./builders/rg "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-tmpl
@@ -284,7 +284,7 @@ build-vim:
 	$(call _clone_github_repo,tyru/open-browser.vim,vim/pack/bundle/start/open-browser.vim)
 
 .PHONY: build-yq
-build-yq:
+build-yq: build-eget
 	@[ ! -e $(_OPT_BIN)/yq ] && ./builders/yq "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-zsh
