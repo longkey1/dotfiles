@@ -1,10 +1,9 @@
 .DEFAULT_GOAL := help
 
 _BUILD := \
-build-arc \
-build-bat \
 build-diary \
 build-direnv \
+build-eget \
 build-envsubst \
 build-fzf \
 build-gcal \
@@ -18,7 +17,6 @@ build-jq \
 build-just \
 build-lf \
 build-mark \
-build-ran \
 build-rg \
 build-tmpl \
 build-vim \
@@ -53,6 +51,7 @@ _OPT := opt
 _CONFIG := config
 _OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
 _LOCAL_BIN := $(HOME)/.local/bin
+_BIN_TARGETS := $(shell find $(_OPT) -type f -print0 | xargs -0 -n1 basename | grep -v .gitignore)
 
 _GOROOTS := goroots
 _GOVERSIONS := \
@@ -106,6 +105,24 @@ define _delete_home_symlink
 	fi
 endef
 
+define _create_local_bin_symlink
+	if test -e "$(_LOCAL_BIN)/$(1)"; then \
+		echo "already exists $(_LOCAL_BIN)/$(1)"; \
+	else \
+		ln -s $(CURDIR)/$(_OPT)/$(1) $(_LOCAL_BIN) && echo "created $(_LOCAL_BIN)/$(1)"; \
+	fi
+endef
+
+define _delete_local_bin_symlink
+	if test -h "$(_LOCAL_BIN)/$(1)"; then \
+		unlink $(_LOCAL_BIN)/$(1) && echo "deleted $(_LOCAL_BIN)/$(1)"; \
+	elif test -e "$(_LOCAL_BIN)/$(1)"; then \
+		echo "no deleted $(_LOCAL_BIN)/$(1), not a symlink"; \
+	else \
+		echo "no exists $(_LOCAL_BIN)/$(1)"; \
+	fi
+endef
+
 .PHONY: build
 build: $(_BUILD) ## build all
 
@@ -133,6 +150,9 @@ install: ## create target's symlink in home directory
 	@for TARGET in $(_TARGETS); do \
 		$(call _create_home_symlink,"$$TARGET"); \
 	done
+	@for TARGET in $(_BIN_TARGETS); do \
+		$(call _create_local_bin_symlink,"$$TARGET"); \
+	done
 	@if test "$(shell uname -s)" = "Linux"; then \
 		for TARGET in $(_LINUX_ONLY_TARGETS); do \
 			$(call _create_home_symlink,"$$TARGET"); \
@@ -146,6 +166,9 @@ install: ## create target's symlink in home directory
 uninstall: ## delete created symlink
 	@for TARGET in $(_TARGETS); do \
 		$(call _delete_home_symlink,"$$TARGET"); \
+	done
+	@for TARGET in $(_BIN_TARGETS); do \
+		$(call _delete_local_bin_symlink,"$$TARGET"); \
 	done
 	@if test "$(shell uname -s)" = "Linux"; then \
 		if test -f /opt/trackpoint-adjuster/apply.sh; then \
@@ -168,48 +191,44 @@ decrypt: ## decrypt files
 	$(call _decrypt,$(_CONFIG)/gcal/credentials.json)
 	$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
 
-.PHONY: build-arc
-build-arc:
-	@[ ! -e $(_LOCAL_BIN)/arc ] && ./builders/arc || true
-
-.PHONY: build-bat
-build-bat:
-	@[ ! -e $(_LOCAL_BIN)/bat ] && ./builders/bat || true
-
 .PHONY: build-diary
-build-diary: build-jq build-envsubst
+build-diary: build-eget
 	@[ ! -e $(_OPT)/diary ] && ./builders/diary "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 	@[ ! -f $(_CONFIG)/diary/config.toml ] && $(_OPT)/envsubst '$$HOME $$EDITOR' < $(_CONFIG)/diary/config.toml.dist > $(_CONFIG)/diary/config.toml || true
 
 .PHONY: build-direnv
-build-direnv: build-jq
+build-direnv: build-eget
 	@[ ! -f $(_OPT)/direnv ] && ./builders/direnv "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
+.PHONY: build-eget
+build-eget:
+	@[ ! -e $(_OPT)/eget ] && ./builders/eget "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+
 .PHONY: build-envsubst
-build-envsubst: build-jq
+build-envsubst: build-eget
 	@[ ! -e $(_OPT)/envsubst ] && ./builders/envsubst "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-fzf
-build-fzf:
-	@[ ! -e $(_LOCAL_BIN)/fzf ] && ./builders/fzf || true
+build-fzf: build-eget
+	@[ ! -e $(_OPT)/fzf ] && ./builders/fzf "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-gcal
-build-gcal: build-jq build-envsubst
+build-gcal: build-eget
 	@[ ! -f $(_OPT)/gcal ] && ./builders/gcal "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 	@[ ! -f $(_CONFIG)/gcal/config.toml ] && $(_OPT)/envsubst '$$HOME' < $(_CONFIG)/gcal/config.toml.dist > $(_CONFIG)/gcal/config.toml || true
 	@$(call _decrypt,$(_CONFIG)/gcal/credentials.json)
 
 .PHONY: build-gh
-build-gh:
-	@[ ! -e $(_LOCAL_BIN)/gh ] && ./builders/gh || true
+build-gh: build-eget
+	@[ ! -e $(_OPT)/gh ] && ./builders/gh "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 	@$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
 
 .PHONY: build-ghq
-build-ghq: build-jq build-arc
+build-ghq: build-eget
 	@[ ! -f $(_OPT)/ghq ] && ./builders/ghq "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-gitlint
-build-gitlint: build-jq
+build-gitlint: build-eget
 	@[ ! -f $(_OPT)/gitlint ] && ./builders/gitlint "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-go
@@ -219,7 +238,7 @@ build-go: build-godl
 	done
 
 .PHONY: build-godl
-build-godl: build-jq
+build-godl: build-eget
 	@[ ! -f $(_OPT)/godl ] && ./builders/godl "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-ideavim
@@ -227,35 +246,31 @@ build-ideavim:
 	@[ ! -f $(_CONFIG)/ideavim/ideavimrc ] && cd $(_CONFIG)/ideavim && ln -s ideavimrc.$(_OS) ideavimrc || true
 
 .PHONY: build-jira
-build-jira: build-jq
+build-jira: build-eget
 	@[ ! -f $(_OPT)/jira ] && ./builders/jira "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-just
-build-just: build-jq build-arc
+build-just: build-eget
 	@[ ! -f $(_OPT)/just ] && ./builders/just "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-jq
-build-jq:
-	@[ ! -e $(_LOCAL_BIN)/jq ] && ./builders/jq || true
+build-jq: build-eget
+	@[ ! -e $(_OPT)/jq ] && ./builders/jq "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-lf
-build-lf:
-	@[ ! -e $(_LOCAL_BIN)/lf ] && ./builders/lf || true
+build-lf: build-eget
+	@[ ! -e $(_OPT)/lf ] && ./builders/lf "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-mark
 build-mark:
 	@[ ! -e $(_OPT)/mark ] && ./builders/mark "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
-.PHONY: build-ran
-build-ran: build-jq
-	@[ ! -f $(_OPT)/ran ] && ./builders/ran "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
-
 .PHONY: build-rg
 build-rg:
-	@[ ! -e $(_LOCAL_BIN)/rg ] && ./builders/rg || true
+	@[ ! -e $(_OPT)/rg ] && ./builders/rg "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-tmpl
-build-tmpl: build-jq build-envsubst
+build-tmpl: build-eget
 	@[ ! -f $(_OPT)/tmpl ] && ./builders/tmpl "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 	@[ ! -f $(_CONFIG)/tmpl/config.toml ] && $(_OPT)/envsubst '$$HOME' < $(_CONFIG)/tmpl/config.toml.dist > $(_CONFIG)/tmpl/config.toml || true
 
@@ -270,7 +285,7 @@ build-vim:
 
 .PHONY: build-yq
 build-yq:
-	@[ ! -e $(_LOCAL_BIN)/yq ] && ./builders/yq || true
+	@[ ! -e $(_OPT_BIN)/yq ] && ./builders/yq "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-zsh
 build-zsh:  build-diary build-gcal build-godl build-just build-tmpl
