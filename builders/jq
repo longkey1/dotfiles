@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
 
-curl -fsS https://webinstall.dev/jq | bash
+BIN=${1}
+OPT=${2}
+
+REPOSITORY="itchyny/gojq"
+
+${OPT}/eget ${REPOSITORY} --to ${OPT}/jq

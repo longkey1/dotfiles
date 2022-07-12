@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
 
-curl -fsS https://webinstall.dev/fzf | bash
+BIN=${1}
+OPT=${2}
+
+REPOSITORY="junegunn/fzf"
+
+${OPT}/eget ${REPOSITORY} --to ${OPT}/
+

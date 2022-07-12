@@ -1,3 +1,10 @@
 #!/usr/bin/env bash
 
-curl -fsS https://webinstall.dev/yq | bash
+BIN=${1}
+OPT=${2}
+
+REPOSITORY="mikefarah/yq"
+OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+ARCH=$(uname -m | sed s/x86_64/amd64/)
+
+${OPT}/eget ${REPOSITORY} --to ${OPT}/yq --asset ${OS}_${ARCH}.tar.gz --file yq_${OS}_${ARCH}

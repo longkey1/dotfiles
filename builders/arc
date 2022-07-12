@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-curl -fsS https://webinstall.dev/arc | bash

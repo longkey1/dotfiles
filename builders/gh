@@ -1,3 +1,14 @@
 #!/usr/bin/env bash
 
-curl -fsS https://webinstall.dev/gh | bash
+BIN=${1}
+OPT=${2}
+
+REPOSITORY="cli/cli"
+OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+ARCH="amd64"
+
+if [ "${OS}" == "linux" ]; then
+  ${OPT}/eget ${REPOSITORY} --to ${OPT}/ --asset ${OS}_${ARCH}.tar.gz
+elif [ "${OS}" == "darwin" ]; then
+  ${OPT}/eget ${REPOSITORY} --to ${OPT}/ --asset macOS
+fi
