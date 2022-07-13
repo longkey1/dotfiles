@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+BIN=${1}
+OPT=${2}
+
+REPOSITORY="ducaale/xh"
+OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+ARCH="amd64"
+
+${OPT}/eget ${REPOSITORY} --system ${OS}/${ARCH} --to ${OPT}/

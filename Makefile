@@ -21,6 +21,7 @@ build-rg \
 build-tmpl \
 build-vim \
 build-yq \
+build-xh \
 build-zsh
 
 _TARGETS := \
@@ -283,9 +284,13 @@ build-vim:
 	$(call _clone_github_repo,ConradIrwin/vim-bracketed-paste,vim/pack/bundle/start/vim-bracketed-paste)
 	$(call _clone_github_repo,tyru/open-browser.vim,vim/pack/bundle/start/open-browser.vim)
 
+.PHONY: build-xh
+build-xh: build-eget
+	@[ ! -e $(_OPT)/xh ] && ./builders/xh "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+
 .PHONY: build-yq
 build-yq: build-eget
-	@[ ! -e $(_OPT_BIN)/yq ] && ./builders/yq "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -e $(_OPT)/yq ] && ./builders/yq "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-zsh
 build-zsh:  build-diary build-gcal build-godl build-just build-tmpl
