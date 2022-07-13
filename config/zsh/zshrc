@@ -43,6 +43,7 @@ excutable gojq && alias jq="gojq -C"
 excutable ls && alias ll="ls -l"
 excutable tput && alias beep="tput bel"
 excutable vim && alias vi="vim"
+excutable xh && alias http="xh"
 
 # grep
 if excutable grep; then
