@@ -55,17 +55,6 @@ _OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
 _LOCAL_BIN := $(HOME)/.local/bin
 _BIN_TARGETS := $(shell find $(_OPT) -type f -print0 | xargs -0 -n1 basename | grep -v .gitignore)
 
-_GOROOTS := goroots
-_GOVERSIONS := \
-"1.18.3" \
-"1.17.11" \
-"1.16.15" \
-"1.15.15" \
-"1.14.15" \
-"1.13.15" \
-"1.12.17" \
-"1.11.13"
-
 define _executable
 	@if ! type $(1) &> /dev/null; then \
 		echo "not found $(1) command."; \
@@ -135,6 +124,7 @@ clean: ## delete all builded files
 	@rm -f $(_CONFIG)/diary/config.toml
 	@rm -f $(_CONFIG)/gcal/config.toml
 	@rm -f $(_CONFIG)/git/config.local
+	@rm -f $(_CONFIG)/godl/config.toml
 	@rm -f $(_CONFIG)/ideavim/ideavimrc
 	@rm -rf $(_CONFIG)/zsh/antigen
 	@rm -f $(_CONFIG)/zsh/.zshrc
@@ -194,7 +184,7 @@ decrypt: ## decrypt files
 	$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
 
 .PHONY: build-diary
-build-diary: build-eget
+build-diary: build-eget build-envsubst
 	@[ ! -e $(_OPT)/diary ] && ./builders/diary "$(_ROOT)/$(_OPT)" || true
 	@[ ! -f $(_CONFIG)/diary/config.toml ] && $(_OPT)/envsubst '$$HOME $$EDITOR' < $(_CONFIG)/diary/config.toml.dist > $(_CONFIG)/diary/config.toml || true
 
@@ -215,7 +205,7 @@ build-fzf: build-eget
 	@[ ! -e $(_OPT)/fzf ] && ./builders/fzf "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-gcal
-build-gcal: build-eget
+build-gcal: build-eget build-envsubst
 	@[ ! -f $(_OPT)/gcal ] && ./builders/gcal "$(_ROOT)/$(_OPT)" || true
 	@[ ! -f $(_CONFIG)/gcal/config.toml ] && $(_OPT)/envsubst '$$HOME' < $(_CONFIG)/gcal/config.toml.dist > $(_CONFIG)/gcal/config.toml || true
 	@$(call _decrypt,$(_CONFIG)/gcal/credentials.json)
@@ -235,13 +225,12 @@ build-gitlint: build-eget
 
 .PHONY: build-go
 build-go: build-godl
-	@for GOVERSION in $(_GOVERSIONS); do \
-		$(_OPT)/godl --goroots $(_CONFIG)/godl/goroots --temp $(_CONFIG)/godl/tmp install $$GOVERSION || true; \
-	done
+	$(_OPT)/godl install
 
 .PHONY: build-godl
-build-godl: build-eget
+build-godl: build-eget build-envsubst
 	@[ ! -f $(_OPT)/godl ] && ./builders/godl "$(_ROOT)/$(_OPT)" || true
+	@[ ! -f $(_CONFIG)/godl/config.toml ] && $(_OPT)/envsubst '$$HOME' < $(_CONFIG)/godl/config.toml.dist > $(_CONFIG)/godl/config.toml || true
 
 .PHONY: build-ideavim
 build-ideavim:
@@ -272,7 +261,7 @@ build-rg: build-eget
 	@[ ! -e $(_OPT)/rg ] && ./builders/rg "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-tmpl
-build-tmpl: build-eget
+build-tmpl: build-eget build-envsubst
 	@[ ! -f $(_OPT)/tmpl ] && ./builders/tmpl "$(_ROOT)/$(_OPT)" || true
 	@[ ! -f $(_CONFIG)/tmpl/config.toml ] && $(_OPT)/envsubst '$$HOME' < $(_CONFIG)/tmpl/config.toml.dist > $(_CONFIG)/tmpl/config.toml || true
 

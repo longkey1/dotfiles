@@ -5,6 +5,7 @@
 /config/gcal/credentials.json
 /config/gh/hosts.yml
 /config/gh/state.yml
+/config/godl/config.toml
 /config/tmpl/config.toml
 /config/zsh/antigen
 /config/zsh/.antigen
