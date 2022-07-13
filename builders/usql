@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+OPT=${1}
+REPOSITORY="xo/usql"
+OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+ARCH="amd64"
+
+if [ "${OS}" == "linux" ]; then
+  ${OPT}/eget ${REPOSITORY} --to ${OPT}/ --asset static
+else
+  ${OPT}/eget ${REPOSITORY} --to ${OPT}/
+fi

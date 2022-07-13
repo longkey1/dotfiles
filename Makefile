@@ -19,6 +19,7 @@ build-lf \
 build-mark \
 build-rg \
 build-tmpl \
+build-usql \
 build-vim \
 build-yq \
 build-xh \
@@ -274,6 +275,10 @@ build-rg: build-eget
 build-tmpl: build-eget
 	@[ ! -f $(_OPT)/tmpl ] && ./builders/tmpl "$(_ROOT)/$(_OPT)" || true
 	@[ ! -f $(_CONFIG)/tmpl/config.toml ] && $(_OPT)/envsubst '$$HOME' < $(_CONFIG)/tmpl/config.toml.dist > $(_CONFIG)/tmpl/config.toml || true
+
+.PHONY: build-usql
+build-usql: build-eget
+	@[ ! -e $(_OPT)/usql ] && ./builders/usql "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-vim
 build-vim:
