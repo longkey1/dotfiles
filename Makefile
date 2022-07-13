@@ -194,43 +194,43 @@ decrypt: ## decrypt files
 
 .PHONY: build-diary
 build-diary: build-eget
-	@[ ! -e $(_OPT)/diary ] && ./builders/diary "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -e $(_OPT)/diary ] && ./builders/diary "$(_ROOT)/$(_OPT)" || true
 	@[ ! -f $(_CONFIG)/diary/config.toml ] && $(_OPT)/envsubst '$$HOME $$EDITOR' < $(_CONFIG)/diary/config.toml.dist > $(_CONFIG)/diary/config.toml || true
 
 .PHONY: build-direnv
 build-direnv: build-eget
-	@[ ! -f $(_OPT)/direnv ] && ./builders/direnv "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -f $(_OPT)/direnv ] && ./builders/direnv "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-eget
 build-eget:
-	@[ ! -e $(_OPT)/eget ] && ./builders/eget "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -e $(_OPT)/eget ] && ./builders/eget "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-envsubst
 build-envsubst: build-eget
-	@[ ! -e $(_OPT)/envsubst ] && ./builders/envsubst "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -e $(_OPT)/envsubst ] && ./builders/envsubst "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-fzf
 build-fzf: build-eget
-	@[ ! -e $(_OPT)/fzf ] && ./builders/fzf "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -e $(_OPT)/fzf ] && ./builders/fzf "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-gcal
 build-gcal: build-eget
-	@[ ! -f $(_OPT)/gcal ] && ./builders/gcal "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -f $(_OPT)/gcal ] && ./builders/gcal "$(_ROOT)/$(_OPT)" || true
 	@[ ! -f $(_CONFIG)/gcal/config.toml ] && $(_OPT)/envsubst '$$HOME' < $(_CONFIG)/gcal/config.toml.dist > $(_CONFIG)/gcal/config.toml || true
 	@$(call _decrypt,$(_CONFIG)/gcal/credentials.json)
 
 .PHONY: build-gh
 build-gh: build-eget
-	@[ ! -e $(_OPT)/gh ] && ./builders/gh "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -e $(_OPT)/gh ] && ./builders/gh "$(_ROOT)/$(_OPT)" || true
 	@$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
 
 .PHONY: build-ghq
 build-ghq: build-eget
-	@[ ! -f $(_OPT)/ghq ] && ./builders/ghq "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -f $(_OPT)/ghq ] && ./builders/ghq "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-gitlint
 build-gitlint: build-eget
-	@[ ! -f $(_OPT)/gitlint ] && ./builders/gitlint "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -f $(_OPT)/gitlint ] && ./builders/gitlint "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-go
 build-go: build-godl
@@ -240,7 +240,7 @@ build-go: build-godl
 
 .PHONY: build-godl
 build-godl: build-eget
-	@[ ! -f $(_OPT)/godl ] && ./builders/godl "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -f $(_OPT)/godl ] && ./builders/godl "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-ideavim
 build-ideavim:
@@ -248,31 +248,31 @@ build-ideavim:
 
 .PHONY: build-jira
 build-jira: build-eget
-	@[ ! -f $(_OPT)/jira ] && ./builders/jira "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -f $(_OPT)/jira ] && ./builders/jira "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-just
 build-just: build-eget
-	@[ ! -f $(_OPT)/just ] && ./builders/just "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -f $(_OPT)/just ] && ./builders/just "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-jq
 build-jq: build-eget
-	@[ ! -e $(_OPT)/jq ] && ./builders/jq "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -e $(_OPT)/jq ] && ./builders/jq "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-lf
 build-lf: build-eget
-	@[ ! -e $(_OPT)/lf ] && ./builders/lf "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -e $(_OPT)/lf ] && ./builders/lf "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-mark
 build-mark: build-eget
-	@[ ! -e $(_OPT)/mark ] && ./builders/mark "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -e $(_OPT)/mark ] && ./builders/mark "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-rg
 build-rg: build-eget
-	@[ ! -e $(_OPT)/rg ] && ./builders/rg "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -e $(_OPT)/rg ] && ./builders/rg "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-tmpl
 build-tmpl: build-eget
-	@[ ! -f $(_OPT)/tmpl ] && ./builders/tmpl "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -f $(_OPT)/tmpl ] && ./builders/tmpl "$(_ROOT)/$(_OPT)" || true
 	@[ ! -f $(_CONFIG)/tmpl/config.toml ] && $(_OPT)/envsubst '$$HOME' < $(_CONFIG)/tmpl/config.toml.dist > $(_CONFIG)/tmpl/config.toml || true
 
 .PHONY: build-vim
@@ -286,11 +286,11 @@ build-vim:
 
 .PHONY: build-xh
 build-xh: build-eget
-	@[ ! -e $(_OPT)/xh ] && ./builders/xh "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -e $(_OPT)/xh ] && ./builders/xh "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-yq
 build-yq: build-eget
-	@[ ! -e $(_OPT)/yq ] && ./builders/yq "$(_LOCAL_BIN)" "$(_ROOT)/$(_OPT)" || true
+	@[ ! -e $(_OPT)/yq ] && ./builders/yq "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-zsh
 build-zsh:  build-diary build-gcal build-godl build-just build-tmpl

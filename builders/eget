@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
-BIN=${1}
-OPT=${2}
-
+OPT=${1}
 BINARY="eget"
-WORK_DIR=/tmp/dotfiles-${USER}-${APP}
+WORK_DIR=/tmp/dotfiles-${USER}-$(basename ${0})
 
 mkdir -p ${WORK_DIR}
 pushd ${WORK_DIR}

@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-BIN=${1}
-OPT=${2}
-
+OPT=${1}
 REPOSITORY="direnv/direnv"
 
 ${OPT}/eget ${REPOSITORY} --to ${OPT}/

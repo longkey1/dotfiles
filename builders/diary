@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 
-BIN=${1}
-OPT=${2}
-APP=$(basename ${0})
-
+OPT=${1}
 REPOSITORY="longkey1/diary"
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 ARCH="amd64"
