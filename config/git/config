@@ -11,7 +11,8 @@
 [alias]
   pushf = push --force-with-lease
   wip = commit -m '[ci skip][wip] initial commit' --allow-empty
-  sync = ! git checkout master && git remote update --prune && git pull origin master --rebase && git branch --merged | grep -v master | grep -v '*' | xargs -I {} git branch -d {}
+  default = ! git remote show origin | grep 'HEAD branch' | awk '{print $NF}'
+  sync = ! git checkout $(git default) && git remote update --prune && git pull origin $(git default) --rebase && git branch --merged | grep -v $(git default) | grep -v '*' | xargs -I {} git branch -d {}
   aliases = ! git config --list | grep ^alias\\. | cut -c 7- | grep -Ei --color \"$1\" "#"
 [push]
   default = nothing
