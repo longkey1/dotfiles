@@ -13,7 +13,7 @@ build-gitlint \
 build-go \
 build-godl \
 build-jira \
-build-jq \
+build-gojq \
 build-just \
 build-lf \
 build-mark \
@@ -254,9 +254,9 @@ build-jira: build-eget
 build-just: build-eget
 	@[ ! -f $(_OPT)/just ] && ./builders/just "$(_ROOT)/$(_OPT)" || true
 
-.PHONY: build-jq
-build-jq: build-eget
-	@[ ! -e $(_OPT)/jq ] && ./builders/jq "$(_ROOT)/$(_OPT)" || true
+.PHONY: build-gojq
+build-gojq: build-eget
+	@[ ! -e $(_OPT)/gojq ] && ./builders/gojq "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-lf
 build-lf: build-eget

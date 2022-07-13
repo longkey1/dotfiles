@@ -3,4 +3,4 @@
 OPT=${1}
 REPOSITORY="itchyny/gojq"
 
-${OPT}/eget ${REPOSITORY} --to ${OPT}/jq
+${OPT}/eget ${REPOSITORY} --to ${OPT}/
