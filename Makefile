@@ -1,7 +1,6 @@
 .DEFAULT_GOAL := help
 
 _BUILD := \
-build-diary \
 build-direnv \
 build-eget \
 build-envsubst \
@@ -13,6 +12,7 @@ build-gitlint \
 build-go \
 build-godl \
 build-jira \
+build-jnal \
 build-gojq \
 build-just \
 build-lf \
@@ -27,13 +27,13 @@ build-zsh
 
 _TARGETS := \
 "config/composer" \
-"config/diary" \
 "config/direnv" \
 "config/gcal" \
 "config/gh" \
 "config/git" \
 "config/godl" \
 "config/ideavim" \
+"config/jnal" \
 "config/lf" \
 "config/nvim" \
 "config/tmpl" \
@@ -121,19 +121,19 @@ build: $(_BUILD) ## build all
 clean: ## delete all builded files
 	@find $(_OPT) -type f -o -type l | grep -v .gitignore | xargs rm -rf
 	@rm -f $(_CONFIG)/composer/auth.json
-	@rm -f $(_CONFIG)/diary/config.toml
 	@rm -f $(_CONFIG)/gcal/config.toml
 	@rm -f $(_CONFIG)/git/config.local
 	@rm -f $(_CONFIG)/godl/config.toml
 	@rm -f $(_CONFIG)/ideavim/ideavimrc
+	@rm -f $(_CONFIG)/jnal/config.toml
 	@rm -rf $(_CONFIG)/zsh/antigen
 	@rm -f $(_CONFIG)/zsh/.zshrc
 	@rm -f $(_CONFIG)/zsh/zshrc.local
 	@find $(_CONFIG)/godl/goroots -mindepth 1 -maxdepth 1 -type d | xargs rm -rf
 	@rm -rf vim/pack/bundle/start/*
-	@rm -f $(_CONFIG)/zsh/functions/_diary
 	@rm -f $(_CONFIG)/zsh/functions/_gcal
 	@rm -f $(_CONFIG)/zsh/functions/_godl
+	@rm -f $(_CONFIG)/zsh/functions/_jnal
 	@rm -f $(_CONFIG)/zsh/functions/_just
 	@rm -f $(_CONFIG)/zsh/functions/_tmpl
 
@@ -182,11 +182,6 @@ decrypt: ## decrypt files
 	$(call _decrypt,$(_CONFIG)/composer/auth.json)
 	$(call _decrypt,$(_CONFIG)/gcal/credentials.json)
 	$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
-
-.PHONY: build-diary
-build-diary: build-eget build-envsubst
-	@[ ! -e $(_OPT)/diary ] && ./builders/diary "$(_ROOT)/$(_OPT)" || true
-	@[ ! -f $(_CONFIG)/diary/config.toml ] && $(_OPT)/envsubst '$$HOME $$EDITOR' < $(_CONFIG)/diary/config.toml.dist > $(_CONFIG)/diary/config.toml || true
 
 .PHONY: build-direnv
 build-direnv: build-eget
@@ -248,6 +243,12 @@ build-just: build-eget
 build-gojq: build-eget
 	@[ ! -e $(_OPT)/gojq ] && ./builders/gojq "$(_ROOT)/$(_OPT)" || true
 
+.PHONY: build-jnal
+build-jnal: build-eget build-envsubst
+	@[ ! -e $(_OPT)/jnal ] && ./builders/jnal "$(_ROOT)/$(_OPT)" || true
+	@[ ! -f $(_CONFIG)/jnal/config.toml ] && $(_OPT)/envsubst '$$HOME $$EDITOR' < $(_CONFIG)/jnal/config.toml.dist > $(_CONFIG)/jnal/config.toml || true
+
+
 .PHONY: build-lf
 build-lf: build-eget
 	@[ ! -e $(_OPT)/lf ] && ./builders/lf "$(_ROOT)/$(_OPT)" || true
@@ -287,12 +288,12 @@ build-yq: build-eget
 	@[ ! -e $(_OPT)/yq ] && ./builders/yq "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-zsh
-build-zsh:  build-diary build-gcal build-godl build-just build-tmpl
+build-zsh:  build-jnal build-gcal build-godl build-just build-tmpl
 	@[ ! -f $(_CONFIG)/zsh/.zshrc ] && cd $(_CONFIG)/zsh && ln -s zshrc .zshrc || true
 	$(call _clone_github_repo,zsh-users/antigen,config/zsh/antigen)
-	@$(_OPT)/diary --config $(_CONFIG)/diary/config.toml completion zsh > $(_CONFIG)/zsh/functions/_diary
 	@$(_OPT)/gcal --config $(_CONFIG)/gcal/config.toml completion zsh > $(_CONFIG)/zsh/functions/_gcal
 	@$(_OPT)/godl completion zsh > $(_CONFIG)/zsh/functions/_godl
+	@$(_OPT)/jnal --config $(_CONFIG)/jnal/config.toml completion zsh > $(_CONFIG)/zsh/functions/_jnal
 	@$(_OPT)/just --completions zsh > $(_CONFIG)/zsh/functions/_just
 	@$(_OPT)/tmpl --config $(_CONFIG)/tmpl/config.toml completion zsh > $(_CONFIG)/zsh/functions/_tmpl
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 OPT=${1}
-REPOSITORY="longkey1/diary"
+REPOSITORY="longkey1/jnal"
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 ARCH="amd64"
 

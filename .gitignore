@@ -14,10 +14,10 @@
 /config/zsh/.zshrc
 /config/zsh/.zshrc.zwc
 /config/zsh/.zsh_sessions
-/config/zsh/functions/_diary
 /config/zsh/functions/_gcal
 /config/zsh/functions/_godl
 /config/zsh/functions/_just
+/config/zsh/functions/_jnal
 /config/zsh/functions/_tmpl
 /config/zsh/history
 /config/zsh/zshrc.antigen.zwc
