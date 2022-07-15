@@ -1,6 +1,0 @@
-base_directory = "/Users/m-nagai/Documents/Journal"
-file_name = "2006/2006-01-02.md"
-file_template = "# 2006-01-02\n"
-open_command = "vim {{ .DayFile }}"
-list_command = "lf {{ .BaseDirectory }}/"
-search_command = "selected=$(pt \"{{ .Pattern }}\" \"{{ .BaseDirectory }}\" | fzf --query \"\" | awk -F : '{print \"-c \"  \" \" }'); [[ -n  ]] && echo  || true"
