@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-OPT=${1}
-REPOSITORY="kovetskiy/mark"
-
-${OPT}/eget ${REPOSITORY} --to ${OPT}/

@@ -11,12 +11,10 @@ build-ghq \
 build-gitlint \
 build-go \
 build-godl \
-build-jira \
 build-jnal \
 build-gojq \
 build-just \
 build-lf \
-build-mark \
 build-rg \
 build-tmpl \
 build-usql \
@@ -231,10 +229,6 @@ build-godl: build-eget build-envsubst
 build-ideavim:
 	@[ ! -f $(_CONFIG)/ideavim/ideavimrc ] && cd $(_CONFIG)/ideavim && ln -s ideavimrc.$(_OS) ideavimrc || true
 
-.PHONY: build-jira
-build-jira: build-eget
-	@[ ! -f $(_OPT)/jira ] && ./builders/jira "$(_ROOT)/$(_OPT)" || true
-
 .PHONY: build-just
 build-just: build-eget
 	@[ ! -f $(_OPT)/just ] && ./builders/just "$(_ROOT)/$(_OPT)" || true
@@ -248,14 +242,9 @@ build-jnal: build-eget build-envsubst
 	@[ ! -e $(_OPT)/jnal ] && ./builders/jnal "$(_ROOT)/$(_OPT)" || true
 	@[ ! -f $(_CONFIG)/jnal/config.toml ] && $(_OPT)/envsubst '$$HOME $$EDITOR' < $(_CONFIG)/jnal/config.toml.dist > $(_CONFIG)/jnal/config.toml || true
 
-
 .PHONY: build-lf
 build-lf: build-eget
 	@[ ! -e $(_OPT)/lf ] && ./builders/lf "$(_ROOT)/$(_OPT)" || true
-
-.PHONY: build-mark
-build-mark: build-eget
-	@[ ! -e $(_OPT)/mark ] && ./builders/mark "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-rg
 build-rg: build-eget
