@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+OPT=${1}
+REPOSITORY="kurtbuilds/checkexec"
+OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+ARCH="amd64"
+
+${OPT}/eget ${REPOSITORY} --to ${OPT}/

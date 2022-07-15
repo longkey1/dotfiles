@@ -1,6 +1,7 @@
 .DEFAULT_GOAL := help
 
 _BUILD := \
+build-checkexec \
 build-direnv \
 build-eget \
 build-envsubst \
@@ -181,6 +182,10 @@ decrypt: ## decrypt files
 	$(call _decrypt,$(_CONFIG)/gcal/credentials.json)
 	$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
 
+.PHONY: build-checkexec
+build-checkexec: build-eget
+	@[ ! -f $(_OPT)/checkexec ] && ./builders/checkexec "$(_ROOT)/$(_OPT)" || true
+
 .PHONY: build-direnv
 build-direnv: build-eget
 	@[ ! -f $(_OPT)/direnv ] && ./builders/direnv "$(_ROOT)/$(_OPT)" || true
@@ -198,9 +203,9 @@ build-fzf: build-eget
 	@[ ! -e $(_OPT)/fzf ] && ./builders/fzf "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-gcal
-build-gcal: build-eget build-envsubst
+build-gcal: build-checkexec build-eget build-eget build-envsubst
 	@[ ! -f $(_OPT)/gcal ] && ./builders/gcal "$(_ROOT)/$(_OPT)" || true
-	@[ ! -f $(_CONFIG)/gcal/config.toml ] && $(_OPT)/envsubst '$$HOME' < $(_CONFIG)/gcal/config.toml.dist > $(_CONFIG)/gcal/config.toml || true
+	@$(_OPT)/checkexec gcal/config.toml $(_CONFIG)/gcal/config.toml.dist -- $(_OPT)/envsubst '$$HOME' < $(_CONFIG)/gcal/config.toml.dist > $(_CONFIG)/gcal/config.toml
 	@$(call _decrypt,$(_CONFIG)/gcal/credentials.json)
 
 .PHONY: build-gh
@@ -218,12 +223,12 @@ build-gitlint: build-eget
 
 .PHONY: build-go
 build-go: build-godl
-	$(_OPT)/godl install
+	@$(_OPT)/godl install
 
 .PHONY: build-godl
-build-godl: build-eget build-envsubst
+build-godl: build-checkexec build-eget build-envsubst
 	@[ ! -f $(_OPT)/godl ] && ./builders/godl "$(_ROOT)/$(_OPT)" || true
-	@[ ! -f $(_CONFIG)/godl/config.toml ] && $(_OPT)/envsubst '$$HOME' < $(_CONFIG)/godl/config.toml.dist > $(_CONFIG)/godl/config.toml || true
+	@$(_OPT)/checkexec godl/config.toml $(_CONFIG)/godl/config.toml.dist -- $(_OPT)/envsubst '$$HOME' < $(_CONFIG)/godl/config.toml.dist > $(_CONFIG)/godl/config.toml
 
 .PHONY: build-ideavim
 build-ideavim:
@@ -238,9 +243,9 @@ build-gojq: build-eget
 	@[ ! -e $(_OPT)/gojq ] && ./builders/gojq "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-jnal
-build-jnal: build-eget build-envsubst
+build-jnal: build-checkexec build-eget build-envsubst
 	@[ ! -e $(_OPT)/jnal ] && ./builders/jnal "$(_ROOT)/$(_OPT)" || true
-	@[ ! -f $(_CONFIG)/jnal/config.toml ] && $(_OPT)/envsubst '$$HOME $$EDITOR' < $(_CONFIG)/jnal/config.toml.dist > $(_CONFIG)/jnal/config.toml || true
+	@$(_OPT)/checkexec jnal/config.toml $(_CONFIG)/jnal/config.toml.dist -- $(_OPT)/envsubst '$$HOME' < $(_CONFIG)/jnal/config.toml.dist > $(_CONFIG)/jnal/config.toml
 
 .PHONY: build-lf
 build-lf: build-eget
@@ -253,7 +258,7 @@ build-rg: build-eget
 .PHONY: build-tmpl
 build-tmpl: build-eget build-envsubst
 	@[ ! -f $(_OPT)/tmpl ] && ./builders/tmpl "$(_ROOT)/$(_OPT)" || true
-	@[ ! -f $(_CONFIG)/tmpl/config.toml ] && $(_OPT)/envsubst '$$HOME' < $(_CONFIG)/tmpl/config.toml.dist > $(_CONFIG)/tmpl/config.toml || true
+	@$(_OPT)/checkexec tmpl/config.toml $(_CONFIG)/tmpl/config.toml.dist -- $(_OPT)/envsubst '$$HOME' < $(_CONFIG)/tmpl/config.toml.dist > $(_CONFIG)/tmpl/config.toml
 
 .PHONY: build-usql
 build-usql: build-eget
