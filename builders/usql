@@ -6,7 +6,7 @@ OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 ARCH="amd64"
 
 if [ "${OS}" == "linux" ]; then
-  ${OPT}/eget ${REPOSITORY} --to ${OPT}/ --asset static
+  ${OPT}/eget ${REPOSITORY} --to ${OPT}/usql --asset static
 else
-  ${OPT}/eget ${REPOSITORY} --to ${OPT}/
+  ${OPT}/eget ${REPOSITORY} --to ${OPT}/usql
 fi
