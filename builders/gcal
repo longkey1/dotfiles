@@ -2,7 +2,5 @@
 
 OPT=${1}
 REPOSITORY="longkey1/gcal"
-OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-ARCH="amd64"
 
-${OPT}/eget ${REPOSITORY} --system ${OS}/${ARCH} --to ${OPT}/
+${OPT}/eget ${REPOSITORY} --to ${OPT}
