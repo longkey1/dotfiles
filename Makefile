@@ -16,6 +16,7 @@ build-jnal \
 build-gojq \
 build-just \
 build-lf \
+build-rclone \
 build-rg \
 build-tmpl \
 build-usql \
@@ -250,6 +251,10 @@ build-jnal: build-checkexec build-eget build-envsubst
 .PHONY: build-lf
 build-lf: build-eget
 	@[ ! -e $(_OPT)/lf ] && ./builders/lf "$(_ROOT)/$(_OPT)" || true
+
+.PHONY: build-rclone
+build-rclone: build-eget
+	@[ ! -e $(_OPT)/rclone ] && ./builders/rclone "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-rg
 build-rg: build-eget

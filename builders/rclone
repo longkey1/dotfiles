@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+OPT=${1}
+REPOSITORY="rclone/rclone"
+
+${OPT}/eget ${REPOSITORY} --to ${OPT}/
