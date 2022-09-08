@@ -18,6 +18,7 @@ build-just \
 build-lf \
 build-rclone \
 build-rg \
+build-sws \
 build-tmpl \
 build-usql \
 build-vim \
@@ -259,6 +260,10 @@ build-rclone: build-eget
 .PHONY: build-rg
 build-rg: build-eget
 	@[ ! -e $(_OPT)/rg ] && ./builders/rg "$(_ROOT)/$(_OPT)" || true
+
+.PHONY: build-sws
+build-sws: build-eget
+	@[ ! -e $(_OPT)/sws ] && ./builders/sws "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-tmpl
 build-tmpl: build-eget build-envsubst

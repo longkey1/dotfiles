@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+OPT=${1}
+REPOSITORY="joseluisq/static-web-server"
+
+${OPT}/eget ${REPOSITORY} --to ${OPT}/
