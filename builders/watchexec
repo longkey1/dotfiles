@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+OPT=${1}
+REPOSITORY="watchexec/watchexec"
+
+OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+ARCH="amd64"
+
+${OPT}/eget ${REPOSITORY} --to ${OPT}/

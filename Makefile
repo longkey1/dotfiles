@@ -22,8 +22,9 @@ build-sws \
 build-tmpl \
 build-usql \
 build-vim \
-build-yq \
+build-watchexec \
 build-xh \
+build-yq \
 build-zsh
 
 _TARGETS := \
@@ -37,6 +38,7 @@ _TARGETS := \
 "config/jnal" \
 "config/lf" \
 "config/nvim" \
+"config/sws" \
 "config/tmpl" \
 "config/tmux" \
 "config/zsh" \
@@ -282,6 +284,10 @@ build-vim:
 	$(call _clone_github_repo,nanotech/jellybeans.vim,vim/pack/bundle/start/jellybeans.vim)
 	$(call _clone_github_repo,ConradIrwin/vim-bracketed-paste,vim/pack/bundle/start/vim-bracketed-paste)
 	$(call _clone_github_repo,tyru/open-browser.vim,vim/pack/bundle/start/open-browser.vim)
+
+.PHONY: build-watchexec
+build-watchexec: build-eget
+	@[ ! -f $(_OPT)/watchexec ] && ./builders/watchexec "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-xh
 build-xh: build-eget
