@@ -3,4 +3,4 @@
 OPT=${1}
 REPOSITORY="joseluisq/static-web-server"
 
-${OPT}/eget ${REPOSITORY} --to ${OPT}/
+${OPT}/eget ${REPOSITORY} --to ${OPT}/sws

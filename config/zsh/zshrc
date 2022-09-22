@@ -67,6 +67,9 @@ fi
 # ansible
 excutable ansible && export ANSIBLE_NOCOWS=1
 
+# sws (ref https://sws.joseluisq.net/)
+excutable sws && export SERVER_CONFIG_FILE="${XDG_CONFIG_HOME}/sws/config.toml"
+
 # make
 excutable make && export MAKEFLAGS="-j$(nproc)"
 

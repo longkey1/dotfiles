@@ -1,0 +1,9 @@
+[general]
+
+#### Address & Root dir
+host = "::"
+port = 8888
+root = "."
+
+#### Logging
+log-level = "trace"
