@@ -17,7 +17,7 @@ if [[ -f "${ZDOTDIR}/antigen/antigen.zsh" ]]; then
   antigen bundle mollifier/anyframe
 
   # Load the theme.
-  antigen theme fishy
+  antigen theme sammy
 
   # Tell antigen that you're done.
   antigen apply
