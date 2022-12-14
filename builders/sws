@@ -3,4 +3,9 @@
 OPT=${1}
 REPOSITORY="joseluisq/static-web-server"
 
-${OPT}/eget ${REPOSITORY} --to ${OPT}/sws
+OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+if [ "${OS}" == "linux" ]; then
+  ${OPT}/eget ${REPOSITORY} --to ${OPT}/sws --asset linux-musl.tar.gz
+else
+  ${OPT}/eget ${REPOSITORY} --to ${OPT}/sws
+fi

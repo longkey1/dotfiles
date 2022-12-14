@@ -16,13 +16,11 @@ build-jnal \
 build-gojq \
 build-just \
 build-lf \
-build-rclone \
 build-rg \
 build-sws \
 build-tmpl \
 build-usql \
 build-vim \
-build-watchexec \
 build-xh \
 build-yq \
 build-zsh
@@ -255,10 +253,6 @@ build-jnal: build-checkexec build-eget build-envsubst
 build-lf: build-eget
 	@[ ! -e $(_OPT)/lf ] && ./builders/lf "$(_ROOT)/$(_OPT)" || true
 
-.PHONY: build-rclone
-build-rclone: build-eget
-	@[ ! -e $(_OPT)/rclone ] && ./builders/rclone "$(_ROOT)/$(_OPT)" || true
-
 .PHONY: build-rg
 build-rg: build-eget
 	@[ ! -e $(_OPT)/rg ] && ./builders/rg "$(_ROOT)/$(_OPT)" || true
@@ -284,10 +278,6 @@ build-vim:
 	$(call _clone_github_repo,nanotech/jellybeans.vim,vim/pack/bundle/start/jellybeans.vim)
 	$(call _clone_github_repo,ConradIrwin/vim-bracketed-paste,vim/pack/bundle/start/vim-bracketed-paste)
 	$(call _clone_github_repo,tyru/open-browser.vim,vim/pack/bundle/start/open-browser.vim)
-
-.PHONY: build-watchexec
-build-watchexec: build-eget
-	@[ ! -f $(_OPT)/watchexec ] && ./builders/watchexec "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-xh
 build-xh: build-eget
