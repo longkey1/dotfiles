@@ -3,4 +3,4 @@
 OPT=${1}
 REPOSITORY="longkey1/gcal"
 
-${OPT}/eget ${REPOSITORY} --to ${OPT}
+${OPT}/eget ${REPOSITORY} --to ${OPT}/

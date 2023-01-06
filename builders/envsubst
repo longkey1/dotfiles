@@ -2,7 +2,5 @@
 
 OPT=${1}
 REPOSITORY="a8m/envsubst"
-OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-ARCH="amd64"
 
-${OPT}/eget ${REPOSITORY} --system ${OS}/${ARCH} --to ${OPT}/
+${OPT}/eget ${REPOSITORY} --to ${OPT}/
