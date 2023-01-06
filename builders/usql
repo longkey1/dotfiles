@@ -2,8 +2,6 @@
 
 OPT=${1}
 REPOSITORY="xo/usql"
-OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-ARCH="amd64"
 
 if [ "${OS}" == "linux" ]; then
   ${OPT}/eget ${REPOSITORY} --to ${OPT}/usql --asset static --file usql_static
