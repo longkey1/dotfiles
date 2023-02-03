@@ -41,6 +41,7 @@ fi
 excutable colordiff && alias diff="colordiff"
 excutable jq && alias jq="jq -C"
 excutable ls && alias ll="ls -l"
+excutable rg && alias rg="rg -p"
 excutable tput && alias beep="tput bel"
 excutable vim && alias vi="vim"
 excutable xh && alias http="xh"
