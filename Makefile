@@ -243,7 +243,7 @@ build-just: build-eget
 .PHONY: build-gojq
 build-gojq: build-eget
 	@[ ! -e $(_OPT)/gojq ] && ./builders/gojq "$(_ROOT)/$(_OPT)" || true
-	@ln -s $(_ROOT)/$(_OPT)/gojq $(_ROOT)/$(_OPT)/jq
+	@[ ! -e $(_OPT)/jq ] && ln -s $(_ROOT)/$(_OPT)/gojq $(_ROOT)/$(_OPT)/jq || true
 
 .PHONY: build-jnal
 build-jnal: build-checkexec build-eget build-envsubst
