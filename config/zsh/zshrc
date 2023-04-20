@@ -109,5 +109,8 @@ export LOCAL_GID=$(id -g)
 # disable beep
 setopt no_beep
 
+# gpg
+export GPG_TTY=${TTY}
+
 # include local file
 [[ -f ${ZDOTDIR}/zshrc.local ]] && source ${ZDOTDIR}/zshrc.local

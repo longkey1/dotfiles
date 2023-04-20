@@ -22,9 +22,14 @@
   diff = diff-highlight | nkf -w | LESSCHARSET=utf-8 less
 [commit]
   template =  ~/.config/git/commit-template
+	gpgsign = true
 [include]
   path = ~/.config/git/config.local
 [ghq]
   root = ~/work/src
 [url "ssh://git@github.com/"]
   insteadOf = https://github.com/
+[gpg]
+	program = gpg
+[tag]
+	gpgsign = true
