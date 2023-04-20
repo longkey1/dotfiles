@@ -291,6 +291,7 @@ build-yq: build-eget
 .PHONY: build-zsh
 build-zsh:  build-jnal build-gcal build-godl build-just build-tmpl
 	@[ ! -f $(_CONFIG)/zsh/.zshrc ] && cd $(_CONFIG)/zsh && ln -s zshrc .zshrc || true
+	@[ ! -f $(_CONFIG)/zsh/.zlogin ] && cd $(_CONFIG)/zsh && ln -s zlogin .zlogin || true
 	$(call _clone_github_repo,zsh-users/antigen,config/zsh/antigen)
 	@$(_OPT)/gcal --config $(_CONFIG)/gcal/config.toml completion zsh > $(_CONFIG)/zsh/functions/_gcal
 	@$(_OPT)/godl completion zsh > $(_CONFIG)/zsh/functions/_godl

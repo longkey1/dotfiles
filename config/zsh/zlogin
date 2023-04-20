@@ -1,0 +1,2 @@
+# include local file
+[[ -f ${ZDOTDIR}/zlogin.local ]] && source ${ZDOTDIR}/zlogin.local
