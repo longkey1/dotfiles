@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := help
 
 _BUILD := \
-build-bw \
+build-bitwarden \
 build-checkexec \
 build-direnv \
 build-eget \
@@ -27,6 +27,7 @@ build-yq \
 build-zsh
 
 _TARGETS := \
+"config/bitwarden" \
 "config/composer" \
 "config/direnv" \
 "config/gcal" \
@@ -186,9 +187,10 @@ decrypt: ## decrypt files
 	$(call _decrypt,$(_CONFIG)/gcal/credentials.json)
 	$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
 
-.PHONY: build-bw
-build-bw:
-	@[ ! -f $(_OPT)/bw ] && ./builders/bw "$(_ROOT)/$(_OPT)" || true
+.PHONY: build-bitwarden
+build-bitwarden:
+	@[ ! -f $(_OPT)/bw ] && ./builders/bitwarden "$(_ROOT)/$(_OPT)" || true
+	@[ ! -f $(_CONFIG)/bitwarden/session ] && env BITWARDENCLI_APPDATA_DIR=$(_CONFIG)/bitwarden $(_OPT)/bw login --raw > $(_CONFIG)/bitwarden/session || true
 
 .PHONY: build-checkexec
 build-checkexec: build-eget
