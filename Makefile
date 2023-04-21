@@ -55,7 +55,7 @@ _OPT := opt
 _CONFIG := config
 _OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
 _LOCAL_BIN := $(HOME)/.local/bin
-_BIN_TARGETS := $(shell find $(_OPT) -type f -o -type l -print0 | xargs -0 -n1 basename | grep -v .gitignore)
+_BIN_TARGETS := $(shell find $(_OPT) -type f -print0 | xargs -0 -n1 basename | grep -v .gitignore)
 
 define _executable
 	@if ! type $(1) &> /dev/null; then \
@@ -248,7 +248,7 @@ build-just: build-eget
 .PHONY: build-gojq
 build-gojq: build-eget
 	@[ ! -e $(_OPT)/gojq ] && ./builders/gojq "$(_ROOT)/$(_OPT)" || true
-	@[ ! -e $(_OPT)/jq ] && ln -s $(_ROOT)/$(_OPT)/gojq $(_ROOT)/$(_OPT)/jq || true
+	@[ ! -e $(_OPT)/jq ] && ln $(_ROOT)/$(_OPT)/gojq $(_ROOT)/$(_OPT)/jq || true
 
 .PHONY: build-jnal
 build-jnal: build-checkexec build-eget build-envsubst
