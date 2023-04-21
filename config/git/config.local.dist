@@ -1,1 +1,2 @@
-/Users/m-nagai/work/src/github.com/kouzoh/zp-m-nagai/dotfiles/config/git/config.local
+[user]
+  signingkey = 376A521A9B63F01365B6D35E92AC04366ADBC4A2
