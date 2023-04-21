@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+OPT=${1}
+BINARY="bw"
+WORK_DIR=/tmp/dotfiles-${USER}-$(basename ${0})
+OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+if [ "${OS}" == "darwin" ]; then
+  OS="macos"
+fi
+
+mkdir -p ${WORK_DIR}
+pushd ${WORK_DIR}
+
+wget "https://vault.bitwarden.com/download/?app=cli&platform=${OS}" -O bw.zip
+unzip bw.zip
+mv bw ${OPT}/${BINARY}
+
+popd
+rm -rf ${WORK_DIR}
