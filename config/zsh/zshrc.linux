@@ -1,3 +1,6 @@
+# path /usr/lib/gnupg
+path=(${path} /usr/lib/gnupg(N-/))
+
 # no create core dump file
 ulimit -c 0
 

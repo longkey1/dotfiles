@@ -1,2 +1,5 @@
-# include local file
+# gpg
+bw get password c5f2ce95-8cd9-41e6-b1ef-afeb00292e4c --session $(cat ${BITWARDENCLI_APPDATA_DIR}/session) | gpg-preset-passphrase --preset ${GPG_KEYGRIP}
+
+# include local
 [[ -f ${ZDOTDIR}/zlogin.local ]] && source ${ZDOTDIR}/zlogin.local
