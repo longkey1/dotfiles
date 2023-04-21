@@ -1,6 +1,7 @@
 .DEFAULT_GOAL := help
 
 _BUILD := \
+build-bw \
 build-checkexec \
 build-direnv \
 build-eget \
@@ -183,6 +184,10 @@ decrypt: ## decrypt files
 	$(call _decrypt,$(_CONFIG)/composer/auth.json)
 	$(call _decrypt,$(_CONFIG)/gcal/credentials.json)
 	$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
+
+.PHONY: build-bw
+build-bw:
+	@[ ! -f $(_OPT)/bw ] && ./builders/bw "$(_ROOT)/$(_OPT)" || true
 
 .PHONY: build-checkexec
 build-checkexec: build-eget

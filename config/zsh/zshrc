@@ -106,6 +106,9 @@ compinit
 export LOCAL_UID=$(id -u)
 export LOCAL_GID=$(id -g)
 
+# bitwarden
+export BITWARDENCLI_APPDATA_DIR="${XDG_CONFIG_HOME}/bitwarden"
+
 # disable beep
 setopt no_beep
 
