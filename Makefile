@@ -41,6 +41,7 @@ _TARGETS := \
 "config/tmpl" \
 "config/tmux" \
 "config/zsh" \
+"gnupg" \
 "vim" \
 "zshenv"
 
