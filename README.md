@@ -4,9 +4,23 @@
 
 ```
 $ mkdir -p $HOME/work/src/github.com/longkey1
+
 $ git clone git@github.com:longkey1/dotfiles.git $HOME/work/src/github.com/longkey1/dotfiles
-$ pushd $HOME/work/src/github.com/longkey1/dotfiles && make build && make install && popd
+$ cd $HOME/work/src/github.com/longkey1/dotfiles
+
+$ make init
+
+# secrets.env
+cp dotfiles/secrets.env.dist dotfiles/secrets.env
+vim dotfiles/secrets.env
+
+# bitwarden
+./bin/bw login
+export BW_SESSION
 ```
+
+$ make build
+$ make install
 
 ## Configuration
 
