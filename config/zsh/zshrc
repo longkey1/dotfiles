@@ -29,7 +29,7 @@ export SAVEHIST=${HISTSIZE}
 export DISABLE_AUTO_TITLE=true
 
 # path .bin
-path=(${path} ${HOME}/.local/bin(N-/))
+path=(${path} ${HOME}/.bin(N-/))
 
 # direnv
 if excutable direnv; then
@@ -105,9 +105,6 @@ compinit
 # docker-compose
 export LOCAL_UID=$(id -u)
 export LOCAL_GID=$(id -g)
-
-# bitwarden
-export BITWARDENCLI_APPDATA_DIR="${XDG_CONFIG_HOME}/bitwarden"
 
 # disable beep
 setopt no_beep

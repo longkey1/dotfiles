@@ -1,14 +1,14 @@
 .DEFAULT_GOAL := help
 
 _BUILD := \
-build-bitwarden \
 build-checkexec \
+build-composer \
 build-direnv \
 build-eget \
-build-envsubst \
 build-fzf \
 build-gcal \
 build-gh \
+build-git \
 build-ghq \
 build-gitlint \
 build-go \
@@ -27,7 +27,7 @@ build-yq \
 build-zsh
 
 _TARGETS := \
-"config/bitwarden" \
+"bin" \
 "config/composer" \
 "config/direnv" \
 "config/gcal" \
@@ -42,44 +42,23 @@ _TARGETS := \
 "config/tmpl" \
 "config/tmux" \
 "config/zsh" \
-"gnupg" \
+"gnupg/gpg-agent.conf" \
+"gnupg/gpg.conf" \
 "vim" \
 "zshenv"
 
 _LINUX_ONLY_TARGETS := \
-"config/fontconfig" \
 "config/systemd" \
 "config/ulauncher" \
 "pam_environment"
 
-_ROOT := $(patsubst %/,%,$(dir $(realpath $(firstword $(MAKEFILE_LIST)))))
-_OPT := opt
-_CONFIG := config
-_OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
-_LOCAL_BIN := $(HOME)/.local/bin
-_BIN_TARGETS := $(shell find $(_OPT) -type f -print0 | xargs -0 -n1 basename | grep -v .gitignore)
-
-define _executable
-	@if ! type $(1) &> /dev/null; then \
-		echo "not found $(1) command."; \
-		exit 1; \
-	fi
-endef
-
-define _encrypt
-	@[ ! -e "$(1).encrypted" ] && openssl enc -aes-256-cbc -e -salt -pbkdf2 -in $(1) -out $(1).encrypted || true
-endef
-
-define _decrypt
-	@[ ! -e "$(1)" ] && openssl enc -aes-256-cbc -d -salt -pbkdf2 -in $(1).encrypted -out $(1) || true
-endef
+ROOT := $(patsubst %/,%,$(dir $(realpath $(firstword $(MAKEFILE_LIST)))))
+BIN := $(ROOT)/bin
+CONFIG := $(ROOT)/config
+OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
 
 define _clone_github_repo
 	@[ ! -d "$(2)" ] && git clone https://github.com/$(1).git $(2) || true
-endef
-
-define _build_go_binary
-	curl -sf https://gobinaries.com/$(1) | PREFIX=$(_OPT) sh
 endef
 
 define _create_home_symlink
@@ -100,54 +79,39 @@ define _delete_home_symlink
 	fi
 endef
 
-define _create_local_bin_symlink
-	if test -e "$(_LOCAL_BIN)/$(1)"; then \
-		echo "already exists $(_LOCAL_BIN)/$(1)"; \
-	else \
-		ln -s $(CURDIR)/$(_OPT)/$(1) $(_LOCAL_BIN) && echo "created $(_LOCAL_BIN)/$(1)"; \
-	fi
-endef
-
-define _delete_local_bin_symlink
-	if test -h "$(_LOCAL_BIN)/$(1)"; then \
-		unlink $(_LOCAL_BIN)/$(1) && echo "deleted $(_LOCAL_BIN)/$(1)"; \
-	elif test -e "$(_LOCAL_BIN)/$(1)"; then \
-		echo "no deleted $(_LOCAL_BIN)/$(1), not a symlink"; \
-	else \
-		echo "no exists $(_LOCAL_BIN)/$(1)"; \
-	fi
-endef
-
 .PHONY: build
 build: $(_BUILD) ## build all
 
 .PHONY: clean
 clean: ## delete all builded files
-	@find $(_OPT) -type f -o -type l | grep -v .gitignore | xargs rm -rf
-	@rm -f $(_CONFIG)/composer/auth.json
-	@rm -f $(_CONFIG)/gcal/config.toml
-	@rm -f $(_CONFIG)/git/config.local
-	@rm -f $(_CONFIG)/godl/config.toml
-	@rm -f $(_CONFIG)/ideavim/ideavimrc
-	@rm -f $(_CONFIG)/jnal/config.toml
-	@rm -rf $(_CONFIG)/zsh/antigen
-	@rm -f $(_CONFIG)/zsh/.zshrc
-	@rm -f $(_CONFIG)/zsh/zshrc.local
-	@find $(_CONFIG)/godl/goroots -mindepth 1 -maxdepth 1 -type d | xargs rm -rf
-	@rm -rf vim/pack/bundle/start/*
-	@rm -f $(_CONFIG)/zsh/functions/_gcal
-	@rm -f $(_CONFIG)/zsh/functions/_godl
-	@rm -f $(_CONFIG)/zsh/functions/_jnal
-	@rm -f $(_CONFIG)/zsh/functions/_just
-	@rm -f $(_CONFIG)/zsh/functions/_tmpl
+	@rm -rf $(BIN)
+	@rm -f $(CONFIG)/composer/auth.json
+	@rm -f $(CONFIG)/gcal/config.toml
+	@rm -f $(CONFIG)/gcal/credentials.json
+	@rm -f $(CONFIG)/gh/credentials.json
+	@rm -f $(CONFIG)/gh/hosts.yml
+	@rm -f $(CONFIG)/git/config
+	@rm -f $(CONFIG)/godl/config.toml
+	@rm -f $(CONFIG)/ideavim/ideavimrc
+	@rm -f $(CONFIG)/jnal/config.toml
+	@rm -f $(CONFIG)/tmpl/config.toml
+	@rm -rf $(CONFIG)/zsh/antigen
+	@rm -f $(CONFIG)/zsh/.zshrc
+	@rm -f $(CONFIG)/zsh/.zlogin
+	@rm -f $(CONFIG)/zsh/zlogin
+	@find $(CONFIG)/godl/goroots -mindepth 1 -maxdepth 1 -type d | xargs rm -rf
+	@rm -rf $(ROOT)/vim/pack/bundle/start/*
+	@rm -f $(CONFIG)/zsh/functions/_gcal
+	@rm -f $(CONFIG)/zsh/functions/_godl
+	@rm -f $(CONFIG)/zsh/functions/_jnal
+	@rm -f $(CONFIG)/zsh/functions/_just
+	@rm -f $(CONFIG)/zsh/functions/_tmpl
+	@rm -f $(ROOT)/dotfiles/secrets.env
 
 .PHONY: install
 install: ## create target's symlink in home directory
 	@for TARGET in $(_TARGETS); do \
 		$(call _create_home_symlink,"$$TARGET"); \
-	done
-	@for TARGET in $(_BIN_TARGETS); do \
-		$(call _create_local_bin_symlink,"$$TARGET"); \
 	done
 	@if test "$(shell uname -s)" = "Linux"; then \
 		for TARGET in $(_LINUX_ONLY_TARGETS); do \
@@ -163,9 +127,6 @@ uninstall: ## delete created symlink
 	@for TARGET in $(_TARGETS); do \
 		$(call _delete_home_symlink,"$$TARGET"); \
 	done
-	@for TARGET in $(_BIN_TARGETS); do \
-		$(call _delete_local_bin_symlink,"$$TARGET"); \
-	done
 	@if test "$(shell uname -s)" = "Linux"; then \
 		if test -f /opt/trackpoint-adjuster/apply.sh; then \
 			systemctl --user disable trackpoint-adjuster.service; \
@@ -175,109 +136,100 @@ uninstall: ## delete created symlink
 		done \
 	fi
 
-.PHONY: encrypt
-encrypt: ## encrypt files
-	$(call _encrypt,$(_CONFIG)/composer/auth.json)
-	$(call _encrypt,$(_CONFIG)/gcal/credentials.json)
-	$(call _encrypt,$(_CONFIG)/gh/hosts.yml)
-
-.PHONY: decrypt
-decrypt: ## decrypt files
-	$(call _decrypt,$(_CONFIG)/composer/auth.json)
-	$(call _decrypt,$(_CONFIG)/gcal/credentials.json)
-	$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
+.PHONY: build-composer
+build-composer:
+	@env GITHUB_PERSONAL_ACCESS_TOKEN=$(shell bw get password afcc443a-6d28-4950-b83b-afeb004c167b) envsubst '$${GITHUB_PERSONAL_ACCESS_TOKEN}' < $(CONFIG)/composer/auth.json.dist > $(CONFIG)/composer/auth.json
 
 .PHONY: build-bitwarden
 build-bitwarden:
-	@[ ! -f $(_OPT)/bw ] && ./builders/bitwarden "$(_ROOT)/$(_OPT)" || true
-	@[ ! -f $(_CONFIG)/bitwarden/session ] && env BITWARDENCLI_APPDATA_DIR=$(_CONFIG)/bitwarden $(_OPT)/bw login --raw > $(_CONFIG)/bitwarden/session || true
+	@[ ! -f $(BIN)/bw ] && ./dotfiles/installer/bitwarden "$(ROOT)/$(BIN)" || true
 
 .PHONY: build-checkexec
 build-checkexec: build-eget
-	@[ ! -f $(_OPT)/checkexec ] && ./builders/checkexec "$(_ROOT)/$(_OPT)" || true
+	@[ ! -f $(BIN)/checkexec ] && ./dotfiles/installer/checkexec "$(ROOT)/$(BIN)" || true
 
 .PHONY: build-direnv
 build-direnv: build-eget
-	@[ ! -f $(_OPT)/direnv ] && ./builders/direnv "$(_ROOT)/$(_OPT)" || true
+	@[ ! -f $(BIN)/direnv ] && ./dotfiles/installer/direnv "$(ROOT)/$(BIN)" || true
 
 .PHONY: build-eget
 build-eget:
-	@[ ! -e $(_OPT)/eget ] && ./builders/eget "$(_ROOT)/$(_OPT)" || true
-
-.PHONY: build-envsubst
-build-envsubst: build-eget
-	@[ ! -e $(_OPT)/envsubst ] && ./builders/envsubst "$(_ROOT)/$(_OPT)" || true
+	@[ ! -e $(BIN)/eget ] && ./dotfiles/installer/eget "$(ROOT)/$(BIN)" || true
 
 .PHONY: build-fzf
 build-fzf: build-eget
-	@[ ! -e $(_OPT)/fzf ] && ./builders/fzf "$(_ROOT)/$(_OPT)" || true
+	@[ ! -e $(BIN)/fzf ] && ./dotfiles/installer/fzf "$(ROOT)/$(BIN)" || true
 
 .PHONY: build-gcal
-build-gcal: build-checkexec build-eget build-eget build-envsubst
-	@[ ! -f $(_OPT)/gcal ] && ./builders/gcal "$(_ROOT)/$(_OPT)" || true
-	@$(_OPT)/checkexec gcal/config.toml $(_CONFIG)/gcal/config.toml.dist -- $(_OPT)/envsubst '$$HOME' < $(_CONFIG)/gcal/config.toml.dist > $(_CONFIG)/gcal/config.toml
-	@$(call _decrypt,$(_CONFIG)/gcal/credentials.json)
+build-gcal: build-checkexec build-eget
+	@[ ! -f $(BIN)/gcal ] && ./dotfiles/installer/gcal "$(ROOT)/$(BIN)" || true
+	@bw get notes 8dbf52a0-9ca9-41ec-8750-afeb004ce918 > $(CONFIG)/gcal/credentials.json
+	@$(BIN)/checkexec gcal/config.toml $(CONFIG)/gcal/config.toml.dist -- envsubst '$${HOME}' < $(CONFIG)/gcal/config.toml.dist > $(CONFIG)/gcal/config.toml
 
 .PHONY: build-gh
 build-gh: build-eget
-	@[ ! -e $(_OPT)/gh ] && ./builders/gh "$(_ROOT)/$(_OPT)" || true
-	@$(call _decrypt,$(_CONFIG)/gh/hosts.yml)
+	@[ ! -e $(BIN)/gh ] && ./dotfiles/installer/gh "$(ROOT)/$(BIN)" || true
+	@env GITHUB_PERSONAL_ACCESS_TOKEN=$(shell bw get password afcc443a-6d28-4950-b83b-afeb004c167b) envsubst '$${GITHUB_PERSONAL_ACCESS_TOKEN}' < $(CONFIG)/gh/hosts.yml.dist > $(CONFIG)/gh/hosts.yml
 
 .PHONY: build-ghq
 build-ghq: build-eget
-	@[ ! -f $(_OPT)/ghq ] && ./builders/ghq "$(_ROOT)/$(_OPT)" || true
+	@[ ! -f $(BIN)/ghq ] && ./dotfiles/installer/ghq "$(ROOT)/$(BIN)" || true
+
+.PHONY: build-git
+build-git:
+	@set -a && . ./dotfiles/secrets.env && set +a && envsubst '$${GPG_KEYID}' < $(CONFIG)/git/config.dist > $(CONFIG)/git/config
 
 .PHONY: build-gitlint
 build-gitlint: build-eget
-	@[ ! -f $(_OPT)/gitlint ] && ./builders/gitlint "$(_ROOT)/$(_OPT)" || true
+	@[ ! -f $(BIN)/gitlint ] && ./dotfiles/installer/gitlint "$(ROOT)/$(BIN)" || true
 
 .PHONY: build-go
 build-go: build-godl
-	@$(_OPT)/godl install
+	@$(BIN)/godl install
 
 .PHONY: build-godl
-build-godl: build-checkexec build-eget build-envsubst
-	@[ ! -f $(_OPT)/godl ] && ./builders/godl "$(_ROOT)/$(_OPT)" || true
-	@$(_OPT)/checkexec godl/config.toml $(_CONFIG)/godl/config.toml.dist -- $(_OPT)/envsubst '$$HOME' < $(_CONFIG)/godl/config.toml.dist > $(_CONFIG)/godl/config.toml
+build-godl: build-checkexec build-eget
+	@[ ! -f $(BIN)/godl ] && ./dotfiles/installer/godl "$(ROOT)/$(BIN)" || true
+	@$(BIN)/checkexec godl/config.toml $(CONFIG)/godl/config.toml.dist -- envsubst '$${HOME}' < $(CONFIG)/godl/config.toml.dist > $(CONFIG)/godl/config.toml
 
 .PHONY: build-ideavim
 build-ideavim:
-	@[ ! -f $(_CONFIG)/ideavim/ideavimrc ] && cd $(_CONFIG)/ideavim && ln -s ideavimrc.$(_OS) ideavimrc || true
+	@[ ! -f $(CONFIG)/ideavim/ideavimrc ] && cd $(CONFIG)/ideavim && ln -s ideavimrc.$(OS) ideavimrc || true
 
 .PHONY: build-just
 build-just: build-eget
-	@[ ! -f $(_OPT)/just ] && ./builders/just "$(_ROOT)/$(_OPT)" || true
+	@[ ! -f $(BIN)/just ] && ./dotfiles/installer/just "$(ROOT)/$(BIN)" || true
 
 .PHONY: build-gojq
 build-gojq: build-eget
-	@[ ! -e $(_OPT)/gojq ] && ./builders/gojq "$(_ROOT)/$(_OPT)" || true
-	@[ ! -e $(_OPT)/jq ] && ln $(_ROOT)/$(_OPT)/gojq $(_ROOT)/$(_OPT)/jq || true
+	@[ ! -e $(BIN)/gojq ] && ./dotfiles/installer/gojq "$(ROOT)/$(BIN)" || true
+	@[ ! -e $(BIN)/jq ] && ln $(ROOT)/$(BIN)/gojq $(ROOT)/$(BIN)/jq || true
 
 .PHONY: build-jnal
-build-jnal: build-checkexec build-eget build-envsubst
-	@[ ! -e $(_OPT)/jnal ] && ./builders/jnal "$(_ROOT)/$(_OPT)" || true
-	@$(_OPT)/checkexec jnal/config.toml $(_CONFIG)/jnal/config.toml.dist -- $(_OPT)/envsubst '$$HOME' < $(_CONFIG)/jnal/config.toml.dist > $(_CONFIG)/jnal/config.toml
+build-jnal: build-checkexec build-eget
+	@[ ! -e $(BIN)/jnal ] && ./dotfiles/installer/jnal "$(ROOT)/$(BIN)" || true
+	@$(BIN)/checkexec jnal/config.toml $(CONFIG)/jnal/config.toml.dist -- envsubst '$${HOME}' < $(CONFIG)/jnal/config.toml.dist > $(CONFIG)/jnal/config.toml
 
 .PHONY: build-lf
 build-lf: build-eget
-	@[ ! -e $(_OPT)/lf ] && ./builders/lf "$(_ROOT)/$(_OPT)" || true
+	@[ ! -e $(BIN)/lf ] && ./dotfiles/installer/lf "$(ROOT)/$(BIN)" || true
 
 .PHONY: build-rg
 build-rg: build-eget
-	@[ ! -e $(_OPT)/rg ] && ./builders/rg "$(_ROOT)/$(_OPT)" || true
+	@[ ! -e $(BIN)/rg ] && ./dotfiles/installer/rg "$(ROOT)/$(BIN)" || true
 
 .PHONY: build-sws
 build-sws: build-eget
-	@[ ! -e $(_OPT)/sws ] && ./builders/sws "$(_ROOT)/$(_OPT)" || true
+	@[ ! -e $(BIN)/sws ] && ./dotfiles/installer/sws "$(ROOT)/$(BIN)" || true
 
 .PHONY: build-tmpl
-build-tmpl: build-eget build-envsubst
-	@[ ! -f $(_OPT)/tmpl ] && ./builders/tmpl "$(_ROOT)/$(_OPT)" || true
-	@$(_OPT)/checkexec tmpl/config.toml $(_CONFIG)/tmpl/config.toml.dist -- $(_OPT)/envsubst '$$HOME' < $(_CONFIG)/tmpl/config.toml.dist > $(_CONFIG)/tmpl/config.toml
+build-tmpl: build-eget
+	@[ ! -f $(BIN)/tmpl ] && ./dotfiles/installer/tmpl "$(ROOT)/$(BIN)" || true
+	@$(BIN)/checkexec tmpl/config.toml $(CONFIG)/tmpl/config.toml.dist -- envsubst '$${HOME}' < $(CONFIG)/tmpl/config.toml.dist > $(CONFIG)/tmpl/config.toml
 
 .PHONY: build-usql
 build-usql: build-eget
-	@[ ! -e $(_OPT)/usql ] && ./builders/usql "$(_ROOT)/$(_OPT)" || true
+	@[ ! -e $(BIN)/usql ] && ./dotfiles/installer/usql "$(ROOT)/$(BIN)" || true
 
 .PHONY: build-vim
 build-vim:
@@ -290,22 +242,23 @@ build-vim:
 
 .PHONY: build-xh
 build-xh: build-eget
-	@[ ! -e $(_OPT)/xh ] && ./builders/xh "$(_ROOT)/$(_OPT)" || true
+	@[ ! -e $(BIN)/xh ] && ./dotfiles/installer/xh "$(ROOT)/$(BIN)" || true
 
 .PHONY: build-yq
 build-yq: build-eget
-	@[ ! -e $(_OPT)/yq ] && ./builders/yq "$(_ROOT)/$(_OPT)" || true
+	@[ ! -e $(BIN)/yq ] && ./dotfiles/installer/yq "$(ROOT)/$(BIN)" || true
 
 .PHONY: build-zsh
 build-zsh:  build-jnal build-gcal build-godl build-just build-tmpl
-	@[ ! -f $(_CONFIG)/zsh/.zshrc ] && cd $(_CONFIG)/zsh && ln -s zshrc .zshrc || true
-	@[ ! -f $(_CONFIG)/zsh/.zlogin ] && cd $(_CONFIG)/zsh && ln -s zlogin .zlogin || true
+	@set -a && . ./dotfiles/secrets.env && set +a && envsubst '$${GPG_KEYGRIP}' < $(CONFIG)/zsh/zlogin.dist > $(CONFIG)/zsh/zlogin
+	@[ ! -f $(CONFIG)/zsh/.zshrc ] && cd $(CONFIG)/zsh && ln -s zshrc .zshrc || true
+	@[ ! -f $(CONFIG)/zsh/.zlogin ] && cd $(CONFIG)/zsh && ln -s zlogin .zlogin || true
 	$(call _clone_github_repo,zsh-users/antigen,config/zsh/antigen)
-	@$(_OPT)/gcal --config $(_CONFIG)/gcal/config.toml completion zsh > $(_CONFIG)/zsh/functions/_gcal
-	@$(_OPT)/godl completion zsh > $(_CONFIG)/zsh/functions/_godl
-	@$(_OPT)/jnal --config $(_CONFIG)/jnal/config.toml completion zsh > $(_CONFIG)/zsh/functions/_jnal
-	@$(_OPT)/just --completions zsh > $(_CONFIG)/zsh/functions/_just
-	@$(_OPT)/tmpl --config $(_CONFIG)/tmpl/config.toml completion zsh > $(_CONFIG)/zsh/functions/_tmpl
+	@$(BIN)/gcal --config $(CONFIG)/gcal/config.toml completion zsh > $(CONFIG)/zsh/functions/_gcal
+	@$(BIN)/godl completion zsh > $(CONFIG)/zsh/functions/_godl
+	@$(BIN)/jnal --config $(CONFIG)/jnal/config.toml completion zsh > $(CONFIG)/zsh/functions/_jnal
+	@$(BIN)/just --completions zsh > $(CONFIG)/zsh/functions/_just
+	@$(BIN)/tmpl --config $(CONFIG)/tmpl/config.toml completion zsh > $(CONFIG)/zsh/functions/_tmpl
 
 
 

@@ -1,0 +1,4 @@
+github.com:
+    user: longkey1
+    oauth_token: ${GITHUB_PERSONAL_ACCESS_TOKEN}
+    git_protocol: https
