@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-OPT=${1}
-REPOSITORY="a8m/envsubst"
-
-${OPT}/eget ${REPOSITORY} --to ${OPT}/
