@@ -79,6 +79,10 @@ define _delete_home_symlink
 	fi
 endef
 
+.PHONY: init
+init: ## initilize
+	mkdir -p $(BIN)
+
 .PHONY: build
 build: $(_BUILD) ## build all
 
@@ -138,42 +142,42 @@ uninstall: ## delete created symlink
 
 .PHONY: build-composer
 build-composer:
-	@env GITHUB_PERSONAL_ACCESS_TOKEN=$(shell bw get password afcc443a-6d28-4950-b83b-afeb004c167b) envsubst '$${GITHUB_PERSONAL_ACCESS_TOKEN}' < $(CONFIG)/composer/auth.json.dist > $(CONFIG)/composer/auth.json
+	@env GITHUB_PERSONAL_ACCESS_TOKEN=$(shell $(BIN)/bw get password afcc443a-6d28-4950-b83b-afeb004c167b) envsubst '$${GITHUB_PERSONAL_ACCESS_TOKEN}' < $(CONFIG)/composer/auth.json.dist > $(CONFIG)/composer/auth.json
 
 .PHONY: build-bitwarden
 build-bitwarden:
-	@[ ! -f $(BIN)/bw ] && ./dotfiles/installer/bitwarden "$(ROOT)/$(BIN)" || true
+	@[ ! -f $(BIN)/bw ] && ./dotfiles/installer/bitwarden "$(BIN)" || true
 
 .PHONY: build-checkexec
 build-checkexec: build-eget
-	@[ ! -f $(BIN)/checkexec ] && ./dotfiles/installer/checkexec "$(ROOT)/$(BIN)" || true
+	@[ ! -f $(BIN)/checkexec ] && ./dotfiles/installer/checkexec "$(BIN)" || true
 
 .PHONY: build-direnv
 build-direnv: build-eget
-	@[ ! -f $(BIN)/direnv ] && ./dotfiles/installer/direnv "$(ROOT)/$(BIN)" || true
+	@[ ! -f $(BIN)/direnv ] && ./dotfiles/installer/direnv "$(BIN)" || true
 
 .PHONY: build-eget
 build-eget:
-	@[ ! -e $(BIN)/eget ] && ./dotfiles/installer/eget "$(ROOT)/$(BIN)" || true
+	@[ ! -e $(BIN)/eget ] && ./dotfiles/installer/eget "$(BIN)" || true
 
 .PHONY: build-fzf
 build-fzf: build-eget
-	@[ ! -e $(BIN)/fzf ] && ./dotfiles/installer/fzf "$(ROOT)/$(BIN)" || true
+	@[ ! -e $(BIN)/fzf ] && ./dotfiles/installer/fzf "$(BIN)" || true
 
 .PHONY: build-gcal
 build-gcal: build-checkexec build-eget
-	@[ ! -f $(BIN)/gcal ] && ./dotfiles/installer/gcal "$(ROOT)/$(BIN)" || true
-	@bw get notes 8dbf52a0-9ca9-41ec-8750-afeb004ce918 > $(CONFIG)/gcal/credentials.json
+	@[ ! -f $(BIN)/gcal ] && ./dotfiles/installer/gcal "$(BIN)" || true
+	@$(BIN)/bw get notes 8dbf52a0-9ca9-41ec-8750-afeb004ce918 > $(CONFIG)/gcal/credentials.json
 	@$(BIN)/checkexec gcal/config.toml $(CONFIG)/gcal/config.toml.dist -- envsubst '$${HOME}' < $(CONFIG)/gcal/config.toml.dist > $(CONFIG)/gcal/config.toml
 
 .PHONY: build-gh
 build-gh: build-eget
-	@[ ! -e $(BIN)/gh ] && ./dotfiles/installer/gh "$(ROOT)/$(BIN)" || true
-	@env GITHUB_PERSONAL_ACCESS_TOKEN=$(shell bw get password afcc443a-6d28-4950-b83b-afeb004c167b) envsubst '$${GITHUB_PERSONAL_ACCESS_TOKEN}' < $(CONFIG)/gh/hosts.yml.dist > $(CONFIG)/gh/hosts.yml
+	@[ ! -e $(BIN)/gh ] && ./dotfiles/installer/gh "$(BIN)" || true
+	@env GITHUB_PERSONAL_ACCESS_TOKEN=$(shell $(BIN)/bw get password afcc443a-6d28-4950-b83b-afeb004c167b) envsubst '$${GITHUB_PERSONAL_ACCESS_TOKEN}' < $(CONFIG)/gh/hosts.yml.dist > $(CONFIG)/gh/hosts.yml
 
 .PHONY: build-ghq
 build-ghq: build-eget
-	@[ ! -f $(BIN)/ghq ] && ./dotfiles/installer/ghq "$(ROOT)/$(BIN)" || true
+	@[ ! -f $(BIN)/ghq ] && ./dotfiles/installer/ghq "$(BIN)" || true
 
 .PHONY: build-git
 build-git:
@@ -181,7 +185,7 @@ build-git:
 
 .PHONY: build-gitlint
 build-gitlint: build-eget
-	@[ ! -f $(BIN)/gitlint ] && ./dotfiles/installer/gitlint "$(ROOT)/$(BIN)" || true
+	@[ ! -f $(BIN)/gitlint ] && ./dotfiles/installer/gitlint "$(BIN)" || true
 
 .PHONY: build-go
 build-go: build-godl
@@ -189,7 +193,7 @@ build-go: build-godl
 
 .PHONY: build-godl
 build-godl: build-checkexec build-eget
-	@[ ! -f $(BIN)/godl ] && ./dotfiles/installer/godl "$(ROOT)/$(BIN)" || true
+	@[ ! -f $(BIN)/godl ] && ./dotfiles/installer/godl "$(BIN)" || true
 	@$(BIN)/checkexec godl/config.toml $(CONFIG)/godl/config.toml.dist -- envsubst '$${HOME}' < $(CONFIG)/godl/config.toml.dist > $(CONFIG)/godl/config.toml
 
 .PHONY: build-ideavim
@@ -198,38 +202,38 @@ build-ideavim:
 
 .PHONY: build-just
 build-just: build-eget
-	@[ ! -f $(BIN)/just ] && ./dotfiles/installer/just "$(ROOT)/$(BIN)" || true
+	@[ ! -f $(BIN)/just ] && ./dotfiles/installer/just "$(BIN)" || true
 
 .PHONY: build-gojq
 build-gojq: build-eget
-	@[ ! -e $(BIN)/gojq ] && ./dotfiles/installer/gojq "$(ROOT)/$(BIN)" || true
-	@[ ! -e $(BIN)/jq ] && ln $(ROOT)/$(BIN)/gojq $(ROOT)/$(BIN)/jq || true
+	@[ ! -e $(BIN)/gojq ] && ./dotfiles/installer/gojq "$(BIN)" || true
+	@[ ! -e $(BIN)/jq ] && ln $(BIN)/gojq $(BIN)/jq || true
 
 .PHONY: build-jnal
 build-jnal: build-checkexec build-eget
-	@[ ! -e $(BIN)/jnal ] && ./dotfiles/installer/jnal "$(ROOT)/$(BIN)" || true
+	@[ ! -e $(BIN)/jnal ] && ./dotfiles/installer/jnal "$(BIN)" || true
 	@$(BIN)/checkexec jnal/config.toml $(CONFIG)/jnal/config.toml.dist -- envsubst '$${HOME}' < $(CONFIG)/jnal/config.toml.dist > $(CONFIG)/jnal/config.toml
 
 .PHONY: build-lf
 build-lf: build-eget
-	@[ ! -e $(BIN)/lf ] && ./dotfiles/installer/lf "$(ROOT)/$(BIN)" || true
+	@[ ! -e $(BIN)/lf ] && ./dotfiles/installer/lf "$(BIN)" || true
 
 .PHONY: build-rg
 build-rg: build-eget
-	@[ ! -e $(BIN)/rg ] && ./dotfiles/installer/rg "$(ROOT)/$(BIN)" || true
+	@[ ! -e $(BIN)/rg ] && ./dotfiles/installer/rg "$(BIN)" || true
 
 .PHONY: build-sws
 build-sws: build-eget
-	@[ ! -e $(BIN)/sws ] && ./dotfiles/installer/sws "$(ROOT)/$(BIN)" || true
+	@[ ! -e $(BIN)/sws ] && ./dotfiles/installer/sws "$(BIN)" || true
 
 .PHONY: build-tmpl
 build-tmpl: build-eget
-	@[ ! -f $(BIN)/tmpl ] && ./dotfiles/installer/tmpl "$(ROOT)/$(BIN)" || true
+	@[ ! -f $(BIN)/tmpl ] && ./dotfiles/installer/tmpl "$(BIN)" || true
 	@$(BIN)/checkexec tmpl/config.toml $(CONFIG)/tmpl/config.toml.dist -- envsubst '$${HOME}' < $(CONFIG)/tmpl/config.toml.dist > $(CONFIG)/tmpl/config.toml
 
 .PHONY: build-usql
 build-usql: build-eget
-	@[ ! -e $(BIN)/usql ] && ./dotfiles/installer/usql "$(ROOT)/$(BIN)" || true
+	@[ ! -e $(BIN)/usql ] && ./dotfiles/installer/usql "$(BIN)" || true
 
 .PHONY: build-vim
 build-vim:
@@ -242,11 +246,11 @@ build-vim:
 
 .PHONY: build-xh
 build-xh: build-eget
-	@[ ! -e $(BIN)/xh ] && ./dotfiles/installer/xh "$(ROOT)/$(BIN)" || true
+	@[ ! -e $(BIN)/xh ] && ./dotfiles/installer/xh "$(BIN)" || true
 
 .PHONY: build-yq
 build-yq: build-eget
-	@[ ! -e $(BIN)/yq ] && ./dotfiles/installer/yq "$(ROOT)/$(BIN)" || true
+	@[ ! -e $(BIN)/yq ] && ./dotfiles/installer/yq "$(BIN)" || true
 
 .PHONY: build-zsh
 build-zsh:  build-jnal build-gcal build-godl build-just build-tmpl
