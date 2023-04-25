@@ -2,5 +2,10 @@
 
 BIN=${1}
 REPOSITORY="ogham/exa"
+OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 
-${BIN}/eget ${REPOSITORY} --to ${BIN}/
+if [ "${OS}" == "linux" ]; then
+  ${BIN}/eget ${REPOSITORY} --to ${BIN}/ --asset exa-linux-x86_64-musl
+else
+  ${BIN}/eget ${REPOSITORY} --to ${BIN}/
+fi
