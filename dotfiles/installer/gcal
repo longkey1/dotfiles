@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-OPT=${1}
+BIN=${1}
 REPOSITORY="longkey1/gcal"
 
-${OPT}/eget ${REPOSITORY} --to ${OPT}/
+${BIN}/eget ${REPOSITORY} --to ${BIN}/

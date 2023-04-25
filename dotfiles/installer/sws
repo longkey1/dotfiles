@@ -1,11 +1,11 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-OPT=${1}
+BIN=${1}
 REPOSITORY="joseluisq/static-web-server"
 
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 if [ "${OS}" == "linux" ]; then
-  ${OPT}/eget ${REPOSITORY} --to ${OPT}/sws --asset linux-musl.tar.gz
+  ${BIN}/eget ${REPOSITORY} --to ${BIN}/sws --asset linux-musl.tar.gz
 else
-  ${OPT}/eget ${REPOSITORY} --to ${OPT}/sws
+  ${BIN}/eget ${REPOSITORY} --to ${BIN}/sws
 fi

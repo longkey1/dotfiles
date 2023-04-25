@@ -1,11 +1,11 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-OPT=${1}
+BIN=${1}
 REPOSITORY="xo/usql"
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 
 if [ "${OS}" == "linux" ]; then
-  ${OPT}/eget ${REPOSITORY} --to ${OPT}/usql --asset static --file usql_static
+  ${BIN}/eget ${REPOSITORY} --to ${BIN}/usql --asset static --file usql_static
 else
-  ${OPT}/eget ${REPOSITORY} --to ${OPT}/usql
+  ${BIN}/eget ${REPOSITORY} --to ${BIN}/usql
 fi

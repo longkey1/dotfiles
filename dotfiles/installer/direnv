@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-OPT=${1}
+BIN=${1}
 REPOSITORY="direnv/direnv"
 
-${OPT}/eget ${REPOSITORY} --to ${OPT}/
+${BIN}/eget ${REPOSITORY} --to ${BIN}/

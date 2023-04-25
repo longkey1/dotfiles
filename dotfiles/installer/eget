@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-OPT=${1}
+BIN=${1}
 BINARY="eget"
 WORK_DIR=/tmp/dotfiles-${USER}-$(basename ${0})
 
@@ -10,7 +10,7 @@ pushd ${WORK_DIR}
 curl -o eget.sh https://zyedidia.github.io/eget.sh
 shasum -a 256 eget.sh
 bash eget.sh
-mv ${BINARY} ${OPT}/${BINARY}
+mv ${BINARY} ${BIN}/${BINARY}
 
 popd
 rm -rf ${WORK_DIR}
