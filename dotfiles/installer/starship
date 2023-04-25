@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+BIN=${1}
+WORK_DIR=/tmp/dotfiles-${USER}-$(basename ${0})
+
+mkdir -p ${WORK_DIR}
+pushd ${WORK_DIR}
+
+curl -O https://starship.rs/install.sh
+chmod +x install.sh
+./install.sh -b ${BIN} -f

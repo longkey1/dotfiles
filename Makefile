@@ -18,6 +18,7 @@ build-gojq \
 build-just \
 build-lf \
 build-rg \
+build-starship \
 build-sws \
 build-tmpl \
 build-usql \
@@ -38,6 +39,7 @@ _TARGETS := \
 "config/jnal" \
 "config/lf" \
 "config/nvim" \
+"config/starship" \
 "config/sws" \
 "config/tmpl" \
 "config/tmux" \
@@ -103,13 +105,13 @@ clean: ## delete all builded files
 	@rm -f $(CONFIG)/zsh/.zshrc
 	@rm -f $(CONFIG)/zsh/.zlogin
 	@rm -f $(CONFIG)/zsh/zlogin
-	@find $(CONFIG)/godl/goroots -mindepth 1 -maxdepth 1 -type d | xargs rm -rf
-	@rm -rf $(ROOT)/vim/pack/bundle/start/*
 	@rm -f $(CONFIG)/zsh/functions/_gcal
 	@rm -f $(CONFIG)/zsh/functions/_godl
 	@rm -f $(CONFIG)/zsh/functions/_jnal
 	@rm -f $(CONFIG)/zsh/functions/_just
 	@rm -f $(CONFIG)/zsh/functions/_tmpl
+	@find $(CONFIG)/godl/goroots -mindepth 1 -maxdepth 1 -type d | xargs rm -rf
+	@rm -rf $(ROOT)/vim/pack/bundle/start/*
 	@rm -f $(ROOT)/dotfiles/secrets.env
 
 .PHONY: install
@@ -222,6 +224,11 @@ build-lf: build-eget
 build-rg: build-eget
 	@[ ! -e $(BIN)/rg ] && ./dotfiles/installer/rg "$(BIN)" || true
 
+.PHONY: build-starship
+build-starship:
+	@[ ! -e $(BIN)/starship ] && ./dotfiles/installer/starship "$(BIN)" || true
+	@[ ! -e $(CONFIG)/starship/config.toml ] && $(BIN)/starship preset pure-preset -o $(CONFIG)/starship/config.toml || true
+
 .PHONY: build-sws
 build-sws: build-eget
 	@[ ! -e $(BIN)/sws ] && ./dotfiles/installer/sws "$(BIN)" || true
@@ -253,11 +260,16 @@ build-yq: build-eget
 	@[ ! -e $(BIN)/yq ] && ./dotfiles/installer/yq "$(BIN)" || true
 
 .PHONY: build-zsh
-build-zsh:  build-jnal build-gcal build-godl build-just build-tmpl
+build-zsh:  build-jnal build-gcal build-godl build-just build-tmpl build-starship
 	@set -a && . ./dotfiles/secrets.env && set +a && envsubst '$${GPG_KEYGRIP}' < $(CONFIG)/zsh/zlogin.dist > $(CONFIG)/zsh/zlogin
 	@[ ! -f $(CONFIG)/zsh/.zshrc ] && cd $(CONFIG)/zsh && ln -s zshrc .zshrc || true
 	@[ ! -f $(CONFIG)/zsh/.zlogin ] && cd $(CONFIG)/zsh && ln -s zlogin .zlogin || true
-	$(call _clone_github_repo,zsh-users/antigen,config/zsh/antigen)
+	@mkdir -p $(CONFIG)/zsh/plugins
+	$(call _clone_github_repo,zsh-users/zsh-completions,$(CONFIG)/zsh/plugins/zsh-users/zsh-completions)
+	$(call _clone_github_repo,zsh-users/zsh-history-substring-search,$(CONFIG)/zsh/plugins/zsh-users/zsh-history-substring-search)
+	$(call _clone_github_repo,zsh-users/zsh-syntax-highlighting,$(CONFIG)/zsh/plugins/zsh-users/zsh-syntax-highlighting)
+	$(call _clone_github_repo,mollifier/anyframe,$(CONFIG)/zsh/plugins/mollifier/anyframe)
+	$(call _clone_github_repo,olets/zsh-abbr,$(CONFIG)/zsh/plugins/olets/zsh-abbr)
 	@$(BIN)/gcal --config $(CONFIG)/gcal/config.toml completion zsh > $(CONFIG)/zsh/functions/_gcal
 	@$(BIN)/godl completion zsh > $(CONFIG)/zsh/functions/_godl
 	@$(BIN)/jnal --config $(CONFIG)/jnal/config.toml completion zsh > $(CONFIG)/zsh/functions/_jnal
