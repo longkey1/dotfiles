@@ -35,7 +35,6 @@ path=(${path} ${HOME}/.bin(N-/))
 # starship
 if excutable starship; then
   export STARSHIP_CONFIG=${XDG_CONFIG_HOME}/starship/config.toml
-  export STARSHIP_CACHE=${XDG_CONFIG_HOME}/starship/cache
   eval "$(starship init zsh)"
 fi
 
