@@ -142,10 +142,6 @@ uninstall: ## delete created symlink
 		done \
 	fi
 
-.PHONY: build-composer
-build-composer:
-	@env GITHUB_PERSONAL_ACCESS_TOKEN=$(shell $(BIN)/bw get password afcc443a-6d28-4950-b83b-afeb004c167b) envsubst '$${GITHUB_PERSONAL_ACCESS_TOKEN}' < $(CONFIG)/composer/auth.json.dist > $(CONFIG)/composer/auth.json
-
 .PHONY: build-bitwarden
 build-bitwarden:
 	@[ ! -f $(BIN)/bw ] && ./dotfiles/installer/bitwarden "$(BIN)" || true
@@ -153,6 +149,10 @@ build-bitwarden:
 .PHONY: build-checkexec
 build-checkexec: build-eget
 	@[ ! -f $(BIN)/checkexec ] && ./dotfiles/installer/checkexec "$(BIN)" || true
+
+.PHONY: build-composer
+build-composer:
+	@env GITHUB_PERSONAL_ACCESS_TOKEN=$(shell $(BIN)/bw get password afcc443a-6d28-4950-b83b-afeb004c167b) envsubst '$${GITHUB_PERSONAL_ACCESS_TOKEN}' < $(CONFIG)/composer/auth.json.dist > $(CONFIG)/composer/auth.json
 
 .PHONY: build-direnv
 build-direnv: build-eget
