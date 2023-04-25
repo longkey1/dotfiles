@@ -101,6 +101,7 @@ clean: ## delete all builded files
 	@rm -f $(CONFIG)/godl/config.toml
 	@rm -f $(CONFIG)/ideavim/ideavimrc
 	@rm -f $(CONFIG)/jnal/config.toml
+	@rm -rf $(CONFIG)/starship
 	@rm -f $(CONFIG)/tmpl/config.toml
 	@rm -rf $(CONFIG)/zsh/antigen
 	@rm -f $(CONFIG)/zsh/.zshrc
@@ -232,6 +233,7 @@ build-rg: build-eget
 .PHONY: build-starship
 build-starship:
 	@[ ! -e $(BIN)/starship ] && ./dotfiles/installer/starship "$(BIN)" || true
+	@mkdir -p $(CONFIG)/starship
 	@[ ! -e $(CONFIG)/starship/config.toml ] && $(BIN)/starship preset pure-preset -o $(CONFIG)/starship/config.toml || true
 
 .PHONY: build-sws
