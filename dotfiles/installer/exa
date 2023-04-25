@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+
+BIN=${1}
+REPOSITORY="ogham/exa"
+
+${BIN}/eget ${REPOSITORY} --to ${BIN}/

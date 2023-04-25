@@ -5,6 +5,7 @@ build-checkexec \
 build-composer \
 build-direnv \
 build-eget \
+build-exa \
 build-fzf \
 build-gcal \
 build-gh \
@@ -161,6 +162,10 @@ build-direnv: build-eget
 .PHONY: build-eget
 build-eget:
 	@[ ! -e $(BIN)/eget ] && ./dotfiles/installer/eget "$(BIN)" || true
+
+.PHONY: build-exa
+build-exa:
+	@[ ! -e $(BIN)/exa ] && ./dotfiles/installer/exa "$(BIN)" || true
 
 .PHONY: build-fzf
 build-fzf: build-eget
