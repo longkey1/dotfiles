@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-OPT=${1}
+BIN=${1}
 REPOSITORY="mikefarah/yq"
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 ARCH=$(uname -m | sed s/x86_64/amd64/)
 
-${OPT}/eget ${REPOSITORY} --to ${OPT}/yq --asset ${OS}_${ARCH}.tar.gz --file yq_${OS}_${ARCH}
+${BIN}/eget ${REPOSITORY} --to ${BIN}/yq --asset ${OS}_${ARCH}.tar.gz --file yq_${OS}_${ARCH}

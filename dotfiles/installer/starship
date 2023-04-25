@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 BIN=${1}
 WORK_DIR=/tmp/dotfiles-${USER}-$(basename ${0})

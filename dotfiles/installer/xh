@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-OPT=${1}
+BIN=${1}
 REPOSITORY="ducaale/xh"
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 ARCH="amd64"
 
-${OPT}/eget ${REPOSITORY} --system ${OS}/${ARCH} --to ${OPT}/
+${BIN}/eget ${REPOSITORY} --system ${OS}/${ARCH} --to ${BIN}/

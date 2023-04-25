@@ -1,12 +1,12 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-OPT=${1}
+BIN=${1}
 REPOSITORY="cli/cli"
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 ARCH="amd64"
 
 if [ "${OS}" == "linux" ]; then
-  ${OPT}/eget ${REPOSITORY} --to ${OPT}/ --asset ${OS}_${ARCH}.tar.gz
+  ${BIN}/eget ${REPOSITORY} --to ${BIN}/ --asset ${OS}_${ARCH}.tar.gz
 elif [ "${OS}" == "darwin" ]; then
-  ${OPT}/eget ${REPOSITORY} --to ${OPT}/ --asset macOS
+  ${BIN}/eget ${REPOSITORY} --to ${BIN}/ --asset macOS
 fi

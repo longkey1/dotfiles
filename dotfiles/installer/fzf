@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-OPT=${1}
+BIN=${1}
 REPOSITORY="junegunn/fzf"
 
-${OPT}/eget ${REPOSITORY} --to ${OPT}/
+${BIN}/eget ${REPOSITORY} --to ${BIN}/
 
