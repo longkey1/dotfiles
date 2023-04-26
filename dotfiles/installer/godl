@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-
-BIN=${1}
-REPOSITORY="longkey1/godl"
-
-${BIN}/eget ${REPOSITORY} --to ${BIN}/

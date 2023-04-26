@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-
-BIN=${1}
-REPOSITORY="x-motemen/ghq"
-
-${BIN}/eget ${REPOSITORY} --to ${BIN}/

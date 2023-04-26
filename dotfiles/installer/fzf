@@ -1,7 +1,0 @@
-#!/usr/bin/env zsh
-
-BIN=${1}
-REPOSITORY="junegunn/fzf"
-
-${BIN}/eget ${REPOSITORY} --to ${BIN}/
-
