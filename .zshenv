@@ -1,1 +1,0 @@
-/Users/m-nagai/.zshenv
