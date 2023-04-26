@@ -7,6 +7,7 @@
 /config/gh/state.yml
 /config/git/config
 /config/godl/config.toml
+/config/ideavim/ideavimrc
 /config/jnal/config.toml
 /config/starship/config.toml
 /config/tmpl/config.toml
@@ -24,4 +25,5 @@
 /vim/.netrwhist
 /vim/pack/bundle/start
 /secrets.env
+*.bk
 *.local
