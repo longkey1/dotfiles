@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-
-BIN=${1}
-REPOSITORY="BurntSushi/ripgrep"
-
-${BIN}/eget ${REPOSITORY} --to ${BIN}/

@@ -89,11 +89,6 @@ if excutable sws; then
   export SERVER_CONFIG_FILE="${XDG_CONFIG_HOME}/sws/config.toml"
 fi
 
-# make
-if excutable make; then
-  export MAKEFLAGS="-j$(nproc)"
-fi
-
 # cdr (ref http://zsh.sourceforge.net/Doc/Release/User-Contributions.html#Recent-Directories)
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
 add-zsh-hook chpwd chpwd_recent_dirs

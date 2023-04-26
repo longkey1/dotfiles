@@ -1,9 +1,0 @@
-#!/usr/bin/env zsh
-
-BIN=${1}
-REPOSITORY="llorllale/go-gitlint"
-OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-ARCH="amd64"
-FILE="gitlint"
-
-${BIN}/eget ${REPOSITORY} --system ${OS}/${ARCH} --file ${FILE} --to ${BIN}/

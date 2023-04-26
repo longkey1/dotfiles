@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+
+function symlink() {
+  target=${1}
+  if [ -e "${HOME}/.${target}" ]; then
+   echo "already exists ${HOME}/.${target}"
+  else
+   ln -s ${ROOT}/${target} ${HOME}/.${target} && echo "created ${HOME}/.${target}"
+  fi
+}
+
+function unsymlink() {
+  target=${1}
+  if [ -h "${HOME}/.${target}" ]; then
+    unlink ${HOME}/.${target} && echo "deleted ${HOME}/.${target}"
+  elif [ -e "${HOME}/.${target}" ]; then
+    echo "no deleted ${HOME}/.${target}, not a symlink"
+  else
+    echo "no exists ${HOME}/.${target}"
+  fi
+}

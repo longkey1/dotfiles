@@ -1,8 +1,0 @@
-#!/usr/bin/env zsh
-
-BIN=${1}
-REPOSITORY="ducaale/xh"
-OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-ARCH="amd64"
-
-${BIN}/eget ${REPOSITORY} --system ${OS}/${ARCH} --to ${BIN}/

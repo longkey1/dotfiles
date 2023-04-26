@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-
-BIN=${1}
-REPOSITORY="casey/just"
-
-${BIN}/eget ${REPOSITORY} --to ${BIN}/
