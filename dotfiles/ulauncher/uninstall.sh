@@ -8,4 +8,4 @@ fi
 
 . ${ROOT}/dotfiles/functions
 
-unsymlink config/ulaunchar
+unsymlink config/ulauncher
