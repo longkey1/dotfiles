@@ -1,5 +1,5 @@
 # gpg
-gpg-conf --launch gpg-agent
+gpgconf --launch gpg-agent
 bw get password c5f2ce95-8cd9-41e6-b1ef-afeb00292e4c | gpg-preset-passphrase --preset ${GPG_KEYGRIP}
 
 # include local
