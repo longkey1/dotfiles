@@ -58,6 +58,7 @@ excutable xh && alias http="xh"
 if excutable abbr; then
   abbr -g -S -q ymd=$(date '+%Y%m%d')
   abbr -g -S -q ymd-=$(date '+%Y-%m-%d')
+  abbr -g -S -q gpp="preset-gpg-passphrase"
 fi
 
 # grep
