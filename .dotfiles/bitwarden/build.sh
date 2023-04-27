@@ -21,7 +21,7 @@ if [ ! -x "${LOCAL_BIN}/${BINARY}" ]; then
 fi
 
 # set secrets
-set -a && . ./dotfiles/secrets.env && set +a
+set -a && . ${DOTFILES}/secrets.env && set +a
 
 
 # inclide functions
