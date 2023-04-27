@@ -22,6 +22,7 @@
 /config/zsh/plugins/
 /config/zsh/zlogin
 /dotfiles/secrets.env
+/dotfiles/bitwarden.session
 /vim/.netrwhist
 /vim/pack/bundle/start
 /secrets.env
