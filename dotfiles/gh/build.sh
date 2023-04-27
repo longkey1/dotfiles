@@ -16,5 +16,7 @@ elif [ "${OS}" == "darwin" ]; then
 fi
 
 #
-GITHUB_PERSONAL_ACCESS_TOKEN=$(${LOCAL_BIN}/bw get password afcc443a-6d28-4950-b83b-afeb004c167b)
+. ${ROOT}/dotfiles/functions
+bw_session=$(get_bitwarden_session)
+GITHUB_PERSONAL_ACCESS_TOKEN=$(${LOCAL_BIN}/bw get password afcc443a-6d28-4950-b83b-afeb004c167b --session "${bw_session}")
 envsubst '${GITHUB_PERSONAL_ACCESS_TOKEN}' < ${LOCAL_CONFIG}/gh/hosts.yml.dist > ${LOCAL_CONFIG}/gh/hosts.yml

@@ -3,19 +3,23 @@
 function symlink() {
   target=${1}
   if [ -e "${HOME}/.${target}" ]; then
-   echo "already exists ${HOME}/.${target}"
+   echo "${HOME}/.${target} already exists"
   else
-   ln -s ${ROOT}/${target} ${HOME}/.${target} && echo "created ${HOME}/.${target}"
+   ln -s ${ROOT}/${target} ${HOME}/.${target} && echo "${HOME}/.${target} linked"
   fi
 }
 
 function unsymlink() {
   target=${1}
   if [ -h "${HOME}/.${target}" ]; then
-    unlink ${HOME}/.${target} && echo "deleted ${HOME}/.${target}"
+    unlink ${HOME}/.${target} && echo "${HOME}/.${target} unlinked"
   elif [ -e "${HOME}/.${target}" ]; then
-    echo "no deleted ${HOME}/.${target}, not a symlink"
+    echo "${HOME}/.${target} not unlinked, not a symlink"
   else
-    echo "no exists ${HOME}/.${target}"
+    echo "${HOME}/.${target} no exists"
   fi
+}
+
+function get_bitwarden_session() {
+  echo "$(cat ${ROOT}/dotfiles/bitwarden.session)"
 }

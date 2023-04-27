@@ -7,16 +7,42 @@ if [ "${OS}" = "darwin" ]; then
   OS="macos"
 fi
 
-if [ -x "${LOCAL_BIN}/${BINARY}" ]; then
+# install
+if [ ! -x "${LOCAL_BIN}/${BINARY}" ]; then
+  mkdir -p ${WORK_DIR}
+  pushd ${WORK_DIR}
+
+  wget "https://vault.bitwarden.com/download/?app=cli&platform=${OS}" -O bw.zip
+  unzip bw.zip
+  mv bw ${LOCAL_BIN}/bw
+
+  popd
+  rm -rf ${WORK_DIR}
+fi
+
+# set secrets
+set -a && . ./dotfiles/secrets.env && set +a
+
+
+# inclide functions
+. ${ROOT}/dotfiles/functions
+
+# session
+touch ${ROOT}/dotfiles/bitwarden.session
+bw_session=$(get_bitwarden_session)
+bw_status=$(${LOCAL_BIN}/bw status --session "${bw_session}" | ${LOCAL_BIN}/jq -r .status)
+
+## unlocked
+if [ "${bw_status}" = "unlocked" ]; then
   exit
 fi
 
-mkdir -p ${WORK_DIR}
-pushd ${WORK_DIR}
+## locked
+if [ "${bw_status}" = "locked" ]; then
+  ${LOCAL_BIN}/bw unlock --raw > ${ROOT}/dotfiles/bitwarden.session
+  exit
+fi
 
-wget "https://vault.bitwarden.com/download/?app=cli&platform=${OS}" -O bw.zip
-unzip bw.zip
-mv bw ${LOCAL_BIN}/bw
-
-popd
-rm -rf ${WORK_DIR}
+# unauthenticated
+${LOCAL_BIN}/bw login --apikey
+${LOCAL_BIN}/bw unlock --raw > ${ROOT}/dotfiles/bitwarden.session
