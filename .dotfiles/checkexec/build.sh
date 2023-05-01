@@ -3,8 +3,6 @@
 BINARY="checkexec"
 REPOSITORY="kurtbuilds/checkexec"
 
-if [ -x "${LOCAL_BIN}/${BINARY}" ]; then
-  exit
+if [ ! -x "${LOCAL_BIN}/${BINARY}" ]; then
+  ${BIN}/eget ${REPOSITORY} --to ${BIN}/
 fi
-
-${BIN}/eget ${REPOSITORY} --to ${BIN}/
