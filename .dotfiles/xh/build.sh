@@ -5,8 +5,6 @@ REPOSITORY="ducaale/xh"
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 ARCH="amd64"
 
-if [ -x "${LOCAL_BIN}/${BINARY}" ]; then
-  exit
+if [ ! -x "${LOCAL_BIN}/${BINARY}" ]; then
+  ${BIN}/eget ${REPOSITORY} --system ${OS}/${ARCH} --to ${BIN}/
 fi
-
-${BIN}/eget ${REPOSITORY} --system ${OS}/${ARCH} --to ${BIN}/

@@ -23,3 +23,11 @@ function unsymlink() {
 function get_bitwarden_session() {
   echo "$(cat ${DOTFILES}/bitwarden.session)"
 }
+
+function execute_envsubst() {
+  OPTION=${1}
+  DESTINATION=${2}
+  SOURCE=${3}
+  echo "envsubst "'${OPTION}'" < ${DESTINATION} > ${SOURCE}"
+  envsubst "'${OPTION}'" < ${DESTINATION} > ${SOURCE}
+}
