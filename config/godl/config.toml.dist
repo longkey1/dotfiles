@@ -2,8 +2,9 @@ golang_url = "https://golang.org"
 goroots_dir = "${HOME}/.config/godl/goroots"
 temp_dir = "${HOME}/.config/godl/tmp"
 versions = [
-  "1.20.4",
-  "1.19.9",
+  "1.21.3",
+  "1.20.10",
+  "1.19.13",
   "1.18.10",
   "1.17.13",
   "1.16.15",
