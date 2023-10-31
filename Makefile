@@ -28,9 +28,9 @@ endef
 .PHONY: init
 init: ## initilize
 	$(call _execute_task,bin,build)
+	$(call _execute_task,eget,build)
 	$(call _execute_task,gojq,build)
 	$(call _execute_task,bitwarden,build)
-	$(call _execute_task,eget,build)
 
 target := ""
 .PHONY: build

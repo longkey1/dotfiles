@@ -7,4 +7,6 @@ if [ ! -x "${LOCAL_BIN}/${BINARY}" ]; then
   ${LOCAL_BIN}/eget ${REPOSITORY} --to ${LOCAL_BIN}/
 fi
 
-[ ! -e ${LOCAL_BIN}/jq ] && ln ${LOCAL_BIN)}gojq ${LOCAL_BIN}/jq || true
+if [ ! -e ${LOCAL_BIN}/jq ]; then
+  ln ${LOCAL_BIN}/gojq ${LOCAL_BIN}/jq
+fi

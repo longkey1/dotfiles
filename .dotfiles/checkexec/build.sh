@@ -4,5 +4,5 @@ BINARY="checkexec"
 REPOSITORY="kurtbuilds/checkexec"
 
 if [ ! -x "${LOCAL_BIN}/${BINARY}" ]; then
-  ${BIN}/eget ${REPOSITORY} --to ${BIN}/
+  ${LOCAL_BIN}/eget ${REPOSITORY} --to ${LOCAL_BIN}/
 fi
