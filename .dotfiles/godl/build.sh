@@ -5,7 +5,7 @@ REPOSITORY="longkey1/godl"
 CURRENT=$(cd $(dirname $0);pwd)
 
 if [ ! -x "${LOCAL_BIN}/${BINARY}" ]; then
-  $LOCAL_{BIN}/eget ${REPOSITORY} --to ${LOCAL_BIN}/
+  ${LOCAL_BIN}/eget ${REPOSITORY} --to ${LOCAL_BIN}/
 fi
 
 #
