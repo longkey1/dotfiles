@@ -41,6 +41,7 @@ augroup END
 augroup filetypedetect_justfile
   autocmd!
   autocmd BufNewFile,BufRead justfile setf make
+  autocmd BufNewFile,BufRead *.justfile setf make
 augroup END
 
 " open-browser.vim
