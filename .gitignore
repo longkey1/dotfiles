@@ -18,6 +18,7 @@
 /config/zsh/.zlogin
 /config/zsh/.zshrc
 /config/zsh/.zshrc.zwc
+/config/zsh/.zsh_history
 /config/zsh/.zsh_sessions
 /config/zsh/functions
 /config/zsh/history

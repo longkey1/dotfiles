@@ -9,6 +9,6 @@ git-clone () {
 git-clone thinca/vim-quickrun vim-quickrun
 git-clone vim-scripts/sudo.vim sudo.vim
 git-clone longkey1/vim-lf vim-lf
-git-clone nanotech/jellybeans.vim, jellybeans.vim
+git-clone nanotech/jellybeans.vim jellybeans.vim
 git-clone ConradIrwin/vim-bracketed-paste vim-bracketed-paste
 git-clone tyru/open-browser.vim open-browser.vim
