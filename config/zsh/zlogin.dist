@@ -1,7 +1,4 @@
 # gpg
-function preset-gpg-passphrase() {
-  bw get password c5f2ce95-8cd9-41e6-b1ef-afeb00292e4c | gpg-preset-passphrase --preset ${GPG_KEYGRIP}
-}
 gpgconf --launch gpg-agent
 preset-gpg-passphrase
 
