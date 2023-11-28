@@ -23,7 +23,7 @@
 /config/zsh/functions
 /config/zsh/history
 /config/zsh/plugins/
-/config/zsh/zlogin
+/config/zsh/zshrc
 /vim/.netrwhist
 /vim/pack/bundle/start
 *.bk
