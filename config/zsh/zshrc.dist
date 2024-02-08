@@ -130,7 +130,9 @@ compinit
 setopt no_beep
 
 # gpg
-export GPG_TTY=${TTY}
+if excutable gpg; then
+  export GPG_TTY=${TTY}
+fi
 
 # include ostype files
 _ostype=$(uname -s | tr '[:upper:]' '[:lower:]')
