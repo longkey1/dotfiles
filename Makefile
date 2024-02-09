@@ -41,6 +41,10 @@ build: init ## build all files or target files
 clean: ## delete all builded files or target builded files
 	$(call _execute_task,$(target),clean)
 
+.PHONY: update
+update: ## update all builded files or target builded files
+	$(call _execute_task,$(target),update)
+
 .PHONY: install
 install: ## create target's symlink in home directory
 	$(call _execute_task,$(target),install)
