@@ -4,10 +4,6 @@
 function excutable() {
   type "$1" &> /dev/null;
 }
-# gpg
-function preset-gpg-passphrase() {
-  bw get password c5f2ce95-8cd9-41e6-b1ef-afeb00292e4c | gpg-preset-passphrase --preset ${GPG_KEYGRIP}
-}
 
 # zsh plugins
 [[ -f ${ZDOTDIR}/plugins/zsh-users/zsh-completions/zsh-completions.plugin.zsh ]] && source ${ZDOTDIR}/plugins/zsh-users/zsh-completions/zsh-completions.plugin.zsh
@@ -129,14 +125,15 @@ compinit
 # disable beep
 setopt no_beep
 
-# gpg
-if excutable gpg; then
-  export GPG_TTY=${TTY}
-fi
-
 # include ostype files
 _ostype=$(uname -s | tr '[:upper:]' '[:lower:]')
 [[ -f ${ZDOTDIR}/zshrc.${_ostype} ]] && source ${ZDOTDIR}/zshrc.${_ostype}
 
 # include local file
 [[ -f ${ZDOTDIR}/zshrc.local ]] && source ${ZDOTDIR}/zshrc.local
+
+# other included files
+if excutable gpg; then
+  [[ -f ${ZDOTDIR}/zshrc.gpg ]] && source ${ZDOTDIR}/zshrc.gpg
+fi
+

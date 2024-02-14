@@ -1,0 +1,6 @@
+# gpg
+gpgconf --launch gpg-agent
+preset-gpg-passphrase
+
+# include local
+[[ -f ${ZDOTDIR}/zlogin.local ]] && source ${ZDOTDIR}/zlogin.local
