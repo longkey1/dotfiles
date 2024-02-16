@@ -6,7 +6,7 @@
 [user]
   email = longkey1@gmail.com
   name = longkey1
-  signingkey = ${GPG_KEYID}
+  signingkey = ${GPG_KEYID}!
 [color]
   ui = auto
 [alias]
