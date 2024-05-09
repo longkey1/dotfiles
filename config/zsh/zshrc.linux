@@ -41,4 +41,9 @@ if [[ "$(uname -r)" == *microsoft* ]]; then
     echo "please start docker..."
     sudo service docker start
   fi
+
+  # zenhan
+  win_username=$(powershell.exe '$env:USERNAME' | tr -d '\r')
+  path=(${path} /mnt/c/Users/${win_username}/Program\ Files/zenhan(N-/))
 fi
+
