@@ -44,6 +44,6 @@ if [[ "$(uname -r)" == *microsoft* ]]; then
 
   # zenhan
   win_username=$(powershell.exe '$env:USERNAME' | tr -d '\r')
-  path=(${path} /mnt/c/Users/${win_username}/Program\ Files/zenhan(N-/))
+  path=(${path} /mnt/c/Users/${win_username}/Program\ Files/zenhan/bin64(N-/))
 fi
 
