@@ -28,3 +28,4 @@
 /vim/pack/bundle/start
 *.bk
 *.local
+*.local.*
