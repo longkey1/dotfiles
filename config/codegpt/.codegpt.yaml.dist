@@ -1,0 +1,22 @@
+git:
+    diff_unified: 3
+    exclude_list: ""
+    template_file: ""
+    template_string: ""
+openai:
+    api_key: ${GEMINI_API_KEY}
+    api_version: ""
+    base_url: ""
+    headers: ""
+    max_tokens: 300
+    model: gemini-1.5-flash-latest
+    org_id: ""
+    provider: gemini
+    proxy: ""
+    skip_verify: false
+    socks: ""
+    temperature: "1"
+    timeout: 30s
+output:
+    file: ""
+    lang: en
