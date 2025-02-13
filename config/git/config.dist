@@ -11,9 +11,9 @@
   ui = auto
 [alias]
   aliases = ! git config --list | grep ^alias\\. | cut -c 7- | grep -Ei --color \"$1\" "#"
-  commitf = commit --no-verify
   default = ! git remote show origin | grep 'HEAD branch' | awk '{print $NF}'
-  pushf = push --no-verify --force-with-lease
+  fcommit = commit --no-verify
+  fpush = push --no-verify --force-with-lease
   sync = ! git checkout $(git default) && git remote update --prune && git pull origin $(git default) --rebase && git branch --merged | grep -v $(git default) | grep -v '*' | xargs -I {} git branch -d {}
 [push]
   default = nothing
