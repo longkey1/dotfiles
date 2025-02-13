@@ -22,7 +22,6 @@
   show = diff-highlight | nkf -w | LESSCHARSET=utf-8 less
   diff = diff-highlight | nkf -w | LESSCHARSET=utf-8 less
 [commit]
-  template =  ~/.config/git/commit-template
   gpgsign = true
 [include]
   path = ~/.config/git/config.local

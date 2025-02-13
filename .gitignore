@@ -1,6 +1,7 @@
 /.dotfiles/secrets.env
 /.dotfiles/bitwarden.session
 /bin
+/config/codegpt/.codegpt.yaml
 /config/composer/.htaccess
 /config/composer/auth.json
 /config/gcal/config.toml
@@ -8,6 +9,7 @@
 /config/gh/hosts.yml
 /config/gh/state.yml
 /config/git/config
+/config/git/hooks/prepare-commit-msg
 /config/godl/config.toml
 /config/ideavim/ideavimrc
 /config/jnal/config.toml
