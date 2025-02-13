@@ -30,19 +30,17 @@ set -a && . ${DOTFILES}/secrets.env && set +a
 # session
 touch ${DOTFILES}/bitwarden.session
 bw_session=$(get_bitwarden_session)
+
+## unauthenticated
 bw_status=$(${LOCAL_BIN}/bw status --session "${bw_session}" | ${LOCAL_BIN}/jq -r .status)
-
-## unlocked
-if [ "${bw_status}" = "unlocked" ]; then
-  exit
-fi
-
-## locked
-if [ "${bw_status}" = "locked" ]; then
+if [ "${bw_status}" = "unauthenticated" ]; then
+  ${LOCAL_BIN}/bw login --apikey
   ${LOCAL_BIN}/bw unlock --raw > ${DOTFILES}/bitwarden.session
   exit
 fi
 
-# unauthenticated
-${LOCAL_BIN}/bw login --apikey
-${LOCAL_BIN}/bw unlock --raw > ${DOTFILES}/bitwarden.session
+## locked
+bw_test=$(${LOCAL_BIN}/bw get notes e662e3a3-6e8d-4903-982d-b283007a1b6f --session "${bw_session}")
+if [ "${bw_test}" != "longkey1" ]; then
+  ${LOCAL_BIN}/bw unlock --raw > ${DOTFILES}/bitwarden.session
+fi
