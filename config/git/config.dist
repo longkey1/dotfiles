@@ -10,6 +10,7 @@
 [color]
   ui = auto
 [alias]
+  aicommit = ! codegpt commit
   aliases = ! git config --list | grep ^alias\\. | cut -c 7- | grep -Ei --color \"$1\" "#"
   default = ! git remote show origin | grep 'HEAD branch' | awk '{print $NF}'
   fcommit = commit --no-verify
