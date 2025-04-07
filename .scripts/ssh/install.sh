@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-. ${DOTFILES}/functions
+. ${SCRIPTS}/functions
 
 symlink ssh/config
 symlink ssh/conf.d

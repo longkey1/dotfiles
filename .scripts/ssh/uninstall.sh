@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-. ${DOTFILES}/functions
+. ${SCRIPTS}/functions
 
 unsymlink ssh/config
 unsymlink ssh/conf.d
