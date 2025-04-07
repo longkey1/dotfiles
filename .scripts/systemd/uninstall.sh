@@ -6,6 +6,6 @@ if [ "${OS}" != "linux" ]; then
   exit
 fi
 
-. ${DOTFILES}/functions
+. ${SCRIPTS}/functions
 
 unsymlink config/systemd

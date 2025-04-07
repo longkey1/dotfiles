@@ -21,26 +21,26 @@ if [ ! -x "${LOCAL_BIN}/${BINARY}" ]; then
 fi
 
 # set secrets
-set -a && . ${DOTFILES}/secrets.env && set +a
+set -a && . ${SCRIPTS}/secrets.env && set +a
 
 
 # inclide functions
-. ${DOTFILES}/functions
+. ${SCRIPTS}/functions
 
 # session
-touch ${DOTFILES}/bitwarden.session
+touch ${SCRIPTS}/bitwarden.session
 bw_session=$(get_bitwarden_session)
 
 ## unauthenticated
 bw_status=$(${LOCAL_BIN}/bw status --session "${bw_session}" | ${LOCAL_BIN}/jq -r .status)
 if [ "${bw_status}" = "unauthenticated" ]; then
   ${LOCAL_BIN}/bw login --apikey
-  ${LOCAL_BIN}/bw unlock --raw > ${DOTFILES}/bitwarden.session
+  ${LOCAL_BIN}/bw unlock --raw > ${SCRIPTS}/bitwarden.session
   exit
 fi
 
 ## locked
 bw_test=$(${LOCAL_BIN}/bw get notes e662e3a3-6e8d-4903-982d-b283007a1b6f --session "${bw_session}")
 if [ "${bw_test}" != "longkey1" ]; then
-  ${LOCAL_BIN}/bw unlock --raw > ${DOTFILES}/bitwarden.session
+  ${LOCAL_BIN}/bw unlock --raw > ${SCRIPTS}/bitwarden.session
 fi

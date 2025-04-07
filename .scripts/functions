@@ -21,7 +21,7 @@ function unsymlink() {
 }
 
 function get_bitwarden_session() {
-  echo "$(cat ${DOTFILES}/bitwarden.session)"
+  echo "$(cat ${SCRIPTS}/bitwarden.session)"
 }
 
 function execute_envsubst() {

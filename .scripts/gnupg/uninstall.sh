@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-. ${DOTFILES}/functions
+. ${SCRIPTS}/functions
 
 unsymlink gnupg/gpg-agent.conf
 unsymlink gnupg/gpg.conf

@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
 
-. ${DOTFILES}/functions
+. ${SCRIPTS}/functions
 
 symlink config/ideavim
