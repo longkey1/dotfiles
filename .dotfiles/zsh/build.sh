@@ -7,8 +7,12 @@ function git-clone() {
 }
 
 set -a && . ${DOTFILES}/secrets.env && set +a &&
+export GPG_PASSPHRASE=$(${LOCAL_BIN}/bw get password c5f2ce95-8cd9-41e6-b1ef-afeb00292e4c --session "${bw_session}")
 
-envsubst '${GPG_KEYGRIP}' < ${LOCAL_CONFIG}/zsh/zshrc.gpg.dist > ${LOCAL_CONFIG}/zsh/zshrc.gpg
+. ${DOTFILES}/functions
+bw_session=$(get_bitwarden_session)
+
+envsubst '${GPG_KEYGRIP} ${GPG_PASSPHRASE}' < ${LOCAL_CONFIG}/zsh/zshrc.gpg.dist > ${LOCAL_CONFIG}/zsh/zshrc.gpg
 
 [ ! -f ${LOCAL_CONFIG}/zsh/.zshrc ] && ln -s ${LOCAL_CONFIG}/zsh/zshrc ${LOCAL_CONFIG}/zsh/.zshrc || true
 [ ! -f ${LOCAL_CONFIG}/zsh/.zlogin ] && ln -s ${LOCAL_CONFIG}/zsh/zlogin ${LOCAL_CONFIG}/zsh/.zlogin || true
