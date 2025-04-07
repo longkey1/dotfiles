@@ -3,17 +3,17 @@
 ROOT := $(patsubst %/,%,$(dir $(realpath $(firstword $(MAKEFILE_LIST)))))
 BIN := $(ROOT)/bin
 CONFIG := $(ROOT)/config
-DOTFILES := $(ROOT)/.dotfiles
+SCRIPTS := $(ROOT)/.scripts
 
 define _execute_task
 	@if [ "$(1)" != "" ]; then \
-		if [ -x "$(DOTFILES)/$(1)/$(2).sh" ]; then \
-			$(call _execute_shell,$(DOTFILES)/$(1)/$(2).sh); \
+		if [ -x "$(SCRIPTS)/$(1)/$(2).sh" ]; then \
+			$(call _execute_shell,$(SCRIPTS)/$(1)/$(2).sh); \
 		else \
-			echo "not executable $(DOTFILES)/$(1)/$(2).sh"; \
+			echo "not executable $(SCRIPTS)/$(1)/$(2).sh"; \
 		fi \
 	else \
-		for target in $(wildcard $(DOTFILES)/*/$(2).sh); do \
+		for target in $(wildcard $(SCRIPTS)/*/$(2).sh); do \
 			if [ -x "$${target}" ]; then \
 				$(call _execute_shell,$${target}); \
 			fi \
@@ -22,7 +22,7 @@ define _execute_task
 endef
 
 define _execute_shell
-	env ROOT=$(ROOT) LOCAL_BIN=$(BIN) LOCAL_CONFIG=$(CONFIG) REMOTE_BIN=$(HOME)/.bin REMOTE_CONFIG=$(HOME)/.config DOTFILES=$(DOTFILES) $(1)
+	env ROOT=$(ROOT) LOCAL_BIN=$(BIN) LOCAL_CONFIG=$(CONFIG) REMOTE_BIN=$(HOME)/.bin REMOTE_CONFIG=$(HOME)/.config SCRIPTS=$(SCRIPTS) $(1)
 endef
 
 .PHONY: init
