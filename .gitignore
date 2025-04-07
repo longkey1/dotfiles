@@ -1,5 +1,5 @@
-/.dotfiles/secrets.env
-/.dotfiles/bitwarden.session
+/.scripts/secrets.env
+/.scripts/bitwarden.session
 /bin
 /config/codegpt/.codegpt.yaml
 /config/gcal/config.toml
