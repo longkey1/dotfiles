@@ -2,8 +2,9 @@
 /.scripts/bitwarden.session
 /bin
 /config/codegpt/.codegpt.yaml
+/config/gcal/application_credentials.json
 /config/gcal/config.toml
-/config/gcal/credentials.json
+/config/gcal/user_credentials.json
 /config/git/config
 /config/git/hooks/prepare-commit-msg
 /config/godl/config.toml

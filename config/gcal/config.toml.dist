@@ -1,4 +1,5 @@
-google_application_credentials = "${HOME}/.config/gcal/credentials.json"
+application_credentials = "${HOME}/.config/gcal/credentials.json"
+user_credentials = "${HOME}/.config/gcal/user_credentials.json"
 calendar_id_list = [
   "longkey1@gmail.com",
 ]
