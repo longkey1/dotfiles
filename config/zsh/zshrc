@@ -32,7 +32,7 @@ export LOCAL_UID=$(id -u)
 export LOCAL_GID=$(id -g)
 
 # path .bin
-path=(${path} ${HOME}/.bin(N-/))
+path=(${path} ${HOME}/.local/bin(N-/))
 
 # starship
 if excutable starship; then

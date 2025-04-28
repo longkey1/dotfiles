@@ -1,6 +1,6 @@
 /.scripts/secrets.env
 /.scripts/bitwarden.session
-/bin
+/local/bin
 /config/codegpt/.codegpt.yaml
 /config/gcal/application_credentials.json
 /config/gcal/config.toml

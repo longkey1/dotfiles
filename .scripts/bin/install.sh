@@ -2,4 +2,4 @@
 
 . ${SCRIPTS}/functions
 
-symlink bin
+symlink local/bin
