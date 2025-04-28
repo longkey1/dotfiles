@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := help
 
 ROOT := $(patsubst %/,%,$(dir $(realpath $(firstword $(MAKEFILE_LIST)))))
-BIN := $(ROOT)/bin
+BIN := $(ROOT)/local/bin
 CONFIG := $(ROOT)/config
 SCRIPTS := $(ROOT)/.scripts
 
