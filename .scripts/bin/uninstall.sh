@@ -2,4 +2,4 @@
 
 . ${SCRIPTS}/functions
 
-unsymlink bin
+unsymlink local/bin
