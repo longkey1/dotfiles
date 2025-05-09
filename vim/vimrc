@@ -22,7 +22,7 @@ let g:netrw_liststyle = 3
 command TrimTrailingBlank %s/\s\+$//ge
 augroup trim_trailing_blank_space
   autocmd!
-  autocmd BufWritePre * :TrimTrailingBlank"
+  autocmd BufWritePre * :TrimTrailingBlank
 augroup END
 
 " IME切り替えの待ち時間を短くする
@@ -31,18 +31,6 @@ set ttimeoutlen=1
 " quickrun
 let g:quickrun_config = {}
 let g:quickrun_config.markdown = {'runner': 'shell', 'command': 'glow'}
-
-" abbreviations
-augroup abbreviations_md_ts
-  autocmd FileType markdown iabbrev <buffer> :ts: <C-R>=strftime("%Y-%m-%d %H:%M")<CR>
-augroup END
-
-" just filetype
-augroup filetypedetect_justfile
-  autocmd!
-  autocmd BufNewFile,BufRead justfile setf make
-  autocmd BufNewFile,BufRead *.justfile setf make
-augroup END
 
 " open-browser.vim
 let g:netrw_nogx = 1 " disable netrw's gx mapping.
@@ -56,6 +44,7 @@ if has('mac') && filereadable(expand('~/.vim/vimrc.mac'))
 elseif has('linux') && filereadable(expand('~/.vim/vimrc.linux'))
   source ~/.vim/vimrc.linux
 endif
+
 " for local
 if filereadable(expand('~/.vim/vimrc.local'))
   source ~/.vim/vimrc.local
