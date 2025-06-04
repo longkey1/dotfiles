@@ -6,7 +6,6 @@
 /config/gcal/config.toml
 /config/gcal/user_credentials.json
 /config/git/config
-/config/git/hooks/prepare-commit-msg
 /config/godl/config.toml
 /config/ideavim/ideavimrc
 /config/jnal/config.toml
