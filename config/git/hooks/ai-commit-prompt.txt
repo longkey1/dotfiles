@@ -1,13 +1,11 @@
-Generate a conventional commit message based on the following git diff changes.
+以下の git diff の変更内容に基づいて、Conventional Commits 仕様に従ったコミットメッセージを生成してください。
 
 Diff:
 {{DIFF}}
 
-IMPORTANT:
-- The first line MUST be the commit subject line following the Conventional Commits specification (for example, "feat:", "fix:", "docs:", etc.). Do NOT skip or omit this line.
-- The second line MUST be empty.
-- From the third line onward, write the commit message body as a markdown list with each item starting with "- ".
-- Check and correct any English grammar mistakes.
-- The entire commit message must be concise and clear.
-
-Please do NOT generate only the body without a subject line.
+制約事項：
+- 1行目は必ず Conventional Commits の形式（例: feat:, fix:, docs: など）に従ったコミットタイトルとしてください。
+- 2行目は空行で表現してください。
+- 3行目以降は本文としてください。
+- 本文は、すべて - で始まるマークダウン形式の箇条書きにしてください。
+- 英語の文法ミスがあれば修正してください。
