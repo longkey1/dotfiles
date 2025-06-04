@@ -1,0 +1,11 @@
+Please generate a conventional commit message based on the following git diff changes.
+
+Diff:
+{{DIFF}}
+
+Instructions:
+- The first line must be the commit subject following the Conventional Commits specification (e.g., "feat:", "fix:", "docs:", etc.).
+- The second line must be empty.
+- From the third line onward, write the commit message body as a markdown list, with each item starting with a hyphen and a space ("- ").
+- Check and correct any English grammar mistakes.
+- Keep the message concise and clear.
