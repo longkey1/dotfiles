@@ -1,33 +1,36 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 COMMIT_MSG_FILE="$1"
 COMMIT_SOURCE="$2"
 
-# Skip if COMMIT_SOURCE is non-empty (e.g. 'merge', 'squash', 'rebase', etc.)
+# Skip if COMMIT_SOURCE is non-empty (e.g. merge commits, amend)
 if [[ -n "$COMMIT_SOURCE" ]]; then
   exit 0
 fi
+
+# Skip if commit message already has a non-comment content
 if grep -vqE '^\s*(#|$)' "$COMMIT_MSG_FILE"; then
   echo "[AI Commit] Non-comment message already exists. Skipping AI." >&2
   exit 0
 fi
 
-SCRIPT_DIR=$(cd "$(dirname "${(%):-%N}")" && pwd)
+# Get script directory and prompt file path
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 PROMPT_FILE="$SCRIPT_DIR/ai-commit-prompt.txt"
 
-# Read config from git config [aicommit]
+# Read configuration from git config
 PROVIDER=$(git config --get aicommit.provider)
 MODEL=$(git config --get aicommit.model)
 API_KEY=$(git config --get aicommit.apikey)
 BASE_URL=$(git config --get aicommit.apibaseurl)
 
-# Validate required values
+# Validate required config
 if [[ -z "$PROVIDER" || -z "$MODEL" || -z "$API_KEY" ]]; then
-  echo "[AI Commit] Missing required config: provider, model, or apikey." >&2
+  echo "[AI Commit] Missing required config." >&2
   exit 0
 fi
 
-# Set default base URL if empty
+# Set default base URL if not set
 if [[ -z "$BASE_URL" ]]; then
   if [[ "$PROVIDER" == "openai" ]]; then
     BASE_URL="https://api.openai.com"
@@ -39,43 +42,61 @@ if [[ -z "$BASE_URL" ]]; then
   fi
 fi
 
+# Check if prompt file exists
 if [[ ! -f "$PROMPT_FILE" ]]; then
-  echo "[AI Commit] Prompt file not found: $PWD/$PROMPT_FILE" >&2
+  echo "[AI Commit] Prompt file not found: $PROMPT_FILE" >&2
   exit 1
 fi
 
+# Get staged git diff
 DIFF=$(git diff --cached)
 if [[ -z "$DIFF" ]]; then
-  echo "[AI Commit] No staged changes. Skipping AI commit message generation." >&2
+  echo "[AI Commit] No staged changes." >&2
   exit 0
 fi
 
-PROMPT=$(<"$PROMPT_FILE")
-PROMPT="${PROMPT//'{{DIFF}}'/$DIFF}"
+# Read prompt file content
+TEMPLATE=$(cat "$PROMPT_FILE")
+PROMPT="${TEMPLATE//'{{DIFF}}'/$DIFF}"
 
-# Call AI API
-if [[ "$PROVIDER" == "openai" ]]; then
-  RESPONSE=$(curl -s "$BASE_URL/v1/chat/completions" \
+# Call AI provider API to generate commit message
+if [[ "$PROVIDER" == "gemini" ]]; then
+  RESPONSE=$(jq -n --arg prompt "$PROMPT" '{
+    contents: [
+      {
+        parts: [
+          { text: $prompt }
+        ]
+      }
+    ]
+  }' | curl -s -X POST "$BASE_URL/v1beta/models/${MODEL}:generateContent?key=${API_KEY}" \
+    -H "Content-Type: application/json" \
+    -d @-)
+
+  CONTENT=$(echo "$RESPONSE" | jq -r '.candidates[0].content.parts[0].text')
+
+elif [[ "$PROVIDER" == "openai" ]]; then
+  RESPONSE=$(jq -n --arg prompt "$PROMPT" '{
+    model: "'"$MODEL"'",
+    messages: [{"role": "user", "content": $prompt}],
+    temperature: 0.5
+  }' | curl -s "$BASE_URL/v1/chat/completions" \
     -H "Authorization: Bearer $API_KEY" \
     -H "Content-Type: application/json" \
-    -d '{
-      "model": "'"$MODEL"'",
-      "messages": [{"role": "user", "content": "'"${PROMPT//\"/\\\"}"'"}],
-      "temperature": 0.5
-    }' | jq -r '.choices[0].message.content')
-elif [[ "$PROVIDER" == "gemini" ]]; then
-  RESPONSE=$(curl -s -X POST "$BASE_URL/v1beta/models/${MODEL}:generateContent?key=${API_KEY}" \
-    -H "Content-Type: application/json" \
-    -d '{"contents":[{"parts":[{"text":"'"${PROMPT//\"/\\\"}"'"}]}]}' | jq -r '.candidates[0].content.parts[0].text')
+    -d @-)
+
+  CONTENT=$(echo "$RESPONSE" | jq -r '.choices[0].message.content')
+
 else
   echo "[AI Commit] Unknown provider: $PROVIDER" >&2
   exit 1
 fi
 
-SUBJECT=$(echo "$RESPONSE" | head -n 1)
-BODY=$(echo "$RESPONSE" | tail -n +3)
+# Split response into subject (1st line) and body (rest, starting 3nd line)
+SUBJECT=$(printf '%s' "$CONTENT" | head -n 1)
+BODY=$(printf '%s' "$CONTENT" | tail -n +3)
 
-# Write AI generated commit message to file
+# Write the commit message file
 {
   echo "$SUBJECT"
   echo ""
