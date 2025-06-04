@@ -1,0 +1,83 @@
+#!/usr/bin/env zsh
+
+COMMIT_MSG_FILE="$1"
+COMMIT_SOURCE="$2"
+
+# Skip if COMMIT_SOURCE is non-empty (e.g. 'merge', 'squash', 'rebase', etc.)
+if [[ -n "$COMMIT_SOURCE" ]]; then
+  exit 0
+fi
+if grep -vqE '^\s*(#|$)' "$COMMIT_MSG_FILE"; then
+  echo "[AI Commit] Non-comment message already exists. Skipping AI." >&2
+  exit 0
+fi
+
+SCRIPT_DIR=$(cd "$(dirname "${(%):-%N}")" && pwd)
+PROMPT_FILE="$SCRIPT_DIR/ai-commit-prompt.txt"
+
+# Read config from git config [aicommit]
+PROVIDER=$(git config --get aicommit.provider)
+MODEL=$(git config --get aicommit.model)
+API_KEY=$(git config --get aicommit.apikey)
+BASE_URL=$(git config --get aicommit.apibaseurl)
+
+# Validate required values
+if [[ -z "$PROVIDER" || -z "$MODEL" || -z "$API_KEY" ]]; then
+  echo "[AI Commit] Missing required config: provider, model, or apikey." >&2
+  exit 0
+fi
+
+# Set default base URL if empty
+if [[ -z "$BASE_URL" ]]; then
+  if [[ "$PROVIDER" == "openai" ]]; then
+    BASE_URL="https://api.openai.com"
+  elif [[ "$PROVIDER" == "gemini" ]]; then
+    BASE_URL="https://generativelanguage.googleapis.com"
+  else
+    echo "[AI Commit] Unknown provider and no base URL set." >&2
+    exit 1
+  fi
+fi
+
+if [[ ! -f "$PROMPT_FILE" ]]; then
+  echo "[AI Commit] Prompt file not found: $PWD/$PROMPT_FILE" >&2
+  exit 1
+fi
+
+DIFF=$(git diff --cached)
+if [[ -z "$DIFF" ]]; then
+  echo "[AI Commit] No staged changes. Skipping AI commit message generation." >&2
+  exit 0
+fi
+
+PROMPT=$(<"$PROMPT_FILE")
+PROMPT="${PROMPT//'{{DIFF}}'/$DIFF}"
+
+# Call AI API
+if [[ "$PROVIDER" == "openai" ]]; then
+  RESPONSE=$(curl -s "$BASE_URL/v1/chat/completions" \
+    -H "Authorization: Bearer $API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "'"$MODEL"'",
+      "messages": [{"role": "user", "content": "'"${PROMPT//\"/\\\"}"'"}],
+      "temperature": 0.5
+    }' | jq -r '.choices[0].message.content')
+elif [[ "$PROVIDER" == "gemini" ]]; then
+  RESPONSE=$(curl -s -X POST "$BASE_URL/v1beta/models/${MODEL}:generateContent?key=${API_KEY}" \
+    -H "Content-Type: application/json" \
+    -d '{"contents":[{"parts":[{"text":"'"${PROMPT//\"/\\\"}"'"}]}]}' | jq -r '.candidates[0].content.parts[0].text')
+else
+  echo "[AI Commit] Unknown provider: $PROVIDER" >&2
+  exit 1
+fi
+
+SUBJECT=$(echo "$RESPONSE" | head -n 1)
+BODY=$(echo "$RESPONSE" | tail -n +3)
+
+# Write AI generated commit message to file
+{
+  echo "$SUBJECT"
+  echo ""
+  echo "$BODY"
+} > "$COMMIT_MSG_FILE"
