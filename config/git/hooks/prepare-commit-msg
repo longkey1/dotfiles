@@ -73,6 +73,8 @@ if [[ "$PROVIDER" == "gemini" ]]; then
     -H "Content-Type: application/json" \
     -d @-)
 
+  echo "gemini"
+  echo ${RESPONSE}
   CONTENT=$(echo "$RESPONSE" | jq -r '.candidates[0].content.parts[0].text')
 
 elif [[ "$PROVIDER" == "openai" ]]; then
@@ -85,7 +87,6 @@ elif [[ "$PROVIDER" == "openai" ]]; then
     -H "Content-Type: application/json" \
     -d @-)
 
-  echo ${RESPONSE}
   CONTENT=$(echo "$RESPONSE" | jq -r '.choices[0].message.content')
 
 else
