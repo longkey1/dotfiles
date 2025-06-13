@@ -1,7 +1,7 @@
 [core]
   editor = vim -c \"set fenc=utf-8\"
   quotepath = false
-  pager = nkf -w | LESSCHARSET=utf-8 less
+  pager = LESSCHARSET=utf-8 less
   hooksPath = ~/.config/git/hooks
 [user]
   email = longkey1@gmail.com
@@ -19,9 +19,9 @@
 [push]
   default = nothing
 [pager]
-  log = diff-highlight | nkf -w | LESSCHARSET=utf-8 less
-  show = diff-highlight | nkf -w | LESSCHARSET=utf-8 less
-  diff = diff-highlight | nkf -w | LESSCHARSET=utf-8 less
+  log = diff-highlight | LESSCHARSET=utf-8 less
+  show = diff-highlight | LESSCHARSET=utf-8 less
+  diff = diff-highlight | LESSCHARSET=utf-8 less
 [commit]
   gpgsign = true
 [include]
