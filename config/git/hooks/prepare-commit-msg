@@ -2,6 +2,7 @@
 
 COMMIT_MSG_FILE="$1"
 COMMIT_SOURCE="$2"
+DIFF=$(git diff --cached)
 
 # Skip if COMMIT_SOURCE is non-empty (e.g. merge commits, amend)
 if [[ -n "$COMMIT_SOURCE" ]]; then
@@ -14,93 +15,4 @@ if grep -vqE '^\s*(#|$)' "$COMMIT_MSG_FILE"; then
   exit 0
 fi
 
-# Get script directory and prompt file path
-SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-PROMPT_FILE="$SCRIPT_DIR/ai-commit-prompt.txt"
-
-# Read configuration from git config
-PROVIDER=$(git config --get aicommit.provider)
-MODEL=$(git config --get aicommit.model)
-API_KEY=$(git config --get aicommit.apikey)
-BASE_URL=$(git config --get aicommit.apibaseurl)
-
-# Validate required config
-if [[ -z "$PROVIDER" || -z "$MODEL" || -z "$API_KEY" ]]; then
-  echo "[AI Commit] Missing required config." >&2
-  exit 0
-fi
-
-# Set default base URL if not set
-if [[ -z "$BASE_URL" ]]; then
-  if [[ "$PROVIDER" == "openai" ]]; then
-    BASE_URL="https://api.openai.com"
-  elif [[ "$PROVIDER" == "gemini" ]]; then
-    BASE_URL="https://generativelanguage.googleapis.com"
-  else
-    echo "[AI Commit] Unknown provider and no base URL set." >&2
-    exit 1
-  fi
-fi
-
-# Check if prompt file exists
-if [[ ! -f "$PROMPT_FILE" ]]; then
-  echo "[AI Commit] Prompt file not found: $PROMPT_FILE" >&2
-  exit 1
-fi
-
-# Get staged git diff
-DIFF=$(git diff --cached)
-if [[ -z "$DIFF" ]]; then
-  echo "[AI Commit] No staged changes." >&2
-  exit 0
-fi
-
-# Read prompt file content
-TEMPLATE=$(cat "$PROMPT_FILE")
-PROMPT="${TEMPLATE//'{{DIFF}}'/$DIFF}"
-
-# Call AI provider API to generate commit message
-if [[ "$PROVIDER" == "gemini" ]]; then
-  RESPONSE=$(jq -n --arg prompt "$PROMPT" '{
-    contents: [
-      {
-        parts: [
-          { text: $prompt }
-        ]
-      }
-    ]
-  }' | curl -s -X POST "$BASE_URL/v1beta/models/${MODEL}:generateContent?key=${API_KEY}" \
-    -H "Content-Type: application/json" \
-    -d @-)
-
-  echo "gemini"
-  echo ${RESPONSE}
-  CONTENT=$(echo "$RESPONSE" | jq -r '.candidates[0].content.parts[0].text')
-
-elif [[ "$PROVIDER" == "openai" ]]; then
-  RESPONSE=$(jq -n --arg prompt "$PROMPT" '{
-    model: "'$MODEL'",
-    messages: [{"role": "user", "content": $prompt}],
-    temperature: 0.5
-  }' | curl -s "$BASE_URL/v1/chat/completions" \
-    -H "Authorization: Bearer $API_KEY" \
-    -H "Content-Type: application/json" \
-    -d @-)
-
-  CONTENT=$(echo "$RESPONSE" | jq -r '.choices[0].message.content')
-
-else
-  echo "[AI Commit] Unknown provider: $PROVIDER" >&2
-  exit 1
-fi
-
-# Split response into subject (1st line) and body (rest, starting 3nd line)
-SUBJECT=$(printf '%s' "$CONTENT" | head -n 1)
-BODY=$(printf '%s' "$CONTENT" | tail -n +3)
-
-# Write the commit message file
-{
-  echo "$SUBJECT"
-  echo ""
-  echo "$BODY"
-} > "$COMMIT_MSG_FILE"
+echo "${DIFF}" | llmc chat -p commit > ${COMMIT_MSG_FILE}
