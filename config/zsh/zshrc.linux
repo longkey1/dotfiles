@@ -47,3 +47,24 @@ if [[ "$(uname -r)" == *microsoft* ]]; then
   path=(${path} /mnt/c/Users/${win_username}/Program\ Files/zenhan/bin64(N-/))
 fi
 
+# ssh-agent
+if excutable ssh-agent; then
+  SSH_ENV="${HOME}/.ssh/agent.env"
+
+  if [ -f "${SSH_ENV}" ]; then
+    . "${SSH_ENV}" > /dev/null
+    if ! ssh-add -l &>/dev/null; then
+      eval "$(ssh-agent -s)" > "${SSH_ENV}"
+      . "${SSH_ENV}" > /dev/null
+    fi
+  else
+    eval "$(ssh-agent -s)" > "${SSH_ENV}"
+    . "${SSH_ENV}" > /dev/null
+  fi
+
+  if [ -f "${HOME}/.ssh/id_rsa" ]; then
+    if ! ssh-add -l | grep -q "${HOME}/.ssh/id_rsa"; then
+      ssh-add "${HOME}/.ssh/id_rsa"
+    fi
+  fi
+fi

@@ -30,3 +30,10 @@ export __CF_USER_TEXT_ENCODING=0x$(printf %x $(id -u)):0x08000100:14
 # locale
 export LANG=C
 export LC_CTYPE=ja_JP.UTF-8
+
+# ssh-agent
+if [ -f "${HOME}/.ssh/id_rsa" ]; then
+  if ! ssh-add -l | grep -q "${HOME}/.ssh/id_rsa"; then
+    ssh-add "${HOME}/.ssh/id_rsa" > /dev/null 2>&1
+  fi
+fi
