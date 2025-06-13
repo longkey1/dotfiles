@@ -1,12 +1,9 @@
 #!/usr/bin/env zsh
 
-BINARY="gcal"
 REPOSITORY="longkey1/gcal"
 CURRENT=$(cd $(dirname $0);pwd)
 
-if [ ! -x "${LOCAL_BIN}/${BINARY}" ]; then
-  ${LOCAL_BIN}/eget ${REPOSITORY} --to ${LOCAL_BIN}/
-fi
+${LOCAL_BIN}/eget ${REPOSITORY} --to ${LOCAL_BIN}/ --upgrade-only
 
 . ${SCRIPTS}/functions
 bw_session=$(get_bitwarden_session)
