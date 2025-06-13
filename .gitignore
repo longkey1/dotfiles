@@ -10,6 +10,7 @@
 /config/godl/config.toml
 /config/ideavim/ideavimrc
 /config/jnal/config.toml
+/config/llmc/config.toml
 /config/starship/config.toml
 /config/tmpl/config.toml
 /config/zsh/.chpwd-recent-dirs
