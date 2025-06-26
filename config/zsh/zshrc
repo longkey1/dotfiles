@@ -40,8 +40,8 @@ path=(${path} ${HOME}/.local/bin(N-/))
 #
 excutable colordiff && alias diff="colordiff"
 excutable jq && alias jq="jq -C"
-excutable ls && alias ls="exa"
-excutable ls && alias ll="exa -l"
+excutable ls && alias ls="ls --color=auto"
+excutable ls && alias ll="ls -al"
 excutable nkf && alias urlenc="nkf -WwMQ | tr = %"
 excutable nkf && alias urldec="nkf -w --url-input"
 excutable rg && alias rg="rg -p"
@@ -124,6 +124,11 @@ zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 bindkey "^p" history-beginning-search-backward-end
 bindkey "^n" history-beginning-search-forward-end
+
+## lnkr
+if excutable lnkr; then
+  export LNKR_REMOTE_ROOT="${XDG_CONFIG_HOME}/lnkr"
+fi
 
 #
 # Include files
