@@ -24,9 +24,3 @@ git-clone zsh-users/zsh-history-substring-search plugins/zsh-users/zsh-history-s
 git-clone zsh-users/zsh-syntax-highlighting plugins/zsh-users/zsh-syntax-highlighting
 git-clone mollifier/anyframe plugins/mollifier/anyframe
 git-clone olets/zsh-abbr plugins/olets/zsh-abbr
-
-${LOCAL_BIN}/gcal --config ${LOCAL_CONFIG}/gcal/config.toml completion zsh > ${LOCAL_CONFIG}/zsh/functions/_gcal
-${LOCAL_BIN}/godl completion zsh > ${LOCAL_CONFIG}/zsh/functions/_godl
-${LOCAL_BIN}/jnal --config ${LOCAL_CONFIG}/jnal/config.toml completion zsh > ${LOCAL_CONFIG}/zsh/functions/_jnal
-${LOCAL_BIN}/just --completions zsh > ${LOCAL_CONFIG}/zsh/functions/_just
-${LOCAL_BIN}/tmpl --config ${LOCAL_CONFIG}/tmpl/config.toml completion zsh > ${LOCAL_CONFIG}/zsh/functions/_tmpl
