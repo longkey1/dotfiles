@@ -125,6 +125,11 @@ zle -N history-beginning-search-forward-end history-search-end
 bindkey "^p" history-beginning-search-backward-end
 bindkey "^n" history-beginning-search-forward-end
 
+## eget
+if excutable lnkr && excutable gh; then
+  export EGET_GITHUB_TOKEN="$(gh auth token)"
+fi
+
 ## lnkr
 if excutable lnkr; then
   export LNKR_REMOTE_ROOT="${XDG_CONFIG_HOME}/lnkr"

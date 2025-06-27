@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 
+BINARY="gitlint"
 REPOSITORY="llorllale/go-gitlint"
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 ARCH="amd64"
