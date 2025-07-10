@@ -58,9 +58,8 @@ export LOCAL_GID=$(id -g)
 
 ## abbr
 if excutable abbr; then
-  abbr -g -S -q ymd=$(date '+%Y%m%d')
-  abbr -g -S -q ymd-=$(date '+%Y-%m-%d')
-  abbr -g -S -q gpp="preset-gpg-passphrase"
+  abbr -g -s -q ymd=$(date '+%y%m%d')
+  abbr -g -s -q ymd-=$(date '+%y-%m-%d')
 fi
 
 ## starship
@@ -139,9 +138,7 @@ fi
 # Include files
 #
 ## include gpg files
-if excutable gpg; then
-  [[ -f ${ZDOTDIR}/zshrc.gpg ]] && source ${ZDOTDIR}/zshrc.gpg
-fi
+[[ -f ${ZDOTDIR}/zshrc.gpg ]] && source ${ZDOTDIR}/zshrc.gpg
 
 ## include ostype files
 _ostype=$(uname -s | tr '[:upper:]' '[:lower:]')
