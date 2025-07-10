@@ -1,8 +1,15 @@
 # gpg
-function preset-gpg-passphrase() {
-  gpg-preset-passphrase --preset --passphrase ${GPG_PASSPHRASE} ${GPG_KEYGRIP}
-}
-
 if excutable gpg; then
+  # function
+  function preset-gpg-passphrase() {
+    gpg-preset-passphrase --preset --passphrase ${GPG_PASSPHRASE} ${GPG_KEYGRIP}
+  }
+  # abbr
+  if excutable abbr; then
+    abbr -g -s -q gpp="preset-gpg-passphrase"
+  fi
+
   export GPG_TTY=${TTY}
+  gpgconf --launch gpg-agent
+  preset-gpg-passphrase
 fi
