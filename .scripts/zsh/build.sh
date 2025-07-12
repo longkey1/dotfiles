@@ -10,7 +10,6 @@ CURRENT=$(cd $(dirname $0);pwd)
 ${LOCAL_BIN}/checkexec ${LOCAL_CONFIG}/zsh/zshrc.gpg ${LOCAL_CONFIG}/zsh/zshrc.gpg.dist -- ${CURRENT}/build_gpg.sh
 
 [ ! -f ${LOCAL_CONFIG}/zsh/.zshrc ] && ln -s ${LOCAL_CONFIG}/zsh/zshrc ${LOCAL_CONFIG}/zsh/.zshrc || true
-[ ! -f ${LOCAL_CONFIG}/zsh/.zlogin ] && ln -s ${LOCAL_CONFIG}/zsh/zlogin ${LOCAL_CONFIG}/zsh/.zlogin || true
 
 # plugins
 mkdir -p ${LOCAL_CONFIG}/zsh/plugins

@@ -1,5 +1,7 @@
 # gpg
 if excutable gpg; then
+  # path
+  path=(${path} /usr/lib/gnupg(N-/))
   # function
   function preset-gpg-passphrase() {
     gpg-preset-passphrase --preset --passphrase ${GPG_PASSPHRASE} ${GPG_KEYGRIP}
