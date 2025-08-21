@@ -137,12 +137,12 @@ fi
 #
 # Include files
 #
-## include gpg files
-[[ -f ${ZDOTDIR}/zshrc.gpg ]] && source ${ZDOTDIR}/zshrc.gpg
-
 ## include ostype files
 _ostype=$(uname -s | tr '[:upper:]' '[:lower:]')
 [[ -f ${ZDOTDIR}/zshrc.${_ostype} ]] && source ${ZDOTDIR}/zshrc.${_ostype}
+
+## include gpg files
+[[ -f ${ZDOTDIR}/zshrc.gpg ]] && source ${ZDOTDIR}/zshrc.gpg
 
 ## include local file
 [[ -f ${ZDOTDIR}/zshrc.local ]] && source ${ZDOTDIR}/zshrc.local
