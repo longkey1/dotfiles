@@ -48,6 +48,7 @@ excutable rg && alias rg="rg -p"
 excutable tput && alias beep="tput bel"
 excutable vim && alias vi="vim"
 excutable xh && alias http="xh"
+excutable gemini && alias gemini-cli='gemini --screen-reader'
 
 #
 # Applications
