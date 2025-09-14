@@ -2,4 +2,4 @@
 
 . ${SCRIPTS}/functions
 
-symlink local/bin
+unsymlink local/bin/fzf

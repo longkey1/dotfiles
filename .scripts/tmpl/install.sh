@@ -2,4 +2,5 @@
 
 . ${SCRIPTS}/functions
 
+symlink local/bin/tmpl
 symlink config/tmpl

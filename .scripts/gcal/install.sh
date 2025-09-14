@@ -2,4 +2,5 @@
 
 . ${SCRIPTS}/functions
 
+symlink local/bin/gcal
 symlink config/gcal

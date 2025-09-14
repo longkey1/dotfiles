@@ -2,4 +2,4 @@
 
 . ${SCRIPTS}/functions
 
-unsymlink local/bin
+symlink local/bin/ghq

@@ -2,4 +2,5 @@
 
 . ${SCRIPTS}/functions
 
+symlink local/bin/lf
 symlink config/lf

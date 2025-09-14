@@ -2,5 +2,4 @@
 
 . ${SCRIPTS}/functions
 
-unsymlink local/bin/lf
-unsymlink config/lf
+symlink local/bin/bw
