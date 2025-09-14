@@ -1,0 +1,6 @@
+# npm configuration for dotfiles
+# Set the directory where npm will install packages
+prefix=local
+
+# Disable package-lock.json generation
+package-lock=false
