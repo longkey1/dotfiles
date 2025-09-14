@@ -135,6 +135,11 @@ if excutable lnkr; then
   export LNKR_REMOTE_ROOT="${XDG_CONFIG_HOME}/lnkr"
 fi
 
+## npm
+if excutable npm; then
+  export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
+fi
+
 #
 # Include files
 #
