@@ -1,10 +1,8 @@
 #!/usr/bin/env zsh
 
 . ${SCRIPTS}/functions
-. ${SCRIPTS}/npm/packages.sh
 
-unsymlink config/npm
-
-for package in "${PACKAGES[@]}"; do
-    npm uninstall --global --prefix "${ROOT}/local" "${package}"
+# npmでインストールされたツール（node_modulesへのシンボリックリンク）のシンボリックリンクを削除
+for target in $(find "${ROOT}/local/bin" -type l -name "*" | xargs ls -l | grep "node_modules" | awk '{print $(NF-2)}' | sed "s|.*local/bin/||"); do
+    unsymlink "local/bin/${target}"
 done

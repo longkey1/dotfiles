@@ -31,3 +31,17 @@ function execute_envsubst() {
   echo "envsubst "'${OPTION}'" < ${DESTINATION} > ${SOURCE}"
   envsubst "'${OPTION}'" < ${DESTINATION} > ${SOURCE}
 }
+
+function symlink_to_symlink() {
+  local target=${1}
+  local source_path="${ROOT}/local/bin/${target}"
+  local dest_path="${HOME}/.local/bin/${target}"
+  
+  if [ -e "${dest_path}" ]; then
+    echo "${dest_path} already exists"
+    return
+  fi
+  
+  # 元のシンボリックリンクを指すようにする
+  ln -s "${source_path}" "${dest_path}" && echo "${dest_path} linked"
+}
