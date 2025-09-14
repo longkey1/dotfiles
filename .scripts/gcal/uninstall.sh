@@ -2,4 +2,5 @@
 
 . ${SCRIPTS}/functions
 
+unsymlink local/bin/gcal
 unsymlink config/gcal
