@@ -44,6 +44,18 @@ function symlink_to_symlink() {
     return
   fi
   
-  # 元のシンボリックリンクを指すようにする
-  ln -s "${source_path}" "${dest_path}" && echo "${dest_path} linked"
+  # Check if source is a symlink
+  if [ ! -h "${source_path}" ]; then
+    echo "${source_path} is not a symlink"
+    return
+  fi
+  
+  # Get the absolute path of the link target
+  local link_target=$(readlink "${source_path}")
+  local source_dir=$(dirname "${source_path}")
+  local absolute_link_target="${source_dir}/${link_target}"
+  local normalized_link_target=$(realpath "${absolute_link_target}")
+  
+  # Create symlink with normalized absolute path
+  ln -s "${normalized_link_target}" "${dest_path}" && echo "${dest_path} linked"
 }
