@@ -10,13 +10,15 @@ function symlink() {
 }
 
 function unsymlink() {
-  target=${1}
-  if [ -h "${HOME}/.${target}" ]; then
-    unlink ${HOME}/.${target} && echo "${HOME}/.${target} unlinked"
-  elif [ -e "${HOME}/.${target}" ]; then
-    echo "${HOME}/.${target} not unlinked, not a symlink"
+  local target=${1}
+  local dest_path="${REMOTE_BIN}/$(basename ${target})"
+  
+  if [ -h "${dest_path}" ]; then
+    unlink ${dest_path} && echo "${dest_path} unlinked"
+  elif [ -e "${dest_path}" ]; then
+    echo "${dest_path} not unlinked, not a symlink"
   else
-    echo "${HOME}/.${target} no exists"
+    echo "${dest_path} no exists"
   fi
 }
 
@@ -34,8 +36,8 @@ function execute_envsubst() {
 
 function symlink_to_symlink() {
   local target=${1}
-  local source_path="${ROOT}/local/bin/${target}"
-  local dest_path="${HOME}/.local/bin/${target}"
+  local source_path="${ROOT}/${target}"
+  local dest_path="${REMOTE_BIN}/$(basename ${target})"
   
   if [ -e "${dest_path}" ]; then
     echo "${dest_path} already exists"
