@@ -126,7 +126,7 @@ bindkey "^p" history-beginning-search-backward-end
 bindkey "^n" history-beginning-search-forward-end
 
 ## eget
-if excutable lnkr && excutable gh; then
+if excutable eget && excutable gh; then
   export EGET_GITHUB_TOKEN="$(gh auth token)"
 fi
 
