@@ -1,8 +1,0 @@
-youtube-dl:
-  image: ghcr.io/longkey1/youtube-dl
-  environment:
-    - LOCAL_UID=${LOCAL_UID}
-    - LOCAL_GID=${LOCAL_GID}
-  volumes:
-    - .:/work
-  working_dir: /work

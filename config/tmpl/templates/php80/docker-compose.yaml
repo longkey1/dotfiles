@@ -1,8 +1,0 @@
-php:
-  image: ghcr.io/longkey1/php:8.0
-  environment:
-    - LOCAL_UID=${LOCAL_UID}
-    - LOCAL_GID=${LOCAL_GID}
-  volumes:
-    - .:/work
-  working_dir: /work
