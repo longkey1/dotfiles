@@ -1,5 +1,0 @@
-application_credentials = "${HOME}/.config/gcal/application_credentials.json"
-user_credentials = "${HOME}/.config/gcal/user_credentials.json"
-calendar_id_list = [
-  "longkey1@gmail.com",
-]
