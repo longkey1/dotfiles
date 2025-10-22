@@ -4,6 +4,7 @@ if [ -e /opt/homebrew/bin/brew ]; then
   path=($(brew --prefix git)/bin ${path}(N-/))
   path=($(brew --prefix openssl)/bin ${path}(N-/))
   path=($(brew --prefix gnupg)/libexec ${path}(N-/))
+  path=($(brew --prefix coreutils)/libexec/gnubin ${path}(N-/))
   export HOMEBREW_GITHUB_API_TOKEN=$(gh auth token)
 fi
 
