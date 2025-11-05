@@ -2,4 +2,4 @@
 
 . ${SCRIPTS}/functions
 
-npm install --global --prefix "${ROOT}/local" --package-lock "@google/gemini-cli"
+npm install --global --prefix "${ROOT}/local" --no-package-lock --no-fund "@google/gemini-cli@latest"

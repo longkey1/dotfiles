@@ -2,4 +2,4 @@
 
 . ${SCRIPTS}/functions
 
-npm install --global --prefix "${ROOT}/local" --package-lock "@openai/codex"
+npm install --global --prefix "${ROOT}/local" --no-package-lock --no-fund "@openai/codex@latest"
