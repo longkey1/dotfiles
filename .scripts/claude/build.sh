@@ -2,4 +2,4 @@
 
 . ${SCRIPTS}/functions
 
-npm install --global --prefix "${ROOT}/local" --package-lock "@anthropic-ai/claude-code"
+npm install --global --prefix "${ROOT}/local" --no-package-lock --no-fund "@anthropic-ai/claude-code@latest"
