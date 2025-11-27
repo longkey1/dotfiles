@@ -1,6 +1,3 @@
-# git/diff-highlight
-path=(${path} $(brew --prefix git)/share/git-core/contrib/diff-highlight(N-/))
-
 # no create core dump file
 ulimit -n 32768
 
