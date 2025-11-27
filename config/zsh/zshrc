@@ -140,11 +140,6 @@ if excutable lnkr; then
   export LNKR_REMOTE_ROOT="${XDG_CONFIG_HOME}/lnkr"
 fi
 
-## codex
-if excutable codex && excutable gh; then
-  export CODEX_GITHUB_TOKEN="$(gh auth token)"
-fi
-
 #
 # Include files
 #
