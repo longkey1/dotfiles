@@ -1,3 +1,16 @@
+# homebrew
+if excutable /opt/homebrew/bin/brew; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+  path=($(brew --prefix git)/bin ${path}(N-/))
+  path=($(brew --prefix openssl)/bin ${path}(N-/))
+  path=($(brew --prefix gnupg)/libexec ${path}(N-/))
+  path=($(brew --prefix coreutils)/libexec/gnubin ${path}(N-/))
+  path=($(brew --prefix git)/share/git-core/contrib/diff-highlight ${path}(N-/))
+  if [ -n "${GITHUB_TOKEN}" ]; then
+    export HOMEBREW_GITHUB_API_TOKEN=${GITHUB_TOKEN}
+  fi
+fi
+
 # no create core dump file
 ulimit -n 32768
 
