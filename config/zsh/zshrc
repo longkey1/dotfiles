@@ -125,7 +125,7 @@ zle -N history-beginning-search-forward-end history-search-end
 bindkey "^p" history-beginning-search-backward-end
 bindkey "^n" history-beginning-search-forward-end
 
-## github
+## gh
 if excutable gh; then
   export GITHUB_TOKEN="$(gh auth token)"
 fi
@@ -138,6 +138,11 @@ fi
 ## lnkr
 if excutable lnkr; then
   export LNKR_REMOTE_ROOT="${XDG_CONFIG_HOME}/lnkr"
+fi
+
+## ghq
+if excutable ghq; then
+  export GHQ_ROOT="${HOME}/work/src"
 fi
 
 #
