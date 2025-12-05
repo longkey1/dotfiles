@@ -24,8 +24,6 @@
   diff = LESSCHARSET=utf-8 less
 [commit]
   gpgsign = true
-[ghq]
-  root = ~/work/src
 [url "ssh://git@github.com/"]
   insteadOf = https://github.com/
 [gpg]
