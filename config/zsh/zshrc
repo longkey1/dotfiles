@@ -158,6 +158,10 @@ _ostype=$(uname -s | tr '[:upper:]' '[:lower:]')
 ## include local file
 [[ -f ${ZDOTDIR}/zshrc.local ]] && source ${ZDOTDIR}/zshrc.local
 
-# update compinit
-autoload -U compinit
-compinit
+# update compinit (rebuild cache if functions dir is newer)
+autoload -Uz compinit
+if [[ ${ZDOTDIR}/functions -nt ~/.zcompdump ]]; then
+  compinit
+else
+  compinit -C
+fi
