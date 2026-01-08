@@ -9,6 +9,7 @@
 /config/gcal/user_credentials.json
 /config/git/config
 /config/godl/config.toml
+/config/got/config.toml
 /config/ideavim/ideavimrc
 /config/jnal/config.toml
 /config/llmc/config.toml
