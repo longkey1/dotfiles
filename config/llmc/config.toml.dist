@@ -1,3 +1,0 @@
-provider = "gemini"
-model = "gemini-2.5-flash"
-token = "${GEMINI_API_KEY}"
