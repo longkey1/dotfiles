@@ -1,6 +1,10 @@
-base_directory = "${HOME}/Documents/Journal"
-file_name = "2006/2006-01-02.md"
-file_template = "# 2006-01-02\n"
-open_command = "${EDITOR} {{ .DayFile }}"
-list_command = "lf {{ .BaseDirectory }}/"
-search_command = "selected=$(pt \"{{ .Pattern }}\" \"{{ .BaseDirectory }}\" | fzf --query \"$LBUFFER\" | awk -F : '{print \"-c \" $2 \" \" $1}'); [[ -n ${selected} ]] && echo $selected || true"
+[general]
+base_directory = "${HOME}/work/src/github.com/longkey1/motologue"
+date_format = "2006-01-02"
+path_format = "2006/01/2006-01-02.md"
+file_template = ""
+title = "Motologue"
+sort = "desc"
+
+[serve]
+port = 8080
