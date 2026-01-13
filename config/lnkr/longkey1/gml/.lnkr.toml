@@ -1,0 +1,8 @@
+local = "/Users/m-nagai/work/src/github.com/longkey1/gml"
+remote = "/Users/m-nagai/work/src/github.com/longkey1/dotfiles/config/lnkr/longkey1/gml"
+link_type = "sym"
+git_exclude_path = ".git/info/exclude"
+
+[[links]]
+  path = "CLAUDE.md"
+  type = "sym"

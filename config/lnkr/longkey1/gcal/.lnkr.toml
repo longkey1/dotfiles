@@ -1,0 +1,12 @@
+local = "/Users/m-nagai/work/src/github.com/longkey1/gcal"
+remote = "/Users/m-nagai/work/src/github.com/longkey1/dotfiles/config/lnkr/longkey1/gcal"
+link_type = "sym"
+git_exclude_path = ".git/info/exclude"
+
+[[links]]
+  path = ".envrc"
+  type = "sym"
+
+[[links]]
+  path = "CLAUDE.md"
+  type = "sym"
