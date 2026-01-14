@@ -4,5 +4,9 @@ link_type = "sym"
 git_exclude_path = ".git/info/exclude"
 
 [[links]]
+  path = ".envrc"
+  type = "sym"
+
+[[links]]
   path = "CLAUDE.md"
   type = "sym"
