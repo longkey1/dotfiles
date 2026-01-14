@@ -1,0 +1,4 @@
+remote_root = "${HOME}/.config/lnkr/src"
+local_root = "${HOME}/work/src"
+link_type = "sym"
+git_exclude_path = ".git/info/exclude"
