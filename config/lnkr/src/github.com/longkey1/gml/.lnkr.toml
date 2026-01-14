@@ -1,5 +1,5 @@
-local = "/Users/m-nagai/work/src/github.com/longkey1/lnkr"
-remote = "/Users/m-nagai/work/src/github.com/longkey1/dotfiles/config/lnkr/longkey1/lnkr"
+local = "{{local_root}}/github.com/longkey1/gml"
+remote = "{{remote_root}}/github.com/longkey1/gml"
 link_type = "sym"
 git_exclude_path = ".git/info/exclude"
 

@@ -1,0 +1,8 @@
+local = "{{local_root}}/github.com/longkey1/jnal"
+remote = "{{remote_root}}/github.com/longkey1/jnal"
+link_type = "sym"
+git_exclude_path = ".git/info/exclude"
+
+[[links]]
+  path = "CLAUDE.md"
+  type = "sym"
