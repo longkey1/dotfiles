@@ -1,4 +1,4 @@
-[general]
+[common]
 base_directory = "${HOME}/work/src/github.com/longkey1/motologue"
 date_format = "2006-01-02"
 path_format = "2006/01/2006-01-02.md"
