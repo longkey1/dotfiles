@@ -2,7 +2,8 @@
 
 COMMIT_MSG_FILE="$1"
 COMMIT_SOURCE="$2"
-DIFF=$(git diff --cached)
+# Remove null bytes that may exist in diff output (causes bash warning)
+DIFF=$(git diff --cached | tr -d '\0')
 
 # Skip if COMMIT_SOURCE is non-empty (e.g. merge commits, amend)
 if [[ -n "$COMMIT_SOURCE" ]]; then
