@@ -1,1 +1,8 @@
+#!/bin/bash
+
+# Skip merge commits
+if head -1 "$1" | grep -q "^Merge "; then
+  exit 0
+fi
+
 gitlint --subject-regex="^(build|ci|chore|docs|feat|fix|perf|refactor|revert|style|test)(\(.+\))?\:\s(.{3,})" --msg-file=$1
