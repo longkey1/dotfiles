@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 local = "{{local_root}}/github.com/longkey1/llmc"
 remote = "{{remote_root}}/github.com/longkey1/llmc"
+=======
+local = "$PWD"
+remote = "{{remote_root}}/llmc"
+>>>>>>> 3b7f149 (refactor: reorganize lnkr config structure under src/github.com/longkey1)
 link_type = "sym"
 git_exclude_path = ".git/info/exclude"
 
@@ -10,8 +15,11 @@ git_exclude_path = ".git/info/exclude"
 [[links]]
   path = "CLAUDE.md"
   type = "sym"
+<<<<<<< HEAD
 
 # .lnkr.toml is automatically managed as a symbolic link to remote
 # [[links]]
 # path = ".lnkr.toml"
 # type = "sym"
+=======
+>>>>>>> 3b7f149 (refactor: reorganize lnkr config structure under src/github.com/longkey1)
