@@ -1,5 +1,5 @@
-local = "$PWD"
-remote = "{{remote_root}}/slago"
+local = "{{local_root}}/github.com/longkey1/slago"
+remote = "{{remote_root}}/github.com/longkey1/slago"
 link_type = "sym"
 git_exclude_path = ".git/info/exclude"
 
