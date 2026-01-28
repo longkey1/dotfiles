@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-LLMC is a command-line tool for interacting with various LLM APIs (OpenAI and Google Gemini). Built with Go and Cobra CLI framework.
+LLMC is a command-line tool for interacting with various LLM APIs (OpenAI, Google Gemini, and Anthropic Claude). Built with Go and Cobra CLI framework.
 
 **Supported Platforms:** Linux and macOS
 
@@ -117,6 +117,7 @@ The tool implements a provider pattern for LLM services:
 
 - `internal/openai/openai.go` - OpenAI API implementation
 - `internal/gemini/gemini.go` - Google Gemini API implementation
+- `internal/anthropic/anthropic.go` - Anthropic Claude API implementation
 
 Each provider implements the `Provider` interface and handles API-specific request/response formatting.
 
@@ -125,12 +126,19 @@ Each provider implements the `Provider` interface and handles API-specific reque
 Uses Viper for multi-source configuration with the following precedence (higher priority overrides lower):
 
 1. CLI flags (highest priority)
-2. Environment variables: `LLMC_MODEL` (format: "provider:model"), `LLMC_OPENAI_BASE_URL`, `LLMC_OPENAI_TOKEN`, `LLMC_GEMINI_BASE_URL`, `LLMC_GEMINI_TOKEN`, `LLMC_PROMPT_DIRS`, `LLMC_ENABLE_WEB_SEARCH`, `LLMC_IGNORE_WEB_SEARCH_ERRORS`
+2. Environment variables: `LLMC_MODEL` (format: "provider:model"), `LLMC_OPENAI_BASE_URL`, `LLMC_OPENAI_TOKEN`, `LLMC_GEMINI_BASE_URL`, `LLMC_GEMINI_TOKEN`, `LLMC_ANTHROPIC_BASE_URL`, `LLMC_ANTHROPIC_TOKEN`, `LLMC_PROMPT_DIRS`, `LLMC_ENABLE_WEB_SEARCH`, `LLMC_SESSION_MESSAGE_THRESHOLD`, `LLMC_SESSION_RETENTION_DAYS`
 3. User config file: `$HOME/.config/llmc/config.toml`
 4. System-wide config files (searched in order):
    - `/etc/llmc/config.toml` (for package manager installations)
    - `/usr/local/etc/llmc/config.toml` (for `go install` or manual builds)
 5. Default values (lowest priority)
+
+Environment variable expansion:
+- Token and base URL fields in config files support environment variable references
+- Syntax: `$VAR` or `${VAR}` (both are supported)
+- Example in config file: `openai_token = "$OPENAI_API_KEY"` or `openai_token = "${OPENAI_API_KEY}"`
+- Environment variables are expanded during `LoadConfig()` and stored as actual values in the `Config` struct
+- If the environment variable is not set, the field will be empty and an error will be shown when the provider is used
 
 Prompt directories support:
 - Multiple directories configured in `prompt_dirs` array
@@ -186,14 +194,18 @@ To add support for a new LLM provider:
 1. Create new package in `internal/` (e.g., `internal/claude/`)
 2. Define provider name constant and default base URL
 3. Implement the `llmc.Provider` interface with `Chat(message, webSearch)` and `ListModels()` methods
-4. Update `Config` struct in `internal/llmc/llmc.go`:
+4. Update `Config` struct in `internal/llmc/config/config.go`:
    - Add base URL field (e.g., `ClaudeBaseURL`)
    - Add token field (e.g., `ClaudeToken`)
-5. Update `Config.GetToken()` and `Config.GetBaseURL()` methods to support the new provider
-6. Add case in `cmd/provider.go` `newProvider()` switch statement to handle the new provider
-7. Update `cmd/root.go` `initConfig()` to:
+5. Update `internal/llmc/config/config.go`:
+   - Add fields to `NewDefaultConfig()` with empty string for token (e.g., `ClaudeToken: ""`)
+   - Add environment variable expansion in `LoadConfig()` for the new token and base URL fields
+6. Update `internal/llmc/config/resolver.go`:
+   - Add cases in `GetToken()` and `GetBaseURL()` methods to support the new provider
+7. Add case in `cmd/provider.go` `newProvider()` switch statement to handle the new provider
+8. Update `cmd/root.go` `initConfig()` to:
    - Set default base URL value (e.g., `"https://api.anthropic.com/v1"`)
-   - Set default token value with environment variable reference (e.g., `$CLAUDE_API_KEY`)
+   - Set default token value to empty string (e.g., `""`)
    - Bind environment variables (e.g., `viper.BindEnv("claude_base_url", "LLMC_CLAUDE_BASE_URL")` and `viper.BindEnv("claude_token", "LLMC_CLAUDE_TOKEN")`)
-8. Update `cmd/models.go` to validate and support the new provider
-9. Update `cmd/config.go` to display the new base URL and token fields
+9. Update `cmd/models.go` to validate and support the new provider
+10. Update `cmd/config.go` to display the new base URL and token fields
