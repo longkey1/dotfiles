@@ -32,3 +32,4 @@ index 0000000..abcdef1
 +};
 """
 user = "{{input}}"
+model = "openai:gpt-4.1-nano"
