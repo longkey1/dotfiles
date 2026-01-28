@@ -1,8 +1,0 @@
-local = "$PWD"
-remote = "{{remote_root}}/gojira"
-link_type = "sym"
-git_exclude_path = ".git/info/exclude"
-
-[[links]]
-  path = "CLAUDE.md"
-  type = "sym"
