@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
 
-BINARY="gojq"
+BINARY="jq"
 
 rm -f ${LOCAL_BIN}/${BINARY}
