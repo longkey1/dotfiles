@@ -3,7 +3,7 @@
 ROOT := $(patsubst %/,%,$(dir $(realpath $(firstword $(MAKEFILE_LIST)))))
 BIN := $(ROOT)/local/bin
 CONFIG := $(ROOT)/config
-SCRIPTS := $(ROOT)/.scripts
+SCRIPTS := $(ROOT)/scripts
 
 define _execute_task
 	@if [ "$(1)" != "" ]; then \
@@ -29,7 +29,7 @@ endef
 init: ## initilize
 	$(call _execute_task,bin,build)
 	$(call _execute_task,eget,build)
-	$(call _execute_task,gojq,build)
+	$(call _execute_task,jq,build)
 	$(call _execute_task,bitwarden,build)
 
 target := ""
