@@ -4,13 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-`slago` is a CLI tool for collecting Slack messages. It uses the Slack API to search, fetch, and organize messages by threads and date ranges.
+`gosla` is a CLI tool for collecting Slack messages. It uses the Slack API to search, fetch, and organize messages by threads and date ranges.
 
 ## Build and Test Commands
 
 ```bash
 # Build the application
-make build                    # Outputs to ./bin/slago
+make build                    # Outputs to ./bin/gosla
 
 # Run tests
 make test                     # Run all tests
@@ -46,11 +46,11 @@ When a tag is pushed, GitHub Actions automatically builds binaries for multiple 
 
 The CLI is built using Cobra with the following command hierarchy:
 
-- **root** (`internal/cli/root.go`) - Base command with global flags
-  - **get** - Fetch single message or thread from Slack URL
-  - **list** - Collect messages for date ranges
-  - **merge** - Merge and deduplicate JSON files
-  - **version** - Display version information
+- **root** (`cmd/root.go`) - Base command with global flags
+  - **get** (`cmd/get.go`) - Fetch single message or thread from Slack URL
+  - **list** (`cmd/list.go`) - Collect messages for date ranges
+  - **merge** (`cmd/merge.go`) - Merge and deduplicate JSON files
+  - **version** (`cmd/version.go`) - Display version information
 
 ### Core Components
 
@@ -80,6 +80,8 @@ The CLI is built using Cobra with the following command hierarchy:
 **config/** - Configuration and environment variable handling
 
 **input/** - Interactive input handling (for prompts)
+
+**version/** - Version information (injected via ldflags during build)
 
 ### Key Design Patterns
 
