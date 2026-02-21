@@ -2,60 +2,105 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Build and Development Commands
+## Project Overview
 
-**重要: ビルドには必ず`make build`を使用すること（`go build`は使わない）**
+`lnkr` is a Go CLI tool for managing hard links and symbolic links with configuration files. It helps sync files between local and remote directories (e.g., backing up config files to cloud storage) while maintaining links in the local location.
 
+## Development Commands
+
+### Building
 ```bash
-make build          # Build to bin/lnkr
-make build-dev      # Build with version/commit metadata
-make test           # Run all tests (go test -v ./...)
-make lint           # Run golangci-lint
+make build          # Build binary to ./bin/lnkr
+make build-dev      # Build with dev version info (includes commit SHA, build time)
+```
+
+### Testing
+```bash
+make test           # Run all tests
+go test ./...       # Standard Go test command
+go test -v ./internal/lnkr  # Run tests in specific package with verbose output
+```
+
+### Code Quality
+```bash
 make fmt            # Format code with gofmt
-make fmt-check      # Check formatting without applying
-go run .            # Run CLI locally
+make fmt-check      # Check formatting without modifying files
+make lint           # Run golangci-lint
 ```
 
-Run a single test:
+### Release Management
 ```bash
-go test -v ./internal/lnkr -run TestFunctionName
+make release type=patch dryrun=true   # Preview patch version bump
+make release type=minor dryrun=false  # Create and push minor version
+make release type=major dryrun=false  # Create and push major version
+
+make re-release tag=v1.0.0 dryrun=false  # Re-release specific version
+make release-dry-run                      # Test goreleaser locally
 ```
 
-## Architecture Overview
+When a version tag is pushed, GitHub Actions automatically builds binaries via GoReleaser.
 
-lnkr is a CLI tool for managing hard links and symbolic links via a `.lnkr.toml` configuration file.
+## Architecture
 
-### Code Structure
+### Package Structure
 
-- `main.go` - Entry point, calls `cmd.Execute()`
-- `cmd/` - Cobra CLI commands (init, add, link, unlink, status, remove, clean)
-- `internal/lnkr/` - Core logic:
-  - `config.go` - Config loading/saving, constants (`ConfigFileName`, `LinkTypeHard`, etc.)
-  - `link.go` - Link creation logic with `CreateLinksAuto()` as main entry point
-  - `add.go` - Adding files/directories to config
-  - `unlink.go` - Removing links
-  - `status.go` - Status reporting
-  - `init.go` - Project initialization
-  - `clean.go` - Cleanup operations
-- `internal/version/` - Version information for build
+- **`cmd/`** - Cobra command definitions (CLI interface layer)
+  - Each command file (init.go, add.go, link.go, etc.) defines CLI flags and calls internal/lnkr functions
+  - Uses cobra for command structure and flag parsing
 
-### Key Concepts
+- **`internal/lnkr/`** - Core business logic
+  - **Configuration management**: `config.go`, `globalconfig.go`
+  - **Path handling**: `pathvar.go` - Critical for variable expansion/contraction
+  - **Operations**: `add.go`, `link.go`, `unlink.go`, `switch.go`, `remove.go`, `status.go`, `clean.go`, `init.go`
 
-- **Config file** (`.lnkr.toml`): Stores local/remote paths, source direction, and link entries
-- **Link direction**: Controlled by `source` field in config ("local" or "remote")
-  - `source = "local"`: Creates links from local -> remote
-  - `source = "remote"`: Creates links from remote -> local
-- **Git exclude integration**: Automatically manages `.git/info/exclude` with LNKR section markers (`### LNKR STA` / `### LNKR END`)
-- **Link types**: Hard links (default, files only) and symbolic links (files and directories)
+- **`internal/version/`** - Version information (set via ldflags during build)
 
-### Environment Variables
+### Key Architectural Concepts
 
-- `LNKR_REMOTE_ROOT` - Base directory for remote paths
-- `LNKR_REMOTE_DEPTH` - Directory depth for default remote path (default: 2)
+#### Configuration Hierarchy
+The tool uses a two-tier config system:
 
-## Release Process
+1. **Global config** (`~/.config/lnkr/config.toml`) - viper-based, provides defaults
+   - Sets `remote_root`, `local_root`, `link_type`, `git_exclude_path`
+   - Priority: Environment variables > Config file > Hardcoded defaults
 
-Releases are tag-driven via GoReleaser:
-```bash
-make release type=patch|minor|major dryrun=false
-```
+2. **Project config** (`.lnkr.toml`) - TOML-based, per-project settings
+   - Stores local/remote paths and link entries
+   - Automatically created as a symlink to remote during `init`
+
+#### Path Variable System (`pathvar.go`)
+Critical for portability across machines. Two key functions:
+
+- **`ExpandPath()`** - Converts stored paths to absolute paths at runtime
+  - Handles placeholders: `{{remote_root}}`, `{{local_root}}`
+  - Handles env vars: `$HOME`, `$PWD`, `$LNKR_REMOTE_ROOT`, etc.
+  - Priority: `{{placeholders}}` (env > config > default) > `$ENV_VARS`
+  - Returns error if any variable is undefined
+
+- **`ContractPath()`** - Converts absolute paths to portable format for storage
+  - Replaces path prefixes with variables (longest match wins)
+  - Prefers `{{remote_root}}` and `{{local_root}}` over `$HOME` for lnkr paths
+  - Used when saving paths to `.lnkr.toml` during `init` and `add`
+
+This system ensures `.lnkr.toml` files work across different machines/users.
+
+#### Link Direction
+**Important**: Links point FROM remote TO local (remote = source, local = link target).
+
+- `add` operation: Moves file from local to remote, then creates link at local pointing to remote
+- `link` operation: Creates links from remote (source) to local (target)
+- This allows remote to be the "source of truth" backed up to cloud storage
+
+#### Git Integration
+Automatically manages git exclusions via `.git/info/exclude` (or custom path):
+- Adds `### LNKR START` / `### LNKR END` section markers
+- Updates exclusions when links are added/removed
+- Cleaned up during `unlink` and `clean` operations
+
+### Testing
+Tests exist for core logic modules:
+- `config_test.go` - Configuration loading/saving
+- `pathvar_test.go` - Path expansion/contraction (critical for portability)
+- `switch_test.go` - Link type switching logic
+
+Run tests with `make test` or `go test ./...` for all tests.
