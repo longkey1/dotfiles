@@ -1,5 +1,5 @@
-local = "{{local_root}}/github.com/longkey1/slago"
-remote = "{{remote_root}}/github.com/longkey1/slago"
+local = "{{local_root}}/github.com/longkey1/gosla"
+remote = "{{remote_root}}/github.com/longkey1/gosla"
 link_type = "sym"
 git_exclude_path = ".git/info/exclude"
 
