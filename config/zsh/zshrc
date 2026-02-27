@@ -33,7 +33,7 @@ export HISTFILE="${ZDOTDIR}/history"
 export HISTSIZE=100000
 export SAVEHIST=${HISTSIZE}
 ## path .bin
-path=(${path} ${HOME}/.local/bin(N-/))
+path=(${HOME}/.local/bin(N-/) ${path})
 
 #
 # alias
