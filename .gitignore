@@ -13,11 +13,12 @@
 /config/ideavim/ideavimrc
 /config/jnal/config.toml
 /config/llmc/sessions
+/config/llmc/history
 /config/starship/config.toml
 /config/tmpl/config.toml
 /config/zsh/.chpwd-recent-dirs
 /config/zsh/.zcompcache
-/config/zsh/.zcompdump
+/config/zsh/.zcompdump*
 /config/zsh/.zlogin
 /config/zsh/.zshrc
 /config/zsh/.zshrc.zwc
