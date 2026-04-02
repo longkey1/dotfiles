@@ -43,7 +43,10 @@ function symlink_to_symlink() {
   local source_path="${ROOT}/${target}"
   local dest_path="${REMOTE_BIN}/$(basename ${target})"
 
-  if [ -e "${dest_path}" ]; then
+  if [ -h "${dest_path}" ] && [ ! -e "${dest_path}" ]; then
+    echo "${dest_path} is broken, re-linking"
+    unlink "${dest_path}"
+  elif [ -e "${dest_path}" ]; then
     echo "${dest_path} already exists"
     return
   fi
