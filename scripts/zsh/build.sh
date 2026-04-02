@@ -17,15 +17,19 @@ git_sync() {
 
   # pull
   if [[ -d "$dest" ]]; then
-    echo "[git_sync] pull: $dest"
-    git -C "$dest" pull --ff-only
+    local output
+    output=$(git -C "$dest" pull --ff-only 2>&1)
+    if [[ "$output" == "Already up to date." ]]; then
+      echo "[git_sync] ${repo}: already up to date"
+    else
+      echo "[git_sync] ${repo}: pulled"
+    fi
     return $?
   fi
 
   # clone
-  echo "[git_sync] clone: $url → $dest"
-  mkdir -p "$(dirname "$dest")"
-  git clone "${clone_args[@]}" "$url" "$dest"
+  git clone "${clone_args[@]}" "$url" "$dest" --quiet
+  echo "[git_sync] ${repo}: cloned"
 }
 git_sync zsh-users/zsh-completions
 git_sync zsh-users/zsh-history-substring-search
