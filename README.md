@@ -2,20 +2,6 @@
 
 個人用の dotfiles リポジトリです。
 
-## Configurations
-
-| Tool | Description |
-|------|-------------|
-| direnv | 環境変数の自動設定 |
-| git | Git の設定とエイリアス |
-| got | Go バージョンマネージャ |
-| ideavim | IntelliJ IDEA の Vim プラグイン設定 |
-| lf | ターミナルファイルマネージャ |
-| nvim | Neovim の設定 |
-| starship | シェルプロンプト |
-| tmux | ターミナルマルチプレクサ |
-| zsh | Zsh の設定 |
-
 ## Installation
 
 ### 1. Node.js のインストール
@@ -48,6 +34,84 @@ vim .scripts/secrets.env
 make build
 make install
 ```
+
+### Optional
+
+必要に応じてインストールしてください。
+
+```bash
+# Debian/Ubuntu
+sudo apt install vim tmux -y
+
+# macOS
+brew install vim tmux
+```
+
+## Make Commands
+
+| Command | Description |
+|---------|-------------|
+| `make init` | 初期化（bin, eget, gojq, bitwarden） |
+| `make build` | 全ファイルをビルド |
+| `make install` | シンボリックリンクを作成 |
+| `make uninstall` | シンボリックリンクを削除 |
+| `make update` | ビルドファイルを更新 |
+| `make clean` | ビルドファイルを削除 |
+
+`build`, `install`, `uninstall`, `update`, `clean` は `target=<name>` を指定すると、そのターゲットのみ実行します。
+
+```bash
+make build target=zsh      # zsh のみビルド
+make install target=nvim   # nvim のみインストール
+make clean target=tmux     # tmux のみクリーン
+```
+
+## Targets
+
+| Target | Link |
+|--------|------|
+| argc | [sigoden/argc](https://github.com/sigoden/argc) |
+| bat | [sharkdp/bat](https://github.com/sharkdp/bat) |
+| bin | - |
+| bitwarden | [bitwarden/clients](https://github.com/bitwarden/clients) |
+| checkexec | [kurtbuilds/checkexec](https://github.com/kurtbuilds/checkexec) |
+| claude | [@anthropic-ai/claude-code](https://www.npmjs.com/package/@anthropic-ai/claude-code) |
+| cloudflared | [cloudflare/cloudflared](https://github.com/cloudflare/cloudflared) |
+| codex | [@openai/codex](https://www.npmjs.com/package/@openai/codex) |
+| direnv | [direnv/direnv](https://github.com/direnv/direnv) |
+| eget | [zyedidia/eget](https://github.com/zyedidia/eget) |
+| envsubst | [a8m/envsubst](https://github.com/a8m/envsubst) |
+| fzf | [junegunn/fzf](https://github.com/junegunn/fzf) |
+| gemini | [@google/gemini-cli](https://www.npmjs.com/package/@google/gemini-cli) |
+| gh | [cli/cli](https://github.com/cli/cli) |
+| ghq | [x-motemen/ghq](https://github.com/x-motemen/ghq) |
+| git | [git-scm.com](https://git-scm.com/) |
+| gitlint | [jorisroovers/gitlint](https://github.com/jorisroovers/gitlint) |
+| gnupg | [gnupg.org](https://gnupg.org/) |
+| go | [go.dev](https://go.dev/) |
+| gopls | [golang/tools](https://github.com/golang/tools) |
+| ideavim | [JetBrains/ideavim](https://github.com/JetBrains/ideavim) |
+| intelephense | [intelephense.com](https://intelephense.com/) |
+| jnal | [longkey1/jnal](https://github.com/longkey1/jnal) |
+| jq | [itchyny/gojq](https://github.com/itchyny/gojq) |
+| just | [casey/just](https://github.com/casey/just) |
+| lf | [gokcehan/lf](https://github.com/gokcehan/lf) |
+| llmc | [longkey1/llmc](https://github.com/longkey1/llmc) |
+| lnkr | [longkey1/lnkr](https://github.com/longkey1/lnkr) |
+| pam_environment | - |
+| rg | [BurntSushi/ripgrep](https://github.com/BurntSushi/ripgrep) |
+| rn | - |
+| ssh | - |
+| starship | [starship/starship](https://github.com/starship/starship) |
+| sws | [joseluisq/static-web-server](https://github.com/joseluisq/static-web-server) |
+| systemd | - |
+| tmux | [tmux/tmux](https://github.com/tmux/tmux) |
+| usql | [xo/usql](https://github.com/xo/usql) |
+| vim | [vim/vim](https://github.com/vim/vim) |
+| xh | [ducaale/xh](https://github.com/ducaale/xh) |
+| yq | [mikefarah/yq](https://github.com/mikefarah/yq) |
+| zenhan | [iuchim/zenhan](https://github.com/iuchim/zenhan) |
+| zsh | [zsh.org](https://www.zsh.org/) |
 
 ## rn (Run) コマンド
 
@@ -151,27 +215,3 @@ _rn_extra() {
     return 1  # 0: 補完済み、1: argc にフォールバック
 }
 ```
-
-## Optional
-
-必要に応じてインストールしてください。
-
-```bash
-# Debian/Ubuntu
-sudo apt install vim tmux -y
-
-# macOS
-brew install vim tmux
-```
-
-## Make Commands
-
-| Command | Description |
-|---------|-------------|
-| `make init` | 初期化（bin, eget, gojq, bitwarden） |
-| `make build` | 全ファイルをビルド |
-| `make build target=<name>` | 指定ターゲットのみビルド |
-| `make install` | シンボリックリンクを作成 |
-| `make uninstall` | シンボリックリンクを削除 |
-| `make update` | ビルドファイルを更新 |
-| `make clean` | ビルドファイルを削除 |
