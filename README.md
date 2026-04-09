@@ -49,6 +49,109 @@ make build
 make install
 ```
 
+## rn (Run) コマンド
+
+プロジェクトごとにカスタムサブコマンドを定義できる CLI ツール。[argc](https://github.com/sigoden/argc) を使ったコマンド定義と zsh 補完をサポートしています。
+
+### 仕組み
+
+- 各リポジトリに `bin/rn` スクリプトと `.rn/` ディレクトリを配置する
+- `direnv` の `.envrc` で `PATH_add bin` を設定し、`rn` コマンドをリポジトリ内で有効にする
+- zsh 補完関数 (`_rn`) はカレントディレクトリから `.rn/` を探索し、argc による動的補完を提供する
+
+### リポジトリでの作成方法
+
+#### 1. ディレクトリ構造を作成
+
+```
+your-repo/
+├── .envrc              # direnv 設定
+├── .rn/
+│   └── completions/
+│       └── _rn_extra   # (任意) プロジェクト固有の補完拡張
+├── bin/
+│   └── rn              # メインスクリプト
+└── scripts/
+    └── rn/             # サブコマンドの実装
+        └── hello/
+            └── world.sh
+```
+
+#### 2. `.envrc` を設定
+
+```bash
+PATH_add bin
+```
+
+#### 3. `bin/rn` を作成
+
+argc のアノテーションでコマンドを定義します。
+
+```bash
+#!/usr/bin/env bash
+# @describe My project CLI
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(dirname "$SCRIPT_DIR")"
+
+# @cmd Say hello
+# @arg name! Name to greet
+hello() {
+    echo "Hello, ${argc_name}!"
+}
+
+# @cmd Greet subcommands
+greet() { :; }
+
+# @cmd Say good morning
+# @arg name Name (default: World)
+greet::morning() {
+    echo "Good morning, ${argc_name:-World}!"
+}
+
+eval "$(argc --argc-eval "$0" "$@")"
+```
+
+```bash
+chmod +x bin/rn
+```
+
+#### 4. 動作確認
+
+```bash
+direnv allow
+rn hello Alice          # => Hello, Alice!
+rn greet::morning       # => Good morning, World!
+rn --help               # => コマンド一覧を表示
+rn hello <TAB>          # => zsh 補完が動作
+```
+
+### argc アノテーション
+
+| アノテーション | 説明 | 例 |
+|---|---|---|
+| `# @describe` | スクリプト全体の説明 | `# @describe My project CLI` |
+| `# @cmd` | サブコマンドの説明 | `# @cmd Run tests` |
+| `# @arg name` | 引数（任意） | `# @arg target Target date` |
+| `# @arg name!` | 引数（必須） | `# @arg url! PR URL` |
+| `# @arg name*[a\|b\|c]` | 引数（選択肢付き） | `# @arg targets*[build\|clean]` |
+| `# @flag --name` | フラグ | `# @flag --force Force execution` |
+
+詳細は [argc ドキュメント](https://github.com/sigoden/argc) を参照してください。
+
+### 補完の拡張 (任意)
+
+`.rn/completions/_rn_extra` にプロジェクト固有の補完ロジックを追加できます。
+
+```bash
+# .rn/completions/_rn_extra
+_rn_extra() {
+    local words=("$@")
+    # カスタム補完ロジック
+    return 1  # 0: 補完済み、1: argc にフォールバック
+}
+```
+
 ## Optional
 
 必要に応じてインストールしてください。
