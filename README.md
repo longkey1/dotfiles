@@ -119,8 +119,8 @@ make clean target=tmux     # tmux のみクリーン
 
 ### 仕組み
 
-- 各リポジトリに `bin/rn` スクリプトと `.rn/` ディレクトリを配置する
-- `direnv` の `.envrc` で `PATH_add bin` を設定し、`rn` コマンドをリポジトリ内で有効にする
+- 各リポジトリに `.rn/bin/rn` スクリプトと `.rn/` ディレクトリを配置する
+- `direnv` の `.envrc` で `PATH_add .rn/bin` を設定し、`rn` コマンドをリポジトリ内で有効にする
 - zsh 補完関数 (`_rn`) はカレントディレクトリから `.rn/` を探索し、argc による動的補完を提供する
 
 ### リポジトリでの作成方法
@@ -131,10 +131,10 @@ make clean target=tmux     # tmux のみクリーン
 your-repo/
 ├── .envrc              # direnv 設定
 ├── .rn/
+│   ├── bin/
+│   │   └── rn          # メインスクリプト
 │   └── completions/
 │       └── _rn_extra   # (任意) プロジェクト固有の補完拡張
-├── bin/
-│   └── rn              # メインスクリプト
 └── scripts/
     └── rn/             # サブコマンドの実装
         └── hello/
@@ -144,10 +144,10 @@ your-repo/
 #### 2. `.envrc` を設定
 
 ```bash
-PATH_add bin
+PATH_add .rn/bin
 ```
 
-#### 3. `bin/rn` を作成
+#### 3. `.rn/bin/rn` を作成
 
 argc のアノテーションでコマンドを定義します。
 
@@ -156,7 +156,7 @@ argc のアノテーションでコマンドを定義します。
 # @describe My project CLI
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT_DIR="$(dirname "$SCRIPT_DIR")"
+ROOT_DIR="$(dirname "$(dirname "$SCRIPT_DIR")")"
 
 # @cmd Say hello
 # @arg name! Name to greet
@@ -177,7 +177,7 @@ eval "$(argc --argc-eval "$0" "$@")"
 ```
 
 ```bash
-chmod +x bin/rn
+chmod +x .rn/bin/rn
 ```
 
 #### 4. 動作確認
