@@ -1,0 +1,31 @@
+#compdef rn
+
+_rn() {
+    # Walk up from $PWD to find the root directory containing .rn
+    local rn_root dir="$PWD"
+    while [[ "$dir" != "/" ]]; do
+        if [[ -d "$dir/.rn" ]]; then
+            rn_root="$dir"
+            break
+        fi
+        dir="${dir:h}"
+    done
+    [[ -n "$rn_root" ]] || return 1
+
+    # Load project-specific extra completions if available
+    local _rn_extra_file="$rn_root/.rn/completions/_rn_extra"
+    if [[ -f "$_rn_extra_file" ]]; then
+        source "$_rn_extra_file"
+        _rn_extra "${words[@]}" && return 0
+    fi
+
+    local -a completions
+    local word desc
+    while IFS=$'\t' read -r word desc _; do
+        word="${word%\\}"   # strip trailing backslash added by argc
+        word="${word% }"    # strip trailing space added by argc
+        [[ -n "$word" ]] && completions+=("${word}:${desc#*:}")
+    done < <(argc --argc-compgen zsh "$(whence -p rn)" "${words[@]}" 2>/dev/null)
+    _describe 'subcommands' completions
+    return 0  # prevent fallthrough to file completion
+}
