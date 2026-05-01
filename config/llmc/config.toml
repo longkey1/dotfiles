@@ -1,4 +1,4 @@
-model = "gemini:gemini-flash-lite-latest"
+model = "gemini:gemini-2.5-flash-lite"
 anthropic_token = "${ANTHROPIC_API_KEY}"
 gemini_token = "${GEMINI_API_KEY}"
 openai_token = "${OPENAI_API_KEY}"
