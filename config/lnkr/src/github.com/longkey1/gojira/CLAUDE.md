@@ -22,7 +22,7 @@ cmd/                 - Cobra command definitions (package cmd)
 cmd/gojira/          - Main entry point
   └── main.go        - Application entry point (package main)
 internal/
-  ├── config/        - Environment variable loading with expansion support
+  ├── config/        - Config loading via viper (TOML file + env vars) with expansion support
   ├── jira/          - JIRA REST API client and search functionality
   ├── models/        - Data models (Issue, Field)
   └── version/       - Version information (populated via ldflags at build time)
@@ -32,15 +32,17 @@ internal/
 
 - **CLI Framework**: Uses `spf13/cobra` for command structure. All commands are in `cmd/` package and registered in `cmd/root.go`. The main entry point in `cmd/gojira/main.go` calls `cmd.Execute()`
 - **API Client**: `jira.Client` handles HTTP communication with JIRA API v3, including authentication via Basic Auth (email + API token)
-- **Configuration**: Environment variables support expansion syntax (`${VAR}` or `$VAR`) for referencing other variables
+- **Configuration**: Loaded via `spf13/viper` from a TOML config file and/or environment variables. Priority: env vars > config file. Values support `${VAR}` or `$VAR` expansion.
 - **Output**: All commands output JSON to stdout following JIRA API response structure
 
 ### Authentication Flow
 
-The client uses Basic Authentication with Base64-encoded email and API token. Required environment variables:
-- `JIRA_EMAIL` - JIRA account email
-- `JIRA_API_TOKEN` - API token from https://id.atlassian.com/manage-profile/security/api-tokens
-- `JIRA_BASE_URL` - JIRA instance URL (e.g., https://your-domain.atlassian.net)
+The client uses Basic Authentication with Base64-encoded email and API token. Required settings (env var or config key):
+- `JIRA_EMAIL` / `email` - JIRA account email
+- `JIRA_API_TOKEN` / `api_token` - API token from https://id.atlassian.com/manage-profile/security/api-tokens
+- `JIRA_BASE_URL` / `base_url` - JIRA instance URL (e.g., https://your-domain.atlassian.net)
+
+Config file is loaded via the `--config` flag, or auto-discovered at `$XDG_CONFIG_HOME/gojira/config.toml` or `$HOME/.config/gojira/config.toml`.
 
 ## Development Commands
 

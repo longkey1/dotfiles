@@ -26,6 +26,26 @@ function unsymlink() {
   fi
 }
 
+function npm_install_global() {
+  local label=${1}
+  local package=${2}
+  local version=${3:-latest}
+
+  local before=$(npm list --global --prefix "${ROOT}/local" "${package}" --json 2>/dev/null | jq -r ".dependencies[\"${package}\"].version // empty")
+  npm install --global --prefix "${ROOT}/local" --no-package-lock --no-fund --silent "${package}@${version}"
+  local after=$(npm list --global --prefix "${ROOT}/local" "${package}" --json 2>/dev/null | jq -r ".dependencies[\"${package}\"].version // empty")
+
+  if [ -z "${after}" ]; then
+    echo "${label}: failed to install ${package}"
+  elif [ -z "${before}" ]; then
+    echo "${label}: installed ${package}@${after}"
+  elif [ "${before}" = "${after}" ]; then
+    echo "${label}: ${package}@${after} is already up to date"
+  else
+    echo "${label}: upgraded ${package} from ${before} to ${after}"
+  fi
+}
+
 function get_bitwarden_session() {
   echo "$(cat ${SCRIPTS}/bitwarden.session)"
 }
