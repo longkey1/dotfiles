@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 BINARY="go"
-GO_INSTALL_DIR="${HOME}/.local/go"
+GO_INSTALL_DIR="${ROOT}/local/go"
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 ARCH=$(uname -m)
 
@@ -29,7 +29,7 @@ TARBALL="${LATEST_VERSION}.${OS}-${ARCH}.tar.gz"
 curl -L "https://go.dev/dl/${TARBALL}" -o ${TARBALL}
 
 rm -rf ${GO_INSTALL_DIR}
-tar -C ${HOME}/.local -xzf ${TARBALL}
+tar -C ${ROOT}/local -xzf ${TARBALL}
 
 popd
 rm -rf ${WORK_DIR}

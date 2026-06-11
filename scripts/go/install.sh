@@ -1,11 +1,10 @@
 #!/usr/bin/env zsh
 
-GO_INSTALL_DIR="${HOME}/.local/go"
+. ${SCRIPTS}/functions
 
 for binary in go gofmt; do
-  if [ -e "${REMOTE_BIN}/${binary}" ]; then
-    echo "${REMOTE_BIN}/${binary} already exists"
-  else
-    ln -s "${GO_INSTALL_DIR}/bin/${binary}" "${REMOTE_BIN}/${binary}" && echo "${REMOTE_BIN}/${binary} linked"
+  if [ ! -h "${ROOT}/local/bin/${binary}" ]; then
+    ln -s "../go/bin/${binary}" "${ROOT}/local/bin/${binary}"
   fi
+  symlink_to_symlink local/bin/${binary}
 done
