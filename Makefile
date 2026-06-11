@@ -6,7 +6,7 @@ CONFIG := $(ROOT)/config
 SCRIPTS := $(ROOT)/scripts
 
 define _execute_task
-	@if [ "$(1)" != "" ]; then \
+	if [ "$(1)" != "" ]; then \
 		if [ -x "$(SCRIPTS)/$(1)/$(2).sh" ]; then \
 			$(call _execute_shell,$(SCRIPTS)/$(1)/$(2).sh); \
 		else \
@@ -25,33 +25,31 @@ define _execute_shell
 	env ROOT=$(ROOT) LOCAL_BIN=$(BIN) LOCAL_CONFIG=$(CONFIG) REMOTE_BIN=$(HOME)/.local/bin REMOTE_CONFIG=$(HOME)/.config SCRIPTS=$(SCRIPTS) $(1)
 endef
 
-.PHONY: init
-init: ## initilize
-	$(call _execute_task,bin,build)
-	$(call _execute_task,eget,build)
-	$(call _execute_task,jq,build)
-	$(call _execute_task,bitwarden,build)
+BUILD_INIT_TASKS := bin eget jq bitwarden
+.PHONY: build-init
+build-init: ## build prerequisites for build
+	@$(foreach t,$(BUILD_INIT_TASKS),$(call _execute_task,$(t),build) ;)
 
 target := ""
 .PHONY: build
-build: init ## build all files or target files
-	$(call _execute_task,$(target),build)
+build: build-init ## build all files or target files
+	@$(call _execute_task,$(target),build)
 
 .PHONY: clean
 clean: ## delete all builded files or target builded files
-	$(call _execute_task,$(target),clean)
+	@$(call _execute_task,$(target),clean)
 
 .PHONY: update
 update: ## update all builded files or target builded files
-	$(call _execute_task,$(target),update)
+	@$(call _execute_task,$(target),update)
 
 .PHONY: install
 install: ## create target's symlink in home directory
-	$(call _execute_task,$(target),install)
+	@$(call _execute_task,$(target),install)
 
 .PHONY: uninstall
 uninstall: ## delete created symlink
-	$(call _execute_task,$(target),uninstall)
+	@$(call _execute_task,$(target),uninstall)
 
 
 
