@@ -7,15 +7,17 @@ SCRIPTS := $(ROOT)/scripts
 
 define _execute_task
 	if [ "$(1)" != "" ]; then \
-		if [ -x "$(SCRIPTS)/$(1)/$(2).sh" ]; then \
+		script="$(SCRIPTS)/$(1)/$(2).sh"; \
+		if [ -x "$${script}" ]; then \
 			$(call _execute_shell,$(SCRIPTS)/$(1)/$(2).sh); \
 		else \
 			echo "not executable $(SCRIPTS)/$(1)/$(2).sh"; \
 		fi \
 	else \
-		for target in $(wildcard $(SCRIPTS)/*/$(2).sh); do \
-			if [ -x "$${target}" ]; then \
-				$(call _execute_shell,$${target}); \
+		for target in $(call _task_packages,$(2)); do \
+			script="$(SCRIPTS)/$${target}/$(2).sh"; \
+			if [ -x "$${script}" ]; then \
+				$(call _execute_shell,$${script}); \
 			fi \
 		done \
 	fi
@@ -26,6 +28,13 @@ define _execute_shell
 endef
 
 BUILD_INIT_TASKS := bin eget jq bitwarden
+
+# $(1)=アクション名。該当する $(1).sh を持つ全パッケージ名のリスト。
+_all_packages = $(notdir $(patsubst %/,%,$(dir $(wildcard $(SCRIPTS)/*/$(1).sh))))
+
+# $(1)=アクション名。build のときは前提タスク(BUILD_INIT_TASKS)を除外する。
+_task_packages = $(filter-out $(if $(filter build,$(1)),$(BUILD_INIT_TASKS)),$(call _all_packages,$(1)))
+
 .PHONY: build-init
 build-init: ## build prerequisites for build
 	@$(foreach t,$(BUILD_INIT_TASKS),$(call _execute_task,$(t),build) ;)
