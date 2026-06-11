@@ -73,7 +73,7 @@ make clean target=tmux     # tmux のみクリーン
 | argc | [sigoden/argc](https://github.com/sigoden/argc) |
 | bat | [sharkdp/bat](https://github.com/sharkdp/bat) |
 | bin | - |
-| bitwarden | [bitwarden/clients](https://github.com/bitwarden/clients) |
+| bitwarden | [@bitwarden/cli](https://www.npmjs.com/package/@bitwarden/cli) |
 | checkexec | [kurtbuilds/checkexec](https://github.com/kurtbuilds/checkexec) |
 | claude | [@anthropic-ai/claude-code](https://www.npmjs.com/package/@anthropic-ai/claude-code) |
 | cloudflared | [cloudflare/cloudflared](https://github.com/cloudflare/cloudflared) |
