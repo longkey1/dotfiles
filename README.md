@@ -27,15 +27,87 @@ git clone git@github.com:longkey1/dotfiles.git $HOME/work/src/github.com/longkey
 cd $HOME/work/src/github.com/longkey1/dotfiles
 
 # Setup secrets
-cp .scripts/secrets.env.dist .scripts/secrets.env
-vim .scripts/secrets.env
+cp scripts/secrets.env.dist scripts/secrets.env
+vim scripts/secrets.env
 
 # Build and install
 make build
 make install
 ```
 
-### Optional
+## Secrets
+
+ビルド時にいくつかのスクリプトは秘匿情報を必要とします。これらは `scripts/secrets.env` から環境変数として読み込まれ、`git config` の署名鍵設定（`scripts/git/build_config.sh`）や GPG パスフレーズの preset（`scripts/zsh/build_gpg.sh`）、Bitwarden CLI のログイン（`scripts/bitwarden/build.sh`）などで使われます。
+
+`scripts/secrets.env` は `.gitignore` 済みでコミットされません。`scripts/secrets.env.dist` をコピーして各値を埋めてください。
+
+```bash
+cp scripts/secrets.env.dist scripts/secrets.env
+vim scripts/secrets.env
+```
+
+### 環境変数の取得方法
+
+| 変数 | 説明 | 取得方法 |
+|------|------|----------|
+| `GPG_KEYGRIP` | GPG 鍵の keygrip。`gpg-preset-passphrase` でパスフレーズを preset する際に使用 | 下記コマンドの `Keygrip` 行 |
+| `GPG_KEYID` | GPG 署名鍵の long ID。git の `user.signingkey` に使用 | 下記コマンドの `sec` 行のキーID |
+| `BW_CLIENTID` | Bitwarden CLI の API キー (client_id) | [Bitwarden Personal API Key](https://bitwarden.com/help/personal-api-key/) |
+| `BW_CLIENTSECRET` | Bitwarden CLI の API キー (client_secret) | [Bitwarden Personal API Key](https://bitwarden.com/help/personal-api-key/) |
+
+`GPG_KEYGRIP` と `GPG_KEYID` は、GPG 鍵をインポート済みの環境で次のコマンドから確認できます。
+
+```bash
+gpg --list-secret-keys --keyid-format=long --with-keygrip
+```
+
+```
+sec   rsa4096/ABCDEF0123456789 2023-01-01 [SC]
+      ^^^^^^^ ^^^^^^^^^^^^^^^^
+      |       └─ この `/` の後ろが GPG_KEYID（例: ABCDEF0123456789）
+      └─ 鍵の種類とビット数
+      Keygrip = 0123456789ABCDEF0123456789ABCDEF01234567
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                └─ この `Keygrip =` の値が GPG_KEYGRIP
+uid                 [ultimate] Your Name <you@example.com>
+ssb   rsa4096/1122334455667788 2023-01-01 [E]
+      Keygrip = 89ABCDEF89ABCDEF89ABCDEF89ABCDEF89ABCDEF
+```
+
+- `GPG_KEYID` は `[SC]`（署名用）の付いた `sec` 行のキーID を使います。`sec` の `/` 直後の 16 桁がキーID です。
+- `GPG_KEYGRIP` はその `sec` 鍵に対応する（直下の）`Keygrip` の値を使います。`ssb`（副鍵）側の Keygrip ではない点に注意してください。
+
+`BW_CLIENTID` / `BW_CLIENTSECRET` は Bitwarden の Web Vault の `Account Settings > Security > Keys > API Key` から取得できます。なお GPG パスフレーズや一部 API キーは Bitwarden 上に保管され、ビルド時に `bw` 経由で取得されます（`scripts/zsh/build_gpg.sh` 等）。そのため `make build` 前に Bitwarden CLI へログイン可能な状態にしておく必要があります。
+
+### GPG 鍵の復元
+
+git のコミット署名（`commit.gpgsign = true`）に GPG 秘密鍵が必要です。新しい環境では事前に鍵をインポートしてください。鍵をインポートしていないと `scripts/zsh/build_gpg.sh` のパスフレーズ preset が失敗します。
+
+バックアップ（既存環境でエクスポート）:
+
+```bash
+# 秘密鍵をエクスポート（ASCII armor 形式）
+gpg --export-secret-keys --armor ${GPG_KEYID} > secret-key.asc
+# 信頼情報をエクスポート
+gpg --export-ownertrust > ownertrust.txt
+```
+
+エクスポートした `secret-key.asc` とパスフレーズは Bitwarden 等の安全な場所に保管してください（リポジトリにはコミットしないこと）。
+
+復元（新しい環境でインポート）:
+
+```bash
+# 秘密鍵をインポート（パスフレーズの入力を求められる）
+gpg --import secret-key.asc
+# 信頼情報をインポート
+gpg --import-ownertrust ownertrust.txt
+# インポート結果を確認
+gpg --list-secret-keys --keyid-format=long --with-keygrip
+```
+
+インポート後、確認コマンドの出力からキーID（`sec` 行の `/` の後ろ）と `Keygrip`（その直下の値）を読み取り、`scripts/secrets.env` の `GPG_KEYID` / `GPG_KEYGRIP` に設定してから `make build` を実行してください。どの部分を使うかは上記「[環境変数の取得方法](#環境変数の取得方法)」の出力例を参照してください。
+
+## Optional
 
 必要に応じてインストールしてください。
 
