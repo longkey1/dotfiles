@@ -74,8 +74,8 @@ ssb   rsa4096/1122334455667788 2023-01-01 [E]
       Keygrip = 89ABCDEF89ABCDEF89ABCDEF89ABCDEF89ABCDEF
 ```
 
-- `GPG_KEYID` は `[SC]`（署名用）の付いた `sec` 行のキーID を使います。`sec` の `/` 直後の 16 桁がキーID です。
-- `GPG_KEYGRIP` はその `sec` 鍵に対応する（直下の）`Keygrip` の値を使います。`ssb`（副鍵）側の Keygrip ではない点に注意してください。
+- `GPG_KEYID` は **`[S]`（署名能力）を持つ鍵** のキーID を使います。`/` 直後の 16 桁がキーID です。上の例では `sec` 行が `[SC]` なので `sec` を使いますが、鍵構成によっては署名用サブ鍵（例: `ssb ... [S]`）側を選ぶ必要があります。`[C]`（認証のみ）や `[E]`（暗号化のみ）の鍵は対象外です。
+- `GPG_KEYGRIP` は上で選んだ署名鍵（`GPG_KEYID` と同じ行）に対応する直下の `Keygrip` の値を使います。git の `user.signingkey` は `!` 付き（厳密指定）で設定されるため、preset する Keygrip は実際に署名する鍵のものと一致している必要があります。
 
 `BW_CLIENTID` / `BW_CLIENTSECRET` は Bitwarden の Web Vault の `Account Settings > Security > Keys > API Key` から取得できます。なお GPG パスフレーズや一部 API キーは Bitwarden 上に保管され、ビルド時に `bw` 経由で取得されます（`scripts/zsh/build_gpg.sh` 等）。そのため `make build` 前に Bitwarden CLI へログイン可能な状態にしておく必要があります。
 
@@ -105,7 +105,7 @@ gpg --import-ownertrust ownertrust.txt
 gpg --list-secret-keys --keyid-format=long --with-keygrip
 ```
 
-インポート後、確認コマンドの出力からキーID（`sec` 行の `/` の後ろ）と `Keygrip`（その直下の値）を読み取り、`scripts/secrets.env` の `GPG_KEYID` / `GPG_KEYGRIP` に設定してから `make build` を実行してください。どの部分を使うかは上記「[環境変数の取得方法](#環境変数の取得方法)」の出力例を参照してください。
+インポート後、確認コマンドの出力から `[S]`（署名能力）を持つ鍵のキーID（`/` の後ろ）と `Keygrip`（その直下の値）を読み取り、`scripts/secrets.env` の `GPG_KEYID` / `GPG_KEYGRIP` に設定してから `make build` を実行してください。どの部分を使うかは上記「[環境変数の取得方法](#環境変数の取得方法)」の出力例を参照してください。
 
 ## Optional
 
