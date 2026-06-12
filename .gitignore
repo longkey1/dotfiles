@@ -1,5 +1,5 @@
-/.scripts/secrets.env
-/.scripts/bitwarden.session
+/scripts/secrets.env
+/scripts/bitwarden.session
 /local/bin
 /local/go
 /local/lib
