@@ -2,4 +2,4 @@
 
 . ${SCRIPTS}/functions
 
-GOBIN="${ROOT}/local/bin" go install golang.org/x/tools/gopls@latest
+GOBIN="${ROOT}/local/bin" "${ROOT}/local/go/bin/go" install golang.org/x/tools/gopls@latest
