@@ -53,6 +53,10 @@ excutable gemini && alias gemini-cli='gemini --screen-reader'
 #
 # Applications
 #
+## go
+export GOPATH="${XDG_DATA_HOME:-${HOME}/.local/share}/go"
+export GOBIN="${HOME}/.local/bin"
+
 ## docker-compose
 export LOCAL_UID=$(id -u)
 export LOCAL_GID=$(id -g)
