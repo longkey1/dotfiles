@@ -51,20 +51,33 @@ brew install vim tmux
 
 | Command | Description |
 |---------|-------------|
-| `make init` | 初期化（bin, eget, gojq, bitwarden） |
-| `make build` | 全ファイルをビルド |
+| `make build` | 全パッケージをビルド（依存を自動解決） |
 | `make install` | シンボリックリンクを作成 |
 | `make uninstall` | シンボリックリンクを削除 |
 | `make update` | ビルドファイルを更新 |
 | `make clean` | ビルドファイルを削除 |
 
-`build`, `install`, `uninstall`, `update`, `clean` は `target=<name>` を指定すると、そのターゲットのみ実行します。
+### 個別実行
+
+各アクションは `<action>-<package>` 形式で単一パッケージのみ実行できます。
 
 ```bash
-make build target=zsh      # zsh のみビルド
-make install target=nvim   # nvim のみインストール
-make clean target=tmux     # tmux のみクリーン
+make build-gopls    # go を先にビルドしてから gopls をビルド
+make build-bat      # eget を先に用意してから bat をビルド
+make install-zsh    # zsh のみインストール
+make clean-tmux     # tmux のみクリーン
 ```
+
+### 依存関係
+
+パッケージ間のビルド依存は `scripts/<package>/deps` に直接依存を1行1つで宣言します（依存がなければファイル不要）。`make build` および `make build-<package>` 実行時に Make が依存を辿って正しい順序で解決します。
+
+```
+# scripts/gopls/deps
+go
+```
+
+例えば `make build-gopls` は `go` → `gopls` の順に、`make build-bat` は `bin` → `eget` → `bat` の順に自動でビルドされます。複数パッケージから要求される共通の依存（`eget` など）は `make build` 全体でも一度だけビルドされます。
 
 ## Targets
 

@@ -160,3 +160,7 @@ if [[ ${ZDOTDIR}/functions -nt ~/.zcompdump ]]; then
 else
   compinit -C
 fi
+
+# make: complete dynamically generated targets (e.g. build-<pkg>) by parsing
+# make's database output instead of the Makefile text
+zstyle ':completion:*:*:make:*:targets' call-command true
