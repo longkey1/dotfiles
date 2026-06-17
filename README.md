@@ -19,7 +19,23 @@ sudo apt install nodejs -y
 brew install node
 ```
 
-### 2. Clone & Setup
+### 2. envsubst のインストール
+
+ビルドスクリプトが GNU 版 `envsubst` を使用します。
+
+#### Debian/Ubuntu
+
+```bash
+sudo apt install gettext-base -y
+```
+
+#### macOS
+
+```bash
+brew install gettext
+```
+
+### 3. Clone & Setup
 
 ```bash
 mkdir -p $HOME/work/src/github.com/longkey1
@@ -165,7 +181,6 @@ go
 | codex | [@openai/codex](https://www.npmjs.com/package/@openai/codex) |
 | direnv | [direnv/direnv](https://github.com/direnv/direnv) |
 | eget | [zyedidia/eget](https://github.com/zyedidia/eget) |
-| envsubst | [a8m/envsubst](https://github.com/a8m/envsubst) |
 | fzf | [junegunn/fzf](https://github.com/junegunn/fzf) |
 | gemini | [@google/gemini-cli](https://www.npmjs.com/package/@google/gemini-cli) |
 | gh | [cli/cli](https://github.com/cli/cli) |
