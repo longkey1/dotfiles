@@ -31,9 +31,9 @@ function npm_install_global() {
   local package=${2}
   local version=${3:-latest}
 
-  local before=$(npm list --global --prefix "${ROOT}/local" "${package}" --json 2>/dev/null | ${LOCAL_BIN}/jq -r ".dependencies[\"${package}\"].version // empty")
+  local before=$(npm list --global --prefix "${ROOT}/local" "${package}" --json 2>/dev/null | jq -r ".dependencies[\"${package}\"].version // empty")
   npm install --global --prefix "${ROOT}/local" --no-package-lock --no-fund --silent "${package}@${version}"
-  local after=$(npm list --global --prefix "${ROOT}/local" "${package}" --json 2>/dev/null | ${LOCAL_BIN}/jq -r ".dependencies[\"${package}\"].version // empty")
+  local after=$(npm list --global --prefix "${ROOT}/local" "${package}" --json 2>/dev/null | jq -r ".dependencies[\"${package}\"].version // empty")
 
   if [ -z "${after}" ]; then
     echo "${label}: failed to install ${package}"

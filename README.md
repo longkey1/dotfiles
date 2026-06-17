@@ -19,7 +19,23 @@ sudo apt install nodejs -y
 brew install node
 ```
 
-### 2. envsubst のインストール
+### 2. jq のインストール
+
+ビルドスクリプトが `jq` を使用します。
+
+#### Debian/Ubuntu
+
+```bash
+sudo apt install jq -y
+```
+
+#### macOS
+
+```bash
+brew install jq
+```
+
+### 3. envsubst のインストール
 
 ビルドスクリプトが GNU 版 `envsubst` を使用します。
 
@@ -35,7 +51,7 @@ sudo apt install gettext-base -y
 brew install gettext
 ```
 
-### 3. Clone & Setup
+### 4. Clone & Setup
 
 ```bash
 mkdir -p $HOME/work/src/github.com/longkey1
@@ -193,7 +209,6 @@ go
 | ideavim | [JetBrains/ideavim](https://github.com/JetBrains/ideavim) |
 | intelephense | [intelephense.com](https://intelephense.com/) |
 | jnal | [longkey1/jnal](https://github.com/longkey1/jnal) |
-| jq | [itchyny/gojq](https://github.com/itchyny/gojq) |
 | just | [casey/just](https://github.com/casey/just) |
 | lf | [gokcehan/lf](https://github.com/gokcehan/lf) |
 | llmc | [longkey1/llmc](https://github.com/longkey1/llmc) |

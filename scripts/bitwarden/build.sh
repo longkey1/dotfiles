@@ -12,7 +12,7 @@ touch ${SCRIPTS}/bitwarden.session
 bw_session=$(get_bitwarden_session)
 
 ## unauthenticated
-bw_status=$(${LOCAL_BIN}/bw status | ${LOCAL_BIN}/jq -r .status)
+bw_status=$(${LOCAL_BIN}/bw status | jq -r .status)
 if [ "${bw_status}" = "unauthenticated" ]; then
   ${LOCAL_BIN}/bw login --apikey
   ${LOCAL_BIN}/bw unlock --raw > ${SCRIPTS}/bitwarden.session
