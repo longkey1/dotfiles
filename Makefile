@@ -13,6 +13,9 @@ _all_packages = $(notdir $(patsubst %/,%,$(dir $(wildcard $(SCRIPTS)/*/$(1).sh))
 # $(1)=パッケージ名。deps ファイルがあればその中身(=直接依存)、なければ空。
 _deps = $(if $(wildcard $(SCRIPTS)/$(1)/deps),$(shell cat $(SCRIPTS)/$(1)/deps))
 
+# $(1)=パッケージ名。system_deps ファイルがあればその中身(=必要なシステムコマンド)、なければ空。
+_system_deps = $(if $(wildcard $(SCRIPTS)/$(1)/system_deps),$(shell cat $(SCRIPTS)/$(1)/system_deps))
+
 define _execute_shell
 	env ROOT=$(ROOT) LOCAL_BIN=$(BIN) LOCAL_CONFIG=$(CONFIG) REMOTE_BIN=$(HOME)/.local/bin REMOTE_CONFIG=$(HOME)/.config SCRIPTS=$(SCRIPTS) $(1)
 endef
@@ -25,11 +28,19 @@ define _run_task
 	fi
 endef
 
+# $(1)=コマンド名。PATH上に存在するかチェックする。
+define _check_system_rule
+check-system-$(1):
+	@command -v $(1) >/dev/null 2>&1 || { echo "ERROR: '$(1)' is required but not found in PATH"; exit 1; }
+.PHONY: check-system-$(1)
+endef
+$(foreach c,$(sort $(foreach p,$(call _all_packages,build),$(call _system_deps,$(p)))),$(eval $(call _check_system_rule,$(c))))
+
 # <action>-<pkg> ターゲットを動的生成する。
 # build のときだけ deps を build-<dep> として prerequisite に付与し、Make に順序を解決させる。
 # (依存ツールは「ビルド済みであること」が必要なので prerequisite は常に build-<dep>)
 define _task_rule
-$(2)-$(1): $$(if $$(filter build,$(2)),$$(addprefix build-,$$(call _deps,$(1))))
+$(2)-$(1): $$(if $$(filter build,$(2)),$$(addprefix build-,$$(call _deps,$(1)))) $$(if $$(filter build,$(2)),$$(addprefix check-system-,$$(call _system_deps,$(1))))
 	@$$(call _run_task,$(1),$(2))
 .PHONY: $(2)-$(1)
 endef
@@ -59,6 +70,7 @@ help:
 	@echo '  make install-zsh    # install zsh only'
 	@echo ''
 	@echo 'Dependencies are declared in scripts/<package>/deps (one per line).'
+	@echo 'System command requirements are declared in scripts/<package>/system_deps (one per line).'
 	@echo ''
 	@echo 'Packages:'
 	@echo '  $(sort $(foreach a,$(ACTIONS),$(call _all_packages,$(a))))' | fold -s -w 76 | sed 's/^/  /'
