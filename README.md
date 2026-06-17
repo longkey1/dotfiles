@@ -161,6 +161,16 @@ go
 
 例えば `make build-gopls` は `go` → `gopls` の順に、`make build-bat` は `bin` → `eget` → `bat` の順に自動でビルドされます。複数パッケージから要求される共通の依存（`eget` など）は `make build` 全体でも一度だけビルドされます。
 
+### システムコマンド要件
+
+パッケージが PATH 上のシステムコマンドを必要とする場合は `scripts/<package>/system_deps` に1行1つで宣言します。`make build-<package>` 実行前にコマンドの存在チェックが走り、見つからない場合はエラーで停止します。
+
+```
+# scripts/claude/system_deps
+jq
+npm
+```
+
 ## Targets
 
 | Target | Link |
