@@ -2,56 +2,34 @@
 
 個人用の dotfiles リポジトリです。
 
+## Prerequisites
+
+`make build` / `make install` を実行する前に以下をインストールしてください。
+
+### macOS
+
+```bash
+# Xcode Command Line Tools（git / make / curl / tar が含まれる）
+xcode-select --install
+
+# Homebrew パッケージ
+brew install node jq gettext gnupg
+```
+
+### Debian/Ubuntu
+
+```bash
+# 基本ツール
+sudo apt install -y build-essential curl git jq gettext-base gnupg
+
+# Node.js (LTS)
+curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+sudo apt install -y nodejs
+```
+
 ## Installation
 
-### 1. Node.js のインストール
-
-#### Debian/Ubuntu
-
-```bash
-curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-sudo apt install nodejs -y
-```
-
-#### macOS
-
-```bash
-brew install node
-```
-
-### 2. jq のインストール
-
-ビルドスクリプトが `jq` を使用します。
-
-#### Debian/Ubuntu
-
-```bash
-sudo apt install jq -y
-```
-
-#### macOS
-
-```bash
-brew install jq
-```
-
-### 3. envsubst のインストール
-
-ビルドスクリプトが GNU 版 `envsubst` を使用します。
-
-#### Debian/Ubuntu
-
-```bash
-sudo apt install gettext-base -y
-```
-
-#### macOS
-
-```bash
-brew install gettext
-```
-
-### 4. Clone & Setup
+### Clone & Setup
 
 ```bash
 mkdir -p $HOME/work/src/github.com/longkey1
