@@ -1,0 +1,8 @@
+# anthropic
+export ANTHROPIC_API_KEY=""
+
+# gemini
+export GEMINI_API_KEY=""
+
+# openai
+export OPENAI_API_KEY=""
