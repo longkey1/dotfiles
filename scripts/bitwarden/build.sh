@@ -11,7 +11,7 @@ set -a && . "${SCRIPTS}"/secrets.env && set +a
 touch "${SCRIPTS}"/bitwarden.session
 
 ## unauthenticated
-bw_status=$("${LOCAL_BIN}"/bw status | "${LOCAL_BIN}/yq" -r .status)
+bw_status=$("${LOCAL_BIN}"/bw status | "${LOCAL_BIN}/jq" -r .status)
 if [ "${bw_status}" = "unauthenticated" ]; then
   "${LOCAL_BIN}"/bw login --apikey
   "${LOCAL_BIN}"/bw unlock --raw > "${SCRIPTS}"/bitwarden.session
