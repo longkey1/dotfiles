@@ -180,6 +180,9 @@ npm
 # インストール（macOS）
 brew install shfmt shellcheck
 
+# インストール（Debian/Ubuntu）
+sudo apt install -y shfmt shellcheck
+
 # 検査
 make lint
 
@@ -211,6 +214,7 @@ make fmt
 | gnupg | [gnupg.org](https://gnupg.org/) |
 | go | [go.dev](https://go.dev/) |
 | gopls | [golang/tools](https://github.com/golang/tools) |
+| herdr | [ogulcancelik/herdr](https://github.com/ogulcancelik/herdr) |
 | ideavim | [JetBrains/ideavim](https://github.com/JetBrains/ideavim) |
 | intelephense | [intelephense.com](https://intelephense.com/) |
 | jnal | [longkey1/jnal](https://github.com/longkey1/jnal) |
@@ -218,6 +222,7 @@ make fmt
 | llmc | [longkey1/llmc](https://github.com/longkey1/llmc) |
 | lnkr | [longkey1/lnkr](https://github.com/longkey1/lnkr) |
 | pam_environment | - |
+| qq | [JFryy/qq](https://github.com/JFryy/qq) |
 | rg | [BurntSushi/ripgrep](https://github.com/BurntSushi/ripgrep) |
 | rn | - |
 | ssh | - |
