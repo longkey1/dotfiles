@@ -214,7 +214,6 @@ make fmt
 | ideavim | [JetBrains/ideavim](https://github.com/JetBrains/ideavim) |
 | intelephense | [intelephense.com](https://intelephense.com/) |
 | jnal | [longkey1/jnal](https://github.com/longkey1/jnal) |
-| just | [casey/just](https://github.com/casey/just) |
 | lf | [gokcehan/lf](https://github.com/gokcehan/lf) |
 | llmc | [longkey1/llmc](https://github.com/longkey1/llmc) |
 | lnkr | [longkey1/lnkr](https://github.com/longkey1/lnkr) |
