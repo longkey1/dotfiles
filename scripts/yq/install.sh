@@ -2,4 +2,4 @@
 
 . "${SCRIPTS}"/functions
 
-symlink local/bin/qq
+symlink local/bin/yq

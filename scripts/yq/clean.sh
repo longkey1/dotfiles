@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-BINARY="qq"
+BINARY="yq"
 rm -f "${LOCAL_BIN}"/${BINARY}

@@ -222,7 +222,6 @@ make fmt
 | llmc | [longkey1/llmc](https://github.com/longkey1/llmc) |
 | lnkr | [longkey1/lnkr](https://github.com/longkey1/lnkr) |
 | pam_environment | - |
-| qq | [JFryy/qq](https://github.com/JFryy/qq) |
 | rg | [BurntSushi/ripgrep](https://github.com/BurntSushi/ripgrep) |
 | rn | - |
 | ssh | - |
@@ -231,6 +230,7 @@ make fmt
 | tmux | [tmux/tmux](https://github.com/tmux/tmux) |
 | vim | [vim/vim](https://github.com/vim/vim) |
 | xh | [ducaale/xh](https://github.com/ducaale/xh) |
+| yq | [mikefarah/yq](https://github.com/mikefarah/yq) |
 | zenhan | [iuchim/zenhan](https://github.com/iuchim/zenhan) |
 | zsh | [zsh.org](https://www.zsh.org/) |
 

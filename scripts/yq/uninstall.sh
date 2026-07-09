@@ -2,4 +2,4 @@
 
 . "${SCRIPTS}"/functions
 
-unsymlink local/bin/qq
+unsymlink local/bin/yq
