@@ -108,11 +108,6 @@ if excutable ansible; then
   export ANSIBLE_NOCOWS=1
 fi
 
-## sws: https://sws.joseluisq.net/
-if excutable sws; then
-  export SERVER_CONFIG_FILE="${XDG_CONFIG_HOME}/sws/config.toml"
-fi
-
 ## cdr: http://zsh.sourceforge.net/Doc/Release/User-Contributions.html#Recent-Directories)
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
 add-zsh-hook chpwd chpwd_recent_dirs

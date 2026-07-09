@@ -225,7 +225,6 @@ make fmt
 | rn | - |
 | ssh | - |
 | starship | [starship/starship](https://github.com/starship/starship) |
-| sws | [joseluisq/static-web-server](https://github.com/joseluisq/static-web-server) |
 | systemd | - |
 | tmux | [tmux/tmux](https://github.com/tmux/tmux) |
 | usql | [xo/usql](https://github.com/xo/usql) |
