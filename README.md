@@ -147,7 +147,7 @@ brew install vim tmux
 
 ```bash
 make build-gopls    # go を先にビルドしてから gopls をビルド
-make build-bat      # eget を先に用意してから bat をビルド
+make build-rg       # eget を先に用意してから rg をビルド
 make install-zsh    # zsh のみインストール
 make clean-tmux     # tmux のみクリーン
 ```
@@ -161,7 +161,7 @@ make clean-tmux     # tmux のみクリーン
 go
 ```
 
-例えば `make build-gopls` は `go` → `gopls` の順に、`make build-bat` は `bin` → `eget` → `bat` の順に自動でビルドされます。複数パッケージから要求される共通の依存（`eget` など）は `make build` 全体でも一度だけビルドされます。
+例えば `make build-gopls` は `go` → `gopls` の順に、`make build-rg` は `bin` → `eget` → `rg` の順に自動でビルドされます。複数パッケージから要求される共通の依存（`eget` など）は `make build` 全体でも一度だけビルドされます。
 
 ### システムコマンド要件
 
@@ -195,7 +195,6 @@ make fmt
 | Target | Link |
 |--------|------|
 | argc | [sigoden/argc](https://github.com/sigoden/argc) |
-| bat | [sharkdp/bat](https://github.com/sharkdp/bat) |
 | bin | - |
 | bitwarden | [@bitwarden/cli](https://www.npmjs.com/package/@bitwarden/cli) |
 | checkexec | [kurtbuilds/checkexec](https://github.com/kurtbuilds/checkexec) |
