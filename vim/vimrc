@@ -28,10 +28,6 @@ augroup END
 " IME切り替えの待ち時間を短くする
 set ttimeoutlen=1
 
-" quickrun
-let g:quickrun_config = {}
-let g:quickrun_config.markdown = {'runner': 'shell', 'command': 'glow'}
-
 " open-browser.vim
 let g:netrw_nogx = 1 " disable netrw's gx mapping.
 nmap gx <Plug>(openbrowser-smart-search)
