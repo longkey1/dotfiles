@@ -1,0 +1,509 @@
+claude
+cd -- /Users/m-nagai/work/src/github.com/kouzoh/zp-longkey1
+claude
+ls -al
+cd
+ls -al
+cd .claude/
+ls -al
+cd ../
+ls -al
+rn .claude
+rm .claude
+mv /Users/m-nagai/work/src/github.com/kouzoh/zp-longkey1/dotfiles/claude .claude
+ls -al
+rm .codex
+mv /Users/m-nagai/work/src/github.com/kouzoh/zp-longkey1/dotfiles/codex .codex
+mv /Users/m-nagai/work/src/github.com/kouzoh/zp-longkey1/dotfiles/gemini .gemini
+mr .gemini
+mv /Users/m-nagai/work/src/github.com/kouzoh/zp-longkey1/dotfiles/gemini .gemini
+ls -al
+rm .gemini
+mv /Users/m-nagai/work/src/github.com/kouzoh/zp-longkey1/dotfiles/gemini .gemini
+ls -al
+vi .Brewfile
+lf
+cd .config/
+ls -al
+lf
+lf
+claude 
+cd -- /Users/m-nagai/work/src/github.com/kouzoh/zp-longkey1
+claude zsh„ÅÆhisotiry„Å£„Å¶‰ΩÉµËÉÅÉ¨„ÅÉ∞„ÇÉ©„ÅÉ§‰øÉΩÂ≠É∏„ÅÉπ„ÇÉ´„ÅÆ„ÅÉ¨„É£Éπ„Çπ„É£É®ÔºÉø
+git status
+git status
+git checkout logs
+git status
+git checkout .flow
+git satus
+git status
+claude
+exit
+cd -- /Users/m-nagai/work/src/github.com/kouzoh/zp-longkey1
+claude
+claude
+claude
+claude
+git staus
+claude
+claude
+git status
+claude
+claude
+claude
+claude
+claude
+claude
+claude
+logs/**/*/github.json„Å®jira.json„ÇÉ≤Ê∂É®„ÅÉ∑„ÅÉø„ÅÉ§
+claude
+git status
+claude
+exit
+cd -- /Users/m-nagai/work/src/github.com/kouzoh/zp-longkey1
+rn task new
+claude
+git status
+git add .rn
+git fcommit
+git sttus
+git status
+git add .
+git fcommit
+git diff
+git status
+git add .
+git fcommit
+git status
+git add .
+git fcommit
+git fcommit -m "remove logs**/*/slack.json"
+git fpush origin master
+git status
+git diff
+git status
+git log
+git fpush origin master
+lf
+git status
+git add .
+git fcommit
+git fpush origin master
+claude
+claude
+claude
+git status
+git add .rn/scripts/lib/config.sh CLAUDE.md
+git fcommit
+git add logs/2026/06/29/
+git fcommit
+git fpush origin master
+lf
+git status
+exit
+lf
+lf
+lf
+lf
+cd -- /Users/m-nagai/work/src/github.com/kouzoh/zp-longkey1
+lf
+lf
+git status
+git add .
+git fcommit
+lf
+git status
+git add logs
+git fcommit
+git status
+git add .
+git fcommit
+lf
+lf
+cd
+lf
+cd -- /Users/m-nagai/work/src/github.com/kouzoh/zp-longkey1
+git satus
+git status
+git add .
+git fcommit
+git satus
+git fcommit logs -m "refactor: remove logs/**/*/github.json,jira.json"
+git status
+git fcommit
+git fpush origin master
+git sync
+git fpush origin master
+claude
+claude
+claude --resume
+git status
+git add .
+git fcommit
+grep -i worktype .env
+lf
+claude
+claude
+claude
+git status
+lf
+lf
+lf
+exit
+cd -- /Users/m-nagai/work/src/github.com/kouzoh/zp-longkey1
+claude
+git status
+git add .rn
+git fcommit
+claude
+claude
+git status
+git status
+cd
+ssh longkey1@elephant.longkey1.com
+ssh longkey1@elephant.longkey1.com
+ssh longkey1@elephant.longkey1.com
+ssh longkey1@elephant.longkey1.com
+ssh longkey1@elephant.longkey1.com
+ssh longkey1@elephant.longkey1.com
+ssh longkey1@elephant.longkey1.com
+ssh longkey1@elephant.longkey1.com
+ssh longkey1@elephant.longkey1.com
+ssh longkey1@elephant.longkey1.com
+exit
+tmux
+cd -- /Users/m-nagai/work/src/github.com/kouzoh/zp-longkey1
+rn work time
+rn task list
+rn work time
+rn work time
+rn work dsm
+rn work schedule --family
+git status
+git status
+rn work time
+rn work actual 8:15
+rn work time
+rn work time
+rn work time
+rn task list updated
+rn work time
+rn work time
+git status
+git worm time
+rn work time
+git status
+git add .
+git fcommit
+git fpush origin master
+which gpg-preset-passphrase
+gpg-preset-passphrase --help
+rn task new
+git status
+git add .
+git fcommit
+rn work time
+rn work time
+rn dsm
+rn work dsm
+rn work time
+git status
+git add logs/2026/06/17/
+git fcommit
+git fpush origin master
+ls -al
+lf
+rn task list
+rn task list --updated
+git status
+git add .
+git fcommit
+git status
+git fcommit reviews/platform-proto
+git fcommit reviews/microservices-terraform/
+git fcommit reviews/reviews/merclient
+git fcommit reviews/reviews/merclient
+git fcommit reviews/merclient
+git status
+git fcommit reviews/microservices-kubernetes
+git fcommit mercari-api-jp
+git fcommit reviews/mercari-api-jp
+git fcommit reviews/mercari-api-jp -m "refactor: remove reviews/mercari-api-jp/*"
+git status
+git fcommmit reviews/mercari-transaction-jp-docs/
+git fcommmit reviews/mercari-transaction-jp-docs
+git fcommit reviews/mercari-transaction-jp-docs/
+git status
+git fcommit reviews/mercari-home-jp
+git status
+git fcommit reviews
+git status
+git add .
+git fcommit
+git status
+lf
+git fpush origin master
+rn task new
+rn task new
+rn task new
+rn task work
+rn task work https://github.com/kouzoh/zp-longkey1/issues/1426
+git status
+rn work time
+git status
+rn task new
+git status
+git add .
+git fcommit
+rn work time
+rn work actual 6:16
+rn work time
+rn work time
+rn work time --month
+git status
+git add .
+git fcommit
+git fpush origin master
+rn work time
+rn work time
+rn work dsm
+rn work schedule --family
+rn work schedule --family
+rn review all
+git status
+git status
+git diff
+git status
+git add .rn/scripts/review/qa.sh
+git fcommit
+git status
+lf
+git status
+git add .
+git fcommit
+lf
+ll logs/2026/06/18/pr-emails.json
+ll logs/2026/06/18/review-all.json
+rn task list --updated
+rn work time
+rn work actual 8:01
+rn work time
+rn work time
+rn work actual 8:32
+rn task list
+rn task list
+rn work actual 8:32
+rn work time
+rn work time
+rn work dsm
+rn work schedule --family
+rn pr review https://github.com/kouzoh/mercari-api-jp/pull/22491
+rn task work https://github.com/kouzoh/zp-longkey1/issues/1425
+rn work time
+rn work actual 8:09
+rn work time
+rn work time
+rn work actual 8:09
+rn work time
+rn work time
+rn work time
+rn work time
+rn work actual 8:09
+rn work time
+rn task list --update
+rn task list --updated
+rn work time
+rn work time
+rn work time
+rn task list
+rn work time
+rn work time
+rn work time
+rn work dsm
+git status
+rn work schedule --family
+git add ./logs && git fcommit && git fpush origin master
+rn task list --updated 2026-06-22
+rn work time 2026-06-22
+rn work time 2026-06-22
+rn work time 2026-06-22
+rn work actual 8:01 2026-06-22
+rn work time 2026-06-22
+rn work time
+rn work time 2026-06-22
+rn work time 2026-06-22
+rn work time 2026-06-22
+git status
+git fcommit
+git add dotfiles/claude/policy-limits.json
+git fcommit
+git status
+git add logs/2026/06/22/work.toml
+git fcommit
+rn work time
+rn work dsm
+rn work dsm
+rn work schedule --family
+git status
+git status
+git add .
+git fcommit
+git fpush origin master
+rn work time
+rn work actual 7:43
+rn work actual 7:43
+rn work time
+rn work time
+git status
+git add .
+git fcommit
+git fpush origin master
+git status
+rn work time
+rn work dsm
+git status
+git add .
+git fcommit
+git fpush origin master
+lf
+rn work actual 7:35
+rn work time
+rn work time
+rn work itme
+rn work time
+git status
+git add logs/2026/06/24/work.toml
+git fcommit
+rn work dsm
+rn work dsm
+git status
+git add logs/2026/06/25/
+git fcommit
+git fpush origin master
+rn work schedule --family
+rn work actual 10:14
+rn work actual 10:14 2026-06-25
+git status
+rn task list --updated
+rn work time
+rn work time 2026-06-25
+rn work time 2026-06-25
+git status
+rm -rf logs/2026/06/26/
+git add .
+git fcommit
+git fpush origin master
+git status
+rn work time 2026-06-25
+rn work time 2026-06-25
+rn work time --month
+git status
+git add .
+git fcommit
+git fpush origin master
+rn work time
+git status
+git add logs/2026/06/26/
+git fcommit
+git fpush origin master
+rn work time
+rn work dsm
+rn work dsm
+rn work schedule --family
+git status
+git status
+rn pr check-all
+rn work actual 4:17 2026-06-26
+git status
+git status
+rn work actual 4:17 2026-06-26
+rn time work
+rn work time
+rn work time 2026-06-26
+git status
+git add logs
+git fcommit
+rn task new
+rn task list
+rn work time
+rn work dsmm
+git status
+git add .rn/scripts/work/day.sh
+git fcommit
+git add logs/2026/06/26/work.toml
+git fcommit
+rn work dsm
+rn work dsm
+git status
+git add .llmc/
+git fcommit
+git add .rn/scripts/work/_dsm-enrich.jq
+git fcommit
+git status
+git add .rn env.example
+git fcommit
+rn work schedule --family
+rn pr check-all
+git status
+rm logs/2026/06/29/pr-check-all.json logs/2026/06/29/pr-emails.json
+rn pr check-all
+lf
+git status
+rm logs/2026/06/29/pr-check-all.json
+rn check-all
+rn pr check-all
+git status
+rm logs/2026/06/29/pr-check-all.json logs/2026/06/29/pr-emails.json
+rn pr check-all
+git status
+rm logs/2026/06/29/pr-check-all.json logs/2026/06/29/pr-emails.json
+rn pr check-all
+rn pr check-all
+cd -- /Users/m-nagai/work/src/github.com/kouzoh/zp-longkey1
+rn work start
+git status
+rn work start
+rn work start
+git status
+git add logs/2026/06/18/work.toml
+git fcommit
+rn work start
+git status
+git add logs
+git fcommit
+git status
+git diff dotfiles/claude/policy-limits.json
+git add dotfiles/claude/policy-limits.json
+git fcommit
+git add .
+git fcommit
+just start
+rn work start
+rn work edit
+rn work start
+git status
+rn work start
+git status
+mv _env.example env.example
+git status
+git add .env.example env.example
+git fcommit
+lf
+cat ~/.claude.json
+lf
+lf
+rn work start
+\:e
+rn work edit
+rn work edit --2026-06-25
+rn work edit 2026-06-25
+git status
+lf
+rn work start
+git statysn
+git status
+git fpush origin master
+rn work start
+rn work start
+jkk
+rn work edit
