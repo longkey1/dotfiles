@@ -230,7 +230,6 @@ make fmt
 | usql | [xo/usql](https://github.com/xo/usql) |
 | vim | [vim/vim](https://github.com/vim/vim) |
 | xh | [ducaale/xh](https://github.com/ducaale/xh) |
-| yq | [mikefarah/yq](https://github.com/mikefarah/yq) |
 | zenhan | [iuchim/zenhan](https://github.com/iuchim/zenhan) |
 | zsh | [zsh.org](https://www.zsh.org/) |
 
