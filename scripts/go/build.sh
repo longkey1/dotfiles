@@ -11,7 +11,7 @@ elif [ "${ARCH}" = "aarch64" ]; then
   ARCH="arm64"
 fi
 
-LATEST_VERSION=$(curl -sL "https://go.dev/VERSION?m=text" | head -1)
+LATEST_VERSION=$("${LOCAL_BIN}"/xh --follow --body GET "https://go.dev/VERSION?m=text" | head -1)
 
 if [ -d "${GO_INSTALL_DIR}" ]; then
   CURRENT_VERSION=$("${GO_INSTALL_DIR}"/bin/go version 2> /dev/null | awk '{print $3}')
@@ -26,7 +26,7 @@ mkdir -p "${WORK_DIR}"
 pushd "${WORK_DIR}" || exit
 
 TARBALL="${LATEST_VERSION}.${OS}-${ARCH}.tar.gz"
-curl -L "https://go.dev/dl/${TARBALL}" -o "${TARBALL}"
+"${LOCAL_BIN}"/xh --follow --download "https://go.dev/dl/${TARBALL}" --output "${TARBALL}"
 
 rm -rf "${GO_INSTALL_DIR}"
 tar -C "${ROOT}"/local -xzf "${TARBALL}"

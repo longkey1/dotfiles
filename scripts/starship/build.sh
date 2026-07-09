@@ -1,18 +1,12 @@
 #!/usr/bin/env bash
 
-BINARY="starship"
-WORK_DIR=/tmp/dotfiles-${BINARY}-${USER}
+REPOSITORY="starship/starship"
+OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 
-if [ ! -x "${LOCAL_BIN}/${BINARY}" ]; then
-  mkdir -p "${WORK_DIR}"
-  pushd "${WORK_DIR}" || exit
-
-  curl -O https://starship.rs/install.sh
-  chmod +x install.sh
-  ./install.sh -b "${LOCAL_BIN}" -f
-
-  popd || exit
-  rm -rf "${WORK_DIR}"
+if [ "${OS}" = "linux" ]; then
+  "${LOCAL_BIN}"/eget ${REPOSITORY} --to "${LOCAL_BIN}"/ --upgrade-only --asset linux-musl
+else
+  "${LOCAL_BIN}"/eget ${REPOSITORY} --to "${LOCAL_BIN}"/ --upgrade-only
 fi
 
 #
