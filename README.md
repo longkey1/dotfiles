@@ -209,7 +209,6 @@ make fmt
 | gh | [cli/cli](https://github.com/cli/cli) |
 | ghq | [x-motemen/ghq](https://github.com/x-motemen/ghq) |
 | git | [git-scm.com](https://git-scm.com/) |
-| gitlint | [jorisroovers/gitlint](https://github.com/jorisroovers/gitlint) |
 | gnupg | [gnupg.org](https://gnupg.org/) |
 | go | [go.dev](https://go.dev/) |
 | gopls | [golang/tools](https://github.com/golang/tools) |
