@@ -1,3 +1,3 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-rm -f ${LOCAL_BIN}/gopls
+rm -f "${LOCAL_BIN}"/gopls

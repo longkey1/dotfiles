@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 BINARY="xh"
-rm -f ${LOCAL_BIN}/${BINARY}
+rm -f "${LOCAL_BIN}"/${BINARY}

@@ -1,5 +1,5 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-. ${SCRIPTS}/functions
+. "${SCRIPTS}"/functions
 
 npm_install_global "claude" "@anthropic-ai/claude-code"

@@ -1,10 +1,10 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 REPOSITORY="joseluisq/static-web-server"
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 
 if [ "${OS}" = "linux" ]; then
-  ${LOCAL_BIN}/eget ${REPOSITORY} --to ${LOCAL_BIN}/sws --upgrade-only --asset linux-musl.tar.gz
+  "${LOCAL_BIN}"/eget ${REPOSITORY} --to "${LOCAL_BIN}"/sws --upgrade-only --asset linux-musl.tar.gz
 else
-  ${LOCAL_BIN}/eget ${REPOSITORY} --to ${LOCAL_BIN}/sws --upgrade-only
+  "${LOCAL_BIN}"/eget ${REPOSITORY} --to "${LOCAL_BIN}"/sws --upgrade-only
 fi

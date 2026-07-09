@@ -54,6 +54,18 @@ $(1): $$(addprefix $(1)-,$$(call _all_packages,$(1)))
 endef
 $(foreach a,$(ACTIONS),$(eval $(call _aggregate_rule,$(a))))
 
+# scripts 配下のシェルスクリプト（*.sh と拡張子なしの functions）
+SH_FILES := $(SCRIPTS)/functions $(shell find $(SCRIPTS) -name '*.sh' -type f)
+
+.PHONY: lint
+lint:
+	shfmt -d $(SCRIPTS)
+	shellcheck $(SH_FILES)
+
+.PHONY: fmt
+fmt:
+	shfmt -w $(SCRIPTS)
+
 .PHONY: help
 help:
 	@echo 'Usage: make <action>[-<package>]'
@@ -64,6 +76,8 @@ help:
 	@echo '  update      update all built files'
 	@echo '  install     create symlinks in home directory'
 	@echo '  uninstall   delete created symlinks'
+	@echo '  lint        run shfmt (check) and shellcheck on scripts'
+	@echo '  fmt         format scripts with shfmt'
 	@echo ''
 	@echo 'Per-package: append -<package> to run a single package, e.g.'
 	@echo '  make build-gopls    # builds go first, then gopls'

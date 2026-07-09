@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 
@@ -6,6 +6,6 @@ if [ "${OS}" != "linux" ]; then
   exit
 fi
 
-. ${SCRIPTS}/functions
+. "${SCRIPTS}"/functions
 
 symlink pam_environment

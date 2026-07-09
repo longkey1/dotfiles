@@ -1,6 +1,6 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-. ${SCRIPTS}/functions
+. "${SCRIPTS}"/functions
 
 unsymlink ssh/config
 unsymlink ssh/conf.d

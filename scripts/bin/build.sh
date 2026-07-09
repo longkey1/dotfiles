@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-mkdir -p ${REMOTE_BIN}
-mkdir -p ${LOCAL_BIN}
+mkdir -p "${REMOTE_BIN}"
+mkdir -p "${LOCAL_BIN}"

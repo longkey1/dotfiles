@@ -1,5 +1,5 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 
-[ ! -h ${LOCAL_CONFIG}/ideavim/ideavimrc ] && ln -s ${LOCAL_CONFIG}/ideavim/ideavimrc.${OS} ${LOCAL_CONFIG}/ideavim/ideavimrc || true
+[ ! -h "${LOCAL_CONFIG}"/ideavim/ideavimrc ] && ln -s "${LOCAL_CONFIG}"/ideavim/ideavimrc."${OS}" "${LOCAL_CONFIG}"/ideavim/ideavimrc || true

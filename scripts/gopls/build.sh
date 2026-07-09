@@ -1,5 +1,5 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-. ${SCRIPTS}/functions
+. "${SCRIPTS}"/functions
 
 GOBIN="${ROOT}/local/bin" "${ROOT}/local/go/bin/go" install golang.org/x/tools/gopls@latest

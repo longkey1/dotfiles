@@ -1,9 +1,9 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-CURRENT=$(cd $(dirname $0);pwd)
-${LOCAL_BIN}/checkexec ${LOCAL_CONFIG}/zsh/zshrc.gpg ${LOCAL_CONFIG}/zsh/zshrc.gpg.dist -- ${CURRENT}/build_gpg.sh
+CURRENT=$(cd "$(dirname "$0")" && pwd)
+"${LOCAL_BIN}"/checkexec "${LOCAL_CONFIG}"/zsh/zshrc.gpg "${LOCAL_CONFIG}"/zsh/zshrc.gpg.dist -- "${CURRENT}"/build_gpg.sh
 
-[ ! -f ${LOCAL_CONFIG}/zsh/.zshrc ] && ln -s ${LOCAL_CONFIG}/zsh/zshrc ${LOCAL_CONFIG}/zsh/.zshrc || true
+[ ! -f "${LOCAL_CONFIG}"/zsh/.zshrc ] && ln -s "${LOCAL_CONFIG}"/zsh/zshrc "${LOCAL_CONFIG}"/zsh/.zshrc || true
 
 # plugins
 # Usage: git_sync <owner/repo> [clone_args...]
@@ -24,7 +24,7 @@ git_sync() {
     else
       echo "[git_sync] ${repo}: pulled"
     fi
-    return $?
+    return 0
   fi
 
   # clone

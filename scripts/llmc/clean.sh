@@ -1,6 +1,6 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 BINARY="llmc"
-rm -f ${LOCAL_BIN}/${BINARY}
-rm -f ${LOCAL_CONFIG}/llmc/config.toml
-rm -f ${LOCAL_CONFIG}/zsh/functions/_llmc
+rm -f "${LOCAL_BIN}"/${BINARY}
+rm -f "${LOCAL_CONFIG}"/llmc/config.toml
+rm -f "${LOCAL_CONFIG}"/zsh/functions/_llmc

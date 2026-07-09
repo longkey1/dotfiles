@@ -1,9 +1,9 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-git-clone () {
+git-clone() {
   repo="https://github.com/${1}.git"
   dest="${ROOT}/vim/pack/bundle/start/${2}"
-  [ ! -d "${dest}" ] && git clone ${repo} ${dest} || true
+  [ ! -d "${dest}" ] && git clone "${repo}" "${dest}" || true
 }
 
 git-clone thinca/vim-quickrun vim-quickrun

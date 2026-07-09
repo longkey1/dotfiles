@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 BINARY="go"
 GO_INSTALL_DIR="${ROOT}/local/go"
@@ -14,7 +14,7 @@ fi
 LATEST_VERSION=$(curl -sL "https://go.dev/VERSION?m=text" | head -1)
 
 if [ -d "${GO_INSTALL_DIR}" ]; then
-  CURRENT_VERSION=$(${GO_INSTALL_DIR}/bin/go version 2>/dev/null | awk '{print $3}')
+  CURRENT_VERSION=$("${GO_INSTALL_DIR}"/bin/go version 2> /dev/null | awk '{print $3}')
   if [ "${CURRENT_VERSION}" = "${LATEST_VERSION}" ]; then
     echo "go: already up to date: ${CURRENT_VERSION}"
     exit 0
@@ -22,14 +22,14 @@ if [ -d "${GO_INSTALL_DIR}" ]; then
 fi
 
 WORK_DIR=/tmp/dotfiles-${BINARY}-${USER}
-mkdir -p ${WORK_DIR}
-pushd ${WORK_DIR}
+mkdir -p "${WORK_DIR}"
+pushd "${WORK_DIR}" || exit
 
 TARBALL="${LATEST_VERSION}.${OS}-${ARCH}.tar.gz"
-curl -L "https://go.dev/dl/${TARBALL}" -o ${TARBALL}
+curl -L "https://go.dev/dl/${TARBALL}" -o "${TARBALL}"
 
-rm -rf ${GO_INSTALL_DIR}
-tar -C ${ROOT}/local -xzf ${TARBALL}
+rm -rf "${GO_INSTALL_DIR}"
+tar -C "${ROOT}"/local -xzf "${TARBALL}"
 
-popd
-rm -rf ${WORK_DIR}
+popd || exit
+rm -rf "${WORK_DIR}"

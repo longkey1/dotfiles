@@ -1,0 +1,4 @@
+# SC1091: source 先が ${SCRIPTS} 等の環境変数を含む動的パスのため追跡不可
+disable=SC1091
+# SC2016: envsubst や powershell.exe に渡すシングルクォート内の ${VAR} は意図的なリテラル
+disable=SC2016

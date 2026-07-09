@@ -138,6 +138,8 @@ brew install vim tmux
 | `make uninstall` | シンボリックリンクを削除 |
 | `make update` | ビルドファイルを更新 |
 | `make clean` | ビルドファイルを削除 |
+| `make lint` | scripts 配下を shfmt（チェック）と shellcheck で検査 |
+| `make fmt` | scripts 配下を shfmt で整形 |
 
 ### 個別実行
 
@@ -170,6 +172,24 @@ go
 jq
 npm
 ```
+
+### Lint / Format
+
+`scripts/` 配下のシェルスクリプト（`*.sh` と `scripts/functions`）は bash スクリプトで、[shfmt](https://github.com/mvdan/sh) と [ShellCheck](https://www.shellcheck.net/) が通る状態を維持します。
+
+```bash
+# インストール（macOS）
+brew install shfmt shellcheck
+
+# 検査
+make lint
+
+# 整形
+make fmt
+```
+
+- shfmt のスタイル（2スペースインデント、`space_redirects`）は `.editorconfig` で定義しています（shfmt はフラグ無し実行時に `.editorconfig` を読みます）
+- shellcheck の除外ルールとその理由は `.shellcheckrc` に記載しています
 
 ## Targets
 

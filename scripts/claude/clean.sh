@@ -1,5 +1,5 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-. ${SCRIPTS}/functions
+. "${SCRIPTS}"/functions
 
 npm uninstall --global --prefix "${ROOT}/local" "@anthropic-ai/claude-code"

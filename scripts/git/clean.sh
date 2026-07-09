@@ -1,3 +1,3 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-rm -f ${LOCAL_CONFIG}/git/config
+rm -f "${LOCAL_CONFIG}"/git/config

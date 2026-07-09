@@ -1,6 +1,6 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-. ${SCRIPTS}/functions
+. "${SCRIPTS}"/functions
 
 unsymlink gnupg/gpg-agent.conf
 unsymlink gnupg/gpg.conf

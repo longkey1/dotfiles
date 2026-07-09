@@ -1,3 +1,3 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 npm uninstall --global --prefix "${ROOT}/local" intelephense
