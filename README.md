@@ -227,7 +227,6 @@ make fmt
 | starship | [starship/starship](https://github.com/starship/starship) |
 | systemd | - |
 | tmux | [tmux/tmux](https://github.com/tmux/tmux) |
-| usql | [xo/usql](https://github.com/xo/usql) |
 | vim | [vim/vim](https://github.com/vim/vim) |
 | xh | [ducaale/xh](https://github.com/ducaale/xh) |
 | zenhan | [iuchim/zenhan](https://github.com/iuchim/zenhan) |
