@@ -13,14 +13,14 @@
 xcode-select --install
 
 # Homebrew パッケージ
-brew install node jq gettext gnupg
+brew install node gettext gnupg
 ```
 
 ### Debian/Ubuntu
 
 ```bash
 # 基本ツール
-sudo apt install -y build-essential curl git jq gettext-base gnupg
+sudo apt install -y build-essential curl git gettext-base gnupg
 
 # Node.js (LTS)
 curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
@@ -169,7 +169,6 @@ go
 
 ```
 # scripts/claude/system_deps
-jq
 npm
 ```
 
