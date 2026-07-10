@@ -225,6 +225,7 @@ make fmt
 | pam_environment | - |
 | rg | [BurntSushi/ripgrep](https://github.com/BurntSushi/ripgrep) |
 | rn | - |
+| run | [longkey1/run](https://github.com/longkey1/run) |
 | ssh | - |
 | starship | [starship/starship](https://github.com/starship/starship) |
 | systemd | - |
