@@ -3,7 +3,9 @@
 git-clone() {
   repo="https://github.com/${1}.git"
   dest="${ROOT}/vim/pack/bundle/start/${2}"
-  [ ! -d "${dest}" ] && git clone "${repo}" "${dest}" || true
+  if [ ! -d "${dest}" ]; then
+    git clone "${repo}" "${dest}"
+  fi
 }
 
 git-clone thinca/vim-quickrun vim-quickrun

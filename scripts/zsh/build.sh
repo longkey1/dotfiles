@@ -3,7 +3,9 @@
 CURRENT=$(cd "$(dirname "$0")" && pwd)
 "${LOCAL_BIN}"/checkexec "${LOCAL_CONFIG}"/zsh/zshrc.gpg "${LOCAL_CONFIG}"/zsh/zshrc.gpg.dist -- "${CURRENT}"/build_gpg.sh
 
-[ ! -f "${LOCAL_CONFIG}"/zsh/.zshrc ] && ln -s "${LOCAL_CONFIG}"/zsh/zshrc "${LOCAL_CONFIG}"/zsh/.zshrc || true
+if [ ! -f "${LOCAL_CONFIG}"/zsh/.zshrc ]; then
+  ln -s "${LOCAL_CONFIG}"/zsh/zshrc "${LOCAL_CONFIG}"/zsh/.zshrc
+fi
 
 # plugins
 # Usage: git_sync <owner/repo> [clone_args...]

@@ -11,4 +11,6 @@ fi
 
 #
 mkdir -p "${LOCAL_CONFIG}"/starship
-[ ! -e "${LOCAL_CONFIG}"/starship/config.toml ] && "${LOCAL_BIN}"/starship preset pure-preset -o "${LOCAL_CONFIG}"/starship/config.toml || true
+if [ ! -e "${LOCAL_CONFIG}"/starship/config.toml ]; then
+  "${LOCAL_BIN}"/starship preset pure-preset -o "${LOCAL_CONFIG}"/starship/config.toml
+fi
