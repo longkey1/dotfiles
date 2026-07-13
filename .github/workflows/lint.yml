@@ -15,7 +15,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # ubuntu-latest には shellcheck はプリインストール済み。shfmt はローカルと同じバージョンを固定して導入する
       - name: Install shfmt
