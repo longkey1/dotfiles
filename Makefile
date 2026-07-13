@@ -54,17 +54,20 @@ $(1): $$(addprefix $(1)-,$$(call _all_packages,$(1)))
 endef
 $(foreach a,$(ACTIONS),$(eval $(call _aggregate_rule,$(a))))
 
-# scripts 配下のシェルスクリプト（*.sh と拡張子なしの functions）
+# lint 対象のシェルスクリプト。
+# scripts 配下（*.sh と拡張子なしの functions）と config 配下の自作スクリプト。
+# config/zsh/plugins などのサードパーティ製は対象外なので個別に列挙する。
 SH_FILES := $(SCRIPTS)/functions $(shell find $(SCRIPTS) -name '*.sh' -type f)
+SH_FILES += $(CONFIG)/rofi/system.sh $(CONFIG)/git/hooks/prepare-commit-msg
 
 .PHONY: lint
 lint:
-	shfmt -d $(SCRIPTS)
+	shfmt -d $(SH_FILES)
 	shellcheck $(SH_FILES)
 
 .PHONY: fmt
 fmt:
-	shfmt -w $(SCRIPTS)
+	shfmt -w $(SH_FILES)
 
 .PHONY: help
 help:
