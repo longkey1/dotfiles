@@ -16,4 +16,4 @@ if grep -vqE '^\s*(#|$)' "$COMMIT_MSG_FILE"; then
   exit 0
 fi
 
-echo "${DIFF}" | llmc chat -p commit > "${COMMIT_MSG_FILE}"
+echo "${DIFF}" | llmc chat -p commit >"${COMMIT_MSG_FILE}"

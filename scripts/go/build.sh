@@ -14,7 +14,7 @@ fi
 LATEST_VERSION=$("${LOCAL_BIN}"/xh --follow --body GET "https://go.dev/VERSION?m=text" | head -1)
 
 if [ -d "${GO_INSTALL_DIR}" ]; then
-  CURRENT_VERSION=$("${GO_INSTALL_DIR}"/bin/go version 2> /dev/null | awk '{print $3}')
+  CURRENT_VERSION=$("${GO_INSTALL_DIR}"/bin/go version 2>/dev/null | awk '{print $3}')
   if [ "${CURRENT_VERSION}" = "${LATEST_VERSION}" ]; then
     echo "go: already up to date: ${CURRENT_VERSION}"
     exit 0

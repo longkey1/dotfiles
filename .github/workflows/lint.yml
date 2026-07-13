@@ -1,0 +1,30 @@
+name: lint
+
+on:
+  push:
+    paths:
+      - 'scripts/**'
+      - 'config/rofi/system.sh'
+      - 'config/git/hooks/prepare-commit-msg'
+      - '.editorconfig'
+      - '.shellcheckrc'
+      - 'Makefile'
+      - '.github/workflows/lint.yml'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # ubuntu-latest には shellcheck はプリインストール済み。shfmt はローカルと同じバージョンを固定して導入する
+      - name: Install shfmt
+        env:
+          SHFMT_VERSION: v3.13.1
+        run: |
+          curl -sSL -o shfmt "https://github.com/mvdan/sh/releases/download/${SHFMT_VERSION}/shfmt_${SHFMT_VERSION}_linux_amd64"
+          chmod +x shfmt
+          sudo mv shfmt /usr/local/bin/shfmt
+
+      - name: Run lint
+        run: make lint

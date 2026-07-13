@@ -7,4 +7,4 @@ bw_session=$(get_bitwarden_session)
 GEMINI_API_KEY=$("${LOCAL_BIN}"/bw get notes a317aaf3-bb1e-4f52-8f07-b27f010add73 --session "${bw_session}")
 export GEMINI_API_KEY
 
-envsubst '${GPG_KEYID} ${GEMINI_API_KEY}' < "${LOCAL_CONFIG}"/git/config.dist > "${LOCAL_CONFIG}"/git/config
+envsubst '${GPG_KEYID} ${GEMINI_API_KEY}' <"${LOCAL_CONFIG}"/git/config.dist >"${LOCAL_CONFIG}"/git/config

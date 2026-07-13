@@ -14,11 +14,11 @@ touch "${SCRIPTS}"/bitwarden.session
 bw_status=$("${LOCAL_BIN}"/bw status | "${LOCAL_BIN}/jq" -r .status)
 if [ "${bw_status}" = "unauthenticated" ]; then
   "${LOCAL_BIN}"/bw login --apikey
-  "${LOCAL_BIN}"/bw unlock --raw > "${SCRIPTS}"/bitwarden.session
+  "${LOCAL_BIN}"/bw unlock --raw >"${SCRIPTS}"/bitwarden.session
   exit
 fi
 
 ## locked
-if [[ "${bw_status}" = "locked" ]] && [[ -z $(< "${SCRIPTS}/bitwarden.session") ]]; then
-  "${LOCAL_BIN}"/bw unlock --raw > "${SCRIPTS}"/bitwarden.session
+if [[ "${bw_status}" = "locked" ]] && [[ -z $(<"${SCRIPTS}/bitwarden.session") ]]; then
+  "${LOCAL_BIN}"/bw unlock --raw >"${SCRIPTS}"/bitwarden.session
 fi

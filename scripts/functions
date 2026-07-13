@@ -33,10 +33,10 @@ function npm_install_global() {
   local version=${3:-latest}
 
   local before
-  before=$(npm list --global --prefix "${ROOT}/local" "${package}" --json 2> /dev/null | "${LOCAL_BIN}/jq" -r ".dependencies[\"${package}\"].version // \"\"")
+  before=$(npm list --global --prefix "${ROOT}/local" "${package}" --json 2>/dev/null | "${LOCAL_BIN}/jq" -r ".dependencies[\"${package}\"].version // \"\"")
   npm install --global --prefix "${ROOT}/local" --no-package-lock --no-fund --silent "${package}@${version}"
   local after
-  after=$(npm list --global --prefix "${ROOT}/local" "${package}" --json 2> /dev/null | "${LOCAL_BIN}/jq" -r ".dependencies[\"${package}\"].version // \"\"")
+  after=$(npm list --global --prefix "${ROOT}/local" "${package}" --json 2>/dev/null | "${LOCAL_BIN}/jq" -r ".dependencies[\"${package}\"].version // \"\"")
 
   if [ -z "${after}" ]; then
     echo "${label}: failed to install ${package}"
@@ -58,7 +58,7 @@ function execute_envsubst() {
   DESTINATION=${2}
   SOURCE=${3}
   echo "envsubst "'${OPTION}'" < ${DESTINATION} > ${SOURCE}"
-  envsubst "'${OPTION}'" < "${DESTINATION}" > "${SOURCE}"
+  envsubst "'${OPTION}'" <"${DESTINATION}" >"${SOURCE}"
 }
 
 function symlink_to_symlink() {
