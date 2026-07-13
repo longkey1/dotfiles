@@ -197,7 +197,6 @@ make fmt
 
 | Target | Link |
 |--------|------|
-| argc | [sigoden/argc](https://github.com/sigoden/argc) |
 | bin | - |
 | bitwarden | [@bitwarden/cli](https://www.npmjs.com/package/@bitwarden/cli) |
 | checkexec | [kurtbuilds/checkexec](https://github.com/kurtbuilds/checkexec) |
