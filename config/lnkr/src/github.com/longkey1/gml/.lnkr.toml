@@ -6,11 +6,3 @@ git_exclude_path = ".git/info/exclude"
 [[links]]
   path = ".envrc"
   type = "sym"
-
-[[links]]
-  path = "AGENTS.md"
-  type = "sym"
-
-[[links]]
-  path = "CLAUDE.md"
-  type = "sym"
