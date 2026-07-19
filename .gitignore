@@ -26,6 +26,7 @@
 /config/zsh/.zsh_history
 /config/zsh/.zsh_sessions
 /config/zsh/functions
+/config/zsh/history
 /config/zsh/plugins/
 /config/zsh/zshrc.gpg
 /vim/.netrwhist
