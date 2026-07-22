@@ -3,3 +3,4 @@
 . "${SCRIPTS}"/functions
 
 unsymlink local/bin/claude
+unsymlink config/claude/settings.json
