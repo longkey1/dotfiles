@@ -2,6 +2,7 @@
 
 ROOT := $(patsubst %/,%,$(dir $(realpath $(firstword $(MAKEFILE_LIST)))))
 BIN := $(ROOT)/local/bin
+OPT := $(ROOT)/local/opt
 CONFIG := $(ROOT)/config
 SCRIPTS := $(ROOT)/scripts
 
@@ -17,7 +18,7 @@ _deps = $(if $(wildcard $(SCRIPTS)/$(1)/deps),$(shell cat $(SCRIPTS)/$(1)/deps))
 _system_deps = $(if $(wildcard $(SCRIPTS)/$(1)/system_deps),$(shell cat $(SCRIPTS)/$(1)/system_deps))
 
 define _execute_shell
-	env ROOT=$(ROOT) LOCAL_BIN=$(BIN) LOCAL_CONFIG=$(CONFIG) REMOTE_BIN=$(HOME)/.local/bin REMOTE_CONFIG=$(HOME)/.config SCRIPTS=$(SCRIPTS) $(1)
+	env ROOT=$(ROOT) LOCAL_BIN=$(BIN) LOCAL_OPT=$(OPT) LOCAL_CONFIG=$(CONFIG) REMOTE_BIN=$(HOME)/.local/bin REMOTE_CONFIG=$(HOME)/.config SCRIPTS=$(SCRIPTS) $(1)
 endef
 
 # $(1)=パッケージ名, $(2)=アクション名。実行可能な $(2).sh があれば実行。

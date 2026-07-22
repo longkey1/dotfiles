@@ -3,6 +3,7 @@
 /local/bin
 /local/go
 /local/lib
+/local/opt
 /config/codegpt/.codegpt.yaml
 /config/gcal/application_credentials.json
 /config/gcal/config.toml
