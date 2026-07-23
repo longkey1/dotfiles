@@ -75,6 +75,12 @@ function symlink_to_symlink() {
     return
   fi
 
+  # Check if source exists
+  if [ ! -e "${source_path}" ] && [ ! -h "${source_path}" ]; then
+    echo "${source_path} does not exist. Did you run 'make build'?"
+    return
+  fi
+
   # Check if source is a symlink
   if [ ! -h "${source_path}" ]; then
     echo "${source_path} is not a symlink"
