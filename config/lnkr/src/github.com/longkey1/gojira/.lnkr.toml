@@ -1,4 +1,3 @@
-local = "{{local_root}}/github.com/longkey1/gojira"
 remote = "{{remote_root}}/github.com/longkey1/gojira"
 link_type = "sym"
 git_exclude_path = ".git/info/exclude"
