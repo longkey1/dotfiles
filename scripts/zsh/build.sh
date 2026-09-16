@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 CURRENT=$(cd "$(dirname "$0")" && pwd)
-"${LOCAL_BIN}"/checkexec "${LOCAL_CONFIG}"/zsh/zshrc.gpg "${LOCAL_CONFIG}"/zsh/zshrc.gpg.dist -- "${CURRENT}"/build_gpg.sh
+. "${SCRIPTS}"/functions
+
+checkexec "${LOCAL_CONFIG}"/zsh/zshrc.gpg "${LOCAL_CONFIG}"/zsh/zshrc.gpg.dist -- "${CURRENT}"/build_gpg.sh
 
 if [ ! -f "${LOCAL_CONFIG}"/zsh/.zshrc ]; then
   ln -s "${LOCAL_CONFIG}"/zsh/zshrc "${LOCAL_CONFIG}"/zsh/.zshrc

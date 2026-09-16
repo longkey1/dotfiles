@@ -199,7 +199,6 @@ make fmt
 |--------|------|
 | bin | - |
 | bitwarden | [@bitwarden/cli](https://www.npmjs.com/package/@bitwarden/cli) |
-| checkexec | [kurtbuilds/checkexec](https://github.com/kurtbuilds/checkexec) |
 | claude | [@anthropic-ai/claude-code](https://www.npmjs.com/package/@anthropic-ai/claude-code) |
 | cloudflared | [cloudflare/cloudflared](https://github.com/cloudflare/cloudflared) |
 | codex | [@openai/codex](https://www.npmjs.com/package/@openai/codex) |

@@ -27,6 +27,51 @@ function unsymlink() {
   fi
 }
 
+# Usage: checkexec <target> <dependencies...> -- <command...>
+# Runs <command> only when <target> is missing or older than any dependency
+# (make-style rebuild check). Exit status: 0 when up to date, 1 when a
+# dependency is missing or the usage is wrong, otherwise the command's own.
+# Replaces kurtbuilds/checkexec, which ships no arm64 macOS binary.
+function checkexec() {
+  local target=${1}
+  shift
+  local deps=()
+  while [ $# -gt 0 ] && [ "${1}" != "--" ]; do
+    deps+=("${1}")
+    shift
+  done
+  if [ "${1:-}" != "--" ] || [ $# -lt 2 ]; then
+    echo "usage: checkexec <target> <dependencies...> -- <command>" >&2
+    return 1
+  fi
+  shift
+
+  local dep
+  for dep in ${deps[@]+"${deps[@]}"}; do
+    if [ ! -e "${dep}" ]; then
+      echo "checkexec: dependency not found: ${dep}" >&2
+      return 1
+    fi
+  done
+
+  local outdated=0
+  if [ ! -e "${target}" ]; then
+    outdated=1
+  else
+    for dep in ${deps[@]+"${deps[@]}"}; do
+      if [ "${dep}" -nt "${target}" ]; then
+        outdated=1
+        break
+      fi
+    done
+  fi
+  if [ "${outdated}" -eq 0 ]; then
+    return 0
+  fi
+
+  "$@"
+}
+
 function npm_install_global() {
   local label=${1}
   local package=${2}
