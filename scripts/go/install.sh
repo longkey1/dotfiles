@@ -2,6 +2,8 @@
 
 . "${SCRIPTS}"/functions
 
+symlink local/go
+
 for binary in go gofmt; do
   if [ ! -h "${ROOT}/local/bin/${binary}" ]; then
     ln -s "../go/bin/${binary}" "${ROOT}/local/bin/${binary}"

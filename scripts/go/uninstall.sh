@@ -8,3 +8,7 @@ for binary in go gofmt; do
     unlink "${ROOT}/local/bin/${binary}"
   fi
 done
+
+if [ -h "${HOME}/.local/go" ]; then
+  unlink "${HOME}/.local/go" && echo "${HOME}/.local/go unlinked"
+fi
