@@ -2,7 +2,10 @@
 
 . "${SCRIPTS}"/functions
 
-npm_install_global "bitwarden" "@bitwarden/cli"
+# 2026.9.0 以降はログイン時に user-key-id backfill (POST /api/accounts/key-management/user-key-id) を
+# 必須実行するが Vaultwarden が未実装で 404 になり login が失敗する
+# https://github.com/dani-garcia/vaultwarden/issues/7750
+npm_install_global "bitwarden" "@bitwarden/cli" "2026.8.0"
 
 # set secrets
 set -a && . "${SCRIPTS}"/secrets.env && set +a
