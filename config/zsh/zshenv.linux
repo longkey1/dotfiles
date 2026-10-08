@@ -1,0 +1,1 @@
+# Linux-specific environment variables (read by every zsh process via zshenv).

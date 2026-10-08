@@ -22,12 +22,8 @@ fpath=(${fpath} ${ZDOTDIR}/functions(N-/))
 setopt no_beep
 
 #
-# environment variables
+# environment variables (shared ones are in zshenv)
 #
-## common
-export EDITOR="vim"
-export VISUAL="vim"
-export PAGER="less"
 ## history
 export HISTFILE="${XDG_STATE_HOME:-${HOME}/.local/state}/zsh/history"
 [[ -d ${HISTFILE:h} ]] || mkdir -p ${HISTFILE:h}
@@ -58,14 +54,6 @@ excutable gemini && alias gemini-cli='gemini --screen-reader'
 #
 # Applications
 #
-## go
-export GOPATH="${XDG_DATA_HOME:-${HOME}/.local/share}/go"
-export GOBIN="${HOME}/.local/bin"
-
-## docker-compose
-export LOCAL_UID=$(id -u)
-export LOCAL_GID=$(id -g)
-
 ## abbr
 if excutable abbr; then
   abbr -g -s -q ymd=$(date '+%y%m%d')
