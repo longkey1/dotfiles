@@ -34,7 +34,7 @@ setopt hist_ignore_all_dups # remove older duplicate when a command is re-entere
 setopt hist_reduce_blanks   # trim redundant whitespace from history entries
 setopt extended_history     # record timestamps in the history file
 ## path .bin
-path=(${HOME}/.local/bin(N-/) ${path})
+path=(${HOME}/.local/bin(N-/) ${GOPATH}/bin(N-/) ${path})
 
 #
 # alias

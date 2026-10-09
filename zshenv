@@ -14,7 +14,6 @@ export PAGER="less"
 #
 ## go
 export GOPATH="${XDG_DATA_HOME:-${HOME}/.local/share}/go"
-export GOBIN="${HOME}/.local/bin"
 
 ## docker-compose
 export LOCAL_UID=${UID}
