@@ -56,8 +56,8 @@ excutable gemini && alias gemini-cli='gemini --screen-reader'
 #
 ## abbr
 if excutable abbr; then
-  abbr -g -s -q ymd=$(date '+%y%m%d')
-  abbr -g -s -q ymd-=$(date '+%y-%m-%d')
+  abbr -g -S -q ymd=$(date '+%y%m%d')
+  abbr -g -S -q ymd-=$(date '+%y-%m-%d')
 fi
 
 ## starship

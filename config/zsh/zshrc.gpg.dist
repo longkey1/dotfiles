@@ -8,7 +8,7 @@ if excutable gpg; then
   }
   # abbr
   if excutable abbr; then
-    abbr -g -s -q gpp="preset-gpg-passphrase"
+    abbr -g -S -q gpp="preset-gpg-passphrase"
   fi
 
   export GPG_TTY=${TTY}
